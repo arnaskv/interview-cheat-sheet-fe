@@ -1,9 +1,9 @@
-import RouterProvider from './components/routerProvider';
+import CustomRouterProvider from './components/customRouterProvider';
 
 function App() {
   return (
     <>
-      <RouterProvider/>
+      <CustomRouterProvider/>
     </>
   );
 }
