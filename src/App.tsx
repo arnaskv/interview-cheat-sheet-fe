@@ -1,7 +1,11 @@
-import QuestionList from './components/questions/QuestionList';
+import CustomRouterProvider from './components/customRouterProvider';
 
 function App() {
-  return <QuestionList />;
+  return (
+    <>
+      <CustomRouterProvider />
+    </>
+  );
 }
 
 export default App;
