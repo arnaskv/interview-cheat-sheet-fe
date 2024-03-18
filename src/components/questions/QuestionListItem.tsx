@@ -8,7 +8,7 @@ type Props = {
 
 const QuestionListItem: React.FC<Props> = ({ question }) => {
   return (
-    <Box sx={{ width: '95%', padding: '5px', border: '0.5pt solid', borderRadius: '5px', marginBottom: '3px' }}>
+    <Box className="question-item">
       <Typography>{question.text}</Typography>
     </Box>
   );
