@@ -1,0 +1,19 @@
+  .page-container {
+    padding: 20px;
+  }
+  
+  .error {
+    color: #c70014;
+    text-align: center;
+  }
+  
+  .list-of-categories {
+    margin-top: 20px;
+  }
+  
+  .category-item {
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+  }

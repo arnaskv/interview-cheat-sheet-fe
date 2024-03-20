@@ -1,9 +1,10 @@
 import { Suspense, FC, lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ROUTE_PATHS } from "../../constants/routePaths";
+import Loader from "../shared/Loader";
 
 const Home = lazy(() => import('../../pages/home/Home'));
-
+const CategoriesPage = lazy(() => import('../../pages/categories/CategoriesPage'));
 
 const CustomRouterProvider: FC = () => {
 
@@ -11,16 +12,24 @@ const CustomRouterProvider: FC = () => {
         {
             path: ROUTE_PATHS.HOME,
             element: (
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<Loader />}>
                     <Home />
                 </Suspense>
             ),
-        }
+        },
+        {
+            path: ROUTE_PATHS.CATEGORIES,
+            element: (
+                <Suspense fallback={<Loader />}>
+                    <CategoriesPage />
+                </Suspense>
+            ),
+        },
     ]);
 
     return (
         <>
-            <RouterProvider router={router}/>
+            <RouterProvider router={router} />
         </>
     );
 };
