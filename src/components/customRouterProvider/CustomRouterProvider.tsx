@@ -5,6 +5,7 @@ import Loader from "../shared/Loader";
 
 const Home = lazy(() => import('../../pages/home/Home'));
 const CategoriesPage = lazy(() => import('../../pages/categories/CategoriesPage'));
+const CommentsList = lazy(() => import('../../pages/comments/CommentsList'));
 
 const CustomRouterProvider: FC = () => {
 
@@ -25,6 +26,14 @@ const CustomRouterProvider: FC = () => {
                 </Suspense>
             ),
         },
+        {
+            path: ROUTE_PATHS.COMMENTS,
+            element: (
+                <Suspense fallback={<Loader />}>
+                    <CommentsList />
+                </Suspense>
+            ),
+        }
     ]);
 
     return (
