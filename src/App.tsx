@@ -3,7 +3,7 @@ import CustomRouterProvider from './components/customRouterProvider';
 function App() {
   return (
     <>
-      <CustomRouterProvider/>
+      <CustomRouterProvider />
     </>
   );
 }
