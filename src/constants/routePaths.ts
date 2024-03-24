@@ -1,4 +1,5 @@
 export const ROUTE_PATHS = {
     HOME: '/',
-    CATEGORIES: '/categories'
+    CATEGORIES: '/categories',
+    COMMENTS: '/comments'
 }

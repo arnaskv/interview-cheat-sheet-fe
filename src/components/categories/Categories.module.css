@@ -1,17 +1,17 @@
-  .page-container {
+  .PageContainer {
     padding: 20px;
   }
   
-  .error {
+  .Error {
     color: #c70014;
     text-align: center;
   }
   
-  .list-of-categories {
+  .ListOfCategories {
     margin-top: 20px;
   }
   
-  .category-item {
+  .CategoryItem {
     padding: 8px;
     margin-bottom: 4px;
     background-color: #f0f0f0;
