@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import apiService, { Query } from "../services/apiService";
-import { HTTP_MEDTHODS } from "../constants/http";
+import { HTTP_METHODS } from "../constants/http";
 import queryService from "../services/queryService";
 
 type UseQueryArguments<T> = {
@@ -26,8 +25,6 @@ export default function useQuery<T>({
         throw new Error('URL is required');
     }
 
-    const navigate = useNavigate();
-
     const [data, setData] = useState<T | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<string[] | null>(null);
@@ -38,7 +35,7 @@ export default function useQuery<T>({
         try {
             const response = await apiService.makeRequestAsync<T>({
                 url,
-                httpMethod: HTTP_MEDTHODS.GET,
+                httpMethod: HTTP_METHODS.GET,
                 queryParams,
             });
 
@@ -66,7 +63,7 @@ export default function useQuery<T>({
                 url,
                 queryParams: query,
                 body: saniziteValues,
-                httpMethod: httpMethod || HTTP_MEDTHODS.POST,
+                httpMethod: httpMethod || HTTP_METHODS.POST,
             });
             if('message' in response) {
                 setErrors([response.message]);
@@ -79,10 +76,6 @@ export default function useQuery<T>({
 
         setIsLoading(false);
     }
-
-    useEffect(() => {
-        getDataAsync();
-    }, [queryParams, navigate]);
 
     return {
         data,

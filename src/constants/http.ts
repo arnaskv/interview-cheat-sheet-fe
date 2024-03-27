@@ -1,4 +1,4 @@
-export const HTTP_MEDTHODS = {
+export const HTTP_METHODS = {
     GET: 'get',
     POST: 'post',
     PUT: 'put',
