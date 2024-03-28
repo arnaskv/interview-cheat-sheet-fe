@@ -29,7 +29,7 @@ export default function useQuery<T>({
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<string[] | null>(null);
 
-    const getDataAsync = async () => {
+    const getData = async () => {
         setIsLoading(true);
         
         try {
@@ -53,7 +53,7 @@ export default function useQuery<T>({
         setIsLoading(false);
     };
 
-    const sendAsync = async (values? : Query) => {
+    const sendData = async (values? : Query) => {
         setIsLoading(true);
         const saniziteValues = values ? queryService.sanitize(values) : "";
         const query = id ? { id } : undefined;
@@ -81,7 +81,7 @@ export default function useQuery<T>({
         data,
         isLoading,
         errors,
-        getDataAsync,
-        sendAsync,
+        getData,
+        sendData,
     };
 };
