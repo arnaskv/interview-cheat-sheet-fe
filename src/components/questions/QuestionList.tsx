@@ -17,7 +17,7 @@ const QuestionList = () => {
   return (
     <>
       <Box width="100%">
-        <QuestionContainer className="question-container">
+        <QuestionContainer>
           {questions.map(question => {
             return <QuestionListItem key={question.id} question={question} />;
           })}
