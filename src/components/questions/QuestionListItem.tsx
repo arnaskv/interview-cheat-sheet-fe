@@ -5,7 +5,6 @@ import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
 import {
   QuestionInfoContainer,
-  QuestionInfoText,
   QuestionItem,
   QuestionReaction,
   QuestionReactionContainer,
