@@ -5,6 +5,7 @@ import Loader from "../shared/Loader";
 
 const Home = lazy(() => import('../../pages/home/Home'));
 const CategoriesPage = lazy(() => import('../../pages/categories/CategoriesPage'));
+const CategoryPage = lazy(() => import('../../pages/categories/CategoryPage'));
 const CommentsList = lazy(() => import('../../pages/comments/CommentsList'));
 
 const CustomRouterProvider: FC = () => {
@@ -23,6 +24,14 @@ const CustomRouterProvider: FC = () => {
             element: (
                 <Suspense fallback={<Loader />}>
                     <CategoriesPage />
+                </Suspense>
+            ),
+        },
+        {
+            path: ROUTE_PATHS.CATEGORY,
+            element: (
+                <Suspense fallback={<Loader />}>
+                    <CategoryPage />
                 </Suspense>
             ),
         },
