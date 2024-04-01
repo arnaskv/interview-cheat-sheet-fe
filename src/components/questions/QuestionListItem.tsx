@@ -1,27 +1,21 @@
 import React from 'react';
 import Question from '../../models/Question.interface';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
-import styled from '@emotion/styled';
+import {
+  QuestionInfoContainer,
+  QuestionInfoText,
+  QuestionItem,
+  QuestionReaction,
+  QuestionReactionContainer,
+  QuestionText,
+} from './QuestionStyles';
+import QuestionStats from './QuestionStats';
 
 type Props = {
   question: Question;
 };
-
-const QuestionText = styled(Typography)`
-  font-family: 'Inter';
-  font-weight: 400;
-  font-size: 16px;
-  color: rgba(0, 0, 72, 1);
-`;
-
-const QuestionInfoText = styled(Typography)`
-  font-family: 'Inter';
-  font-weight: 400;
-  font-size: 13px;
-  color: rgba(153, 153, 153, 1);
-`;
 
 const QuestionListItem: React.FC<Props> = ({ question }) => {
   //Handle logic later
@@ -29,24 +23,24 @@ const QuestionListItem: React.FC<Props> = ({ question }) => {
   const handleLikeClick = () => {};
 
   return (
-    <Box className="question-item">
-      <Box className="question-info-container">
-        <Box>
+    <QuestionItem>
+      <QuestionInfoContainer>
+        <Box sx={{ lineHeight: '24px' }}>
           <QuestionText>{question.text}</QuestionText>
         </Box>
         <Box>
-          <QuestionInfoText>Category • 0 comment • 0 Likes</QuestionInfoText>
+          <QuestionStats category="Category" />
         </Box>
-      </Box>
-      <Box className="question-reaction-container">
-        <Box className="question-reaction">
+      </QuestionInfoContainer>
+      <QuestionReactionContainer>
+        <QuestionReaction>
           <CommentButton onClick={handleCommentClick} />
-        </Box>
-        <Box className="question-reaction">
+        </QuestionReaction>
+        <QuestionReaction>
           <LikeButton onClick={handleLikeClick} />
-        </Box>
-      </Box>
-    </Box>
+        </QuestionReaction>
+      </QuestionReactionContainer>
+    </QuestionItem>
   );
 };
 
