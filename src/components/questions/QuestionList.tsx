@@ -3,6 +3,8 @@ import React from 'react';
 import QuestionListItem from './QuestionListItem';
 import questions from '../../data/MockQuestions';
 import styled from '@emotion/styled';
+import QuestionCreateButton from './components/QuestionCreateButton';
+import style from './QuestionPage.module.css';
 
 const QuestionContainer = styled(Box)`
   display: flex;
@@ -16,7 +18,11 @@ const QuestionContainer = styled(Box)`
 const QuestionList = () => {
   return (
     <>
+    
       <Box width="100%">
+        <div className={style.ButtonContainer}>
+          <QuestionCreateButton />
+        </div>
         <QuestionContainer>
           {questions.map(question => {
             return <QuestionListItem key={question.id} question={question} />;
