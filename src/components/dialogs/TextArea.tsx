@@ -1,13 +1,12 @@
 import { DialogContentText, TextField } from '@mui/material';
+import { TextFieldProps } from '@mui/material/TextField';
 import React from 'react';
 
-type Props = {
+type Props = TextFieldProps & {
   contentType: string;
-  multiline?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const TextArea: React.FC<Props> = ({ contentType, multiline = false, onChange }) => {
+const TextArea: React.FC<Props> = ({ contentType, ...textFieldProps }) => {
   return (
     <>
       <DialogContentText>
@@ -16,10 +15,11 @@ const TextArea: React.FC<Props> = ({ contentType, multiline = false, onChange })
       <TextField
         name={contentType.toLowerCase()}
         variant="outlined"
-        onChange={onChange}
-        multiline={multiline}
-        rows={multiline ? 4 : 1}
+        onChange={textFieldProps.onChange}
+        multiline={textFieldProps.multiline}
+        rows={textFieldProps.rows}
         fullWidth
+        required
         margin="dense"
         sx={{
           '& .MuiOutlinedInput-root': {

@@ -1,9 +1,8 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
 import TextArea from './TextArea';
-import CreateButton from '../buttons/CreateButton';
-import CancelButton from '../buttons/CancelButton';
-import CloseButton from '../buttons/CloseButton';
+import ActionButton from '../buttons/ActionButton';
 
 type Props = {
   isOpen: boolean;
@@ -18,7 +17,7 @@ const CreateDialog: React.FC<Props> = ({ isOpen, handleClose, contentType }) => 
     event.preventDefault();
     console.log(textFieldValue);
     handleClose();
-    //later useQuery would be added
+    //TODO: implemet post request with useQuery
   };
 
   const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,14 +43,24 @@ const CreateDialog: React.FC<Props> = ({ isOpen, handleClose, contentType }) => 
       >
         <DialogTitle>
           Add {contentType}
-          <CloseButton onClick={handleClose} />
+          <IconButton
+            sx={{ position: 'absolute', top: '8px', right: '8px', color: '#000048' }}
+            aria-label="close"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent sx={{ paddingBottom: '40px' }}>
-          <TextArea contentType={contentType} multiline onChange={handleTextFieldChange} />
+          <TextArea contentType={contentType} multiline onChange={handleTextFieldChange} rows={4} />
         </DialogContent>
         <DialogActions sx={{ borderTop: '1px solid #DDD', padding: '15px' }}>
-          <CancelButton onClick={handleClose} />
-          <CreateButton contentType={contentType} />
+          <ActionButton onClick={handleClose} color="secondary" variant="contained">
+            Cancel
+          </ActionButton>
+          <ActionButton type="submit" color="primary" variant="contained">
+            Add Category
+          </ActionButton>
         </DialogActions>
       </Dialog>
     </>
