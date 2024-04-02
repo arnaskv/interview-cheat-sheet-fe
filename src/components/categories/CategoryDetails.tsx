@@ -1,36 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { Category } from '../../interfaces/Category';
-import { fetchCategory } from '../../services/categoryService';
 import styles from './Categories.module.css';
 import Loader from '../shared/Loader';
+import useQuery from '../../hooks/useQuery';
 
 interface CategoryDetailsProps {
     categoryId: string;
 }
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
-    const [category, setCategory] = useState<Category | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const {
+        data: category,
+        isLoading,
+        errors,
+        getData
+    } = useQuery<Category>({
+        url: `https://givgai-api.devbstaging.com/api/v1/category/${categoryId}`,
+        httpMethod: 'GET',
+    });
 
     useEffect(() => {
-        if (categoryId) {
-            setLoading(true);
-
-            fetchCategory(parseInt(categoryId, 10))
-                .then(data => {
-                    setCategory(data);
-                    setLoading(false);
-                })
-                .catch(error => {
-                    setError(error.message);
-                    setLoading(false);
-                });
+        if (categoryId && !category) {
+            getData();
         }
-    }, [categoryId]);
+    }, [categoryId, getData, category]);
 
-    if (loading) return <Loader />;
-    if (error) return <div className={styles.Error}>{error}</div>;
+    if (isLoading) return <Loader />;
+    if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
     if (!category) return <div>No category found</div>
 
     return (

@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
-import { fetchCategories } from '../../services/categoryService';
 import styles from './Categories.module.css';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import CategoryItem from './CategoryItem';
+import useQuery from '../../hooks/useQuery';
 
 const Categories: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
+    const {
+        data: categories,
+        isLoading,
+        errors,
+        getData
+    } = useQuery<Category[]>({
+        url: 'https://givgai-api.devbstaging.com/api/v1/category',
+        httpMethod: 'GET',
+    });
 
     useEffect(() => {
-        setLoading(true);
+        if (!categories) {
+            getData();
+        }
+    }, [categories, getData]);
 
-        fetchCategories()
-            .then(data => {
-                setCategories(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                setError(error.message);
-                setLoading(false);
-            });
-    }, []);
+    const navigate = useNavigate();
 
     const handleCategoryClick = (categoryId: number) => {
         navigate(`/category/${categoryId}`);
     };
 
-    if (loading) return <Loader />;
-    if (error) return <div className={styles.Error}>{error}</div>;
+    if (isLoading) return <Loader />;
+    if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
+    if (!categories || categories.length === 0) return <div>No categories found</div>;
 
     return (
         <List component="nav" aria-label="categories">
