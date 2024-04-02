@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, Card} from '@mui/material';
+import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
 import { fetchCategories } from '../../services/categoryService';
 import styles from './Categories.module.css';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../shared/Loader';
+import CategoryItem from './CategoryItem';
 
 const Categories: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -36,25 +37,11 @@ const Categories: React.FC = () => {
     return (
         <List component="nav" aria-label="categories">
             {categories.map(category => (
-                <Card
+                <CategoryItem
                     key={category.id}
-                    sx={{
-                        mb: 1.5,
-                        cursor: 'pointer',
-                        borderColor: 'lightgray',
-                        borderWidth: '1px',
-                        borderStyle: 'solid',
-                        borderRadius: '4px',
-                        fontSize: '1rem'
-                    }}
+                    category={category}
                     onClick={() => handleCategoryClick(category.id)}
-                >
-                    <ListItem>
-                        <ListItemText
-                            primary={category.title}
-                        />
-                    </ListItem>
-                </Card>
+                />
             ))}
         </List>
     );
