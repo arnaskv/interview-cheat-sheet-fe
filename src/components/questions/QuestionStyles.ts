@@ -2,22 +2,20 @@ import styled from '@emotion/styled';
 import { Box, Typography } from '@mui/material';
 
 export const QuestionText = styled(Typography)`
-  font-family: 'Inter';
   font-weight: 400;
   font-size: 16px;
-  color: rgba(0, 0, 72, 1);
+  color: #000048;
 `;
 
 export const QuestionInfoText = styled(Typography)`
-  font-family: 'Inter';
   font-weight: 400;
   font-size: 13px;
-  color: rgba(153, 153, 153, 1);
+  color: #999999;
 `;
 
 export const QuestionItem = styled(Box)`
   border: 1px solid;
-  border-color: rgba(221, 221, 221, 1);
+  border-color: #dddddd;
   border-radius: 8px;
   display: flex;
   flex-direction: row;

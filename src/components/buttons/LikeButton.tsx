@@ -9,7 +9,7 @@ type Props = {
 const LikeButton: React.FC<Props> = ({ onClick }) => {
   return (
     <IconButton onClick={onClick}>
-      <ThumbUpOutlined sx={{ fill: 'rgba(153, 153, 153, 1)', height: '16px', width: '16px' }} />
+      <ThumbUpOutlined sx={{ fill: '#999999', height: '16px', width: '16px' }} />
     </IconButton>
   );
 };

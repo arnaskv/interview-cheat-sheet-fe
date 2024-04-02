@@ -9,7 +9,7 @@ type Props = {
 const CommentButton: React.FC<Props> = ({ onClick }) => {
   return (
     <IconButton onClick={onClick}>
-      <ChatBubbleOutlineOutlined sx={{ fill: 'rgba(153, 153, 153, 1)', height: '16px', width: '16px' }} />
+      <ChatBubbleOutlineOutlined sx={{ fill: '#999999', height: '16px', width: '16px' }} />
     </IconButton>
   );
 };
