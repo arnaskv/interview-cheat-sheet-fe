@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, Card, useMediaQuery, useTheme } from '@mui/material';
+import { List, ListItem, ListItemText, Card} from '@mui/material';
 import { Category } from '../../interfaces/Category';
 import { fetchCategories } from '../../services/categoryService';
 import styles from './Categories.module.css';
@@ -11,10 +11,6 @@ const Categories: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-    const theme = useTheme();
-    const isXSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
-    const isSmallScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-    const isMediumScreen = useMediaQuery(theme.breakpoints.between('md', 'lg'));
 
     useEffect(() => {
         setLoading(true);
@@ -34,13 +30,6 @@ const Categories: React.FC = () => {
         navigate(`/category/${categoryId}`);
     };
 
-    const getTypographyVariant = () => {
-        if (isXSmallScreen) return 'subtitle1';
-        if (isSmallScreen) return 'h6';
-        if (isMediumScreen) return 'h5';
-        return 'h5';
-    }
-
     if (loading) return <Loader />;
     if (error) return <div className={styles.Error}>{error}</div>;
 
@@ -55,16 +44,14 @@ const Categories: React.FC = () => {
                         borderColor: 'lightgray',
                         borderWidth: '1px',
                         borderStyle: 'solid',
-                        borderRadius: '4px'
+                        borderRadius: '4px',
+                        fontSize: '1rem'
                     }}
                     onClick={() => handleCategoryClick(category.id)}
                 >
                     <ListItem>
                         <ListItemText
                             primary={category.title}
-                            primaryTypographyProps={{
-                                variant: getTypographyVariant()
-                            }}
                         />
                     </ListItem>
                 </Card>
