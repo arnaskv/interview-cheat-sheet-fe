@@ -1,8 +1,11 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import QuestionListItem from './QuestionListItem';
-import questions from '../../data/MockQuestions';
 import styled from '@emotion/styled';
+import Question from '../../models/Question.interface';
+import { ENDPOINTS } from '../../constants/endpoints';
+import useQuery from '../../hooks/useQuery';
+import Loader from '../shared/Loader';
 
 const QuestionContainer = styled(Box)`
   display: flex;
@@ -14,6 +17,26 @@ const QuestionContainer = styled(Box)`
 `;
 
 const QuestionList = () => {
+  const {
+    data: questions,
+    isLoading,
+    errors,
+    getData,
+  } = useQuery<Question[]>({
+    url: ENDPOINTS.QUESTION.GET_ALL,
+    httpMethod: 'GET',
+  });
+
+  useEffect(() => {
+    if (!questions) {
+      getData();
+    }
+  }, [questions, getData]);
+
+  if (isLoading) return <Loader />;
+  if (errors) return <div>{errors.join(', ')}</div>;
+  if (!questions || questions.length === 0) return <div>No questions found</div>;
+
   return (
     <>
       <Box width="100%">
