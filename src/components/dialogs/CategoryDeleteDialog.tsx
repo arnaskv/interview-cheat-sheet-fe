@@ -32,7 +32,7 @@ const CategoryDeleteDialog: React.FC<CategoryDeleteProps> = ({ categoryId }) => 
 
   return (
     <>
-      <ActionButton onClick={toggleDialog} startIcon={<DeleteIcon />} variant="contained" color="primary">
+      <ActionButton onClick={toggleDialog} startIcon={<DeleteIcon />} variant="contained" color="error">
         Delete
       </ActionButton>
       <ActionDialog
