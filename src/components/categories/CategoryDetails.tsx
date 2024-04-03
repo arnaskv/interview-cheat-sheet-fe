@@ -4,38 +4,39 @@ import styles from './Categories.module.css';
 import Loader from '../shared/Loader';
 import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
-
+import CategoryDeleteDialog from '../dialogs/CategoryDeleteDialog';
 
 interface CategoryDetailsProps {
-    categoryId: string;
+  categoryId: string;
 }
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
-    const {
-        data: category,
-        isLoading,
-        errors,
-        getData
-    } = useQuery<Category>({
-        url: ENDPOINTS.CATEGORY.GET_ONE(categoryId),
-        httpMethod: 'GET',
-    });
+  const {
+    data: category,
+    isLoading,
+    errors,
+    getData,
+  } = useQuery<Category>({
+    url: ENDPOINTS.CATEGORY.GET_ONE(categoryId),
+    httpMethod: 'GET',
+  });
 
-    useEffect(() => {
-        if (categoryId && !category) {
-            getData();
-        }
-    }, [categoryId, getData, category]);
+  useEffect(() => {
+    if (categoryId && !category) {
+      getData();
+    }
+  }, [categoryId, getData, category]);
 
-    if (isLoading) return <Loader />;
-    if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
-    if (!category) return <div>No category found</div>
+  if (isLoading) return <Loader />;
+  if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
+  if (!category) return <div>No category found</div>;
 
-    return (
-        <div>
-            <h2>{category.title}</h2>
-        </div>
-    );
+  return (
+    <div>
+      <h2>{category.title}</h2>
+      <CategoryDeleteDialog categoryId={categoryId} />
+    </div>
+  );
 };
 
 export default CategoryDetails;
