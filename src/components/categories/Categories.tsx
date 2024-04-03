@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import CategoryItem from './CategoryItem';
 import useQuery from '../../hooks/useQuery';
+import { ENDPOINTS } from '../../constants/endpoints';
 
 const Categories: React.FC = () => {
     const {
@@ -14,7 +15,7 @@ const Categories: React.FC = () => {
         errors,
         getData
     } = useQuery<Category[]>({
-        url: 'https://givgai-api.devbstaging.com/api/v1/category',
+        url: ENDPOINTS.CATEGORY.GET_ALL,
         httpMethod: 'GET',
     });
 

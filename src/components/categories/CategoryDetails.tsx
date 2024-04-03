@@ -1,8 +1,10 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
 import Loader from '../shared/Loader';
 import useQuery from '../../hooks/useQuery';
+import { ENDPOINTS } from '../../constants/endpoints';
+
 
 interface CategoryDetailsProps {
     categoryId: string;
@@ -15,7 +17,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
         errors,
         getData
     } = useQuery<Category>({
-        url: `https://givgai-api.devbstaging.com/api/v1/category/${categoryId}`,
+        url: ENDPOINTS.CATEGORY.GET_ONE(categoryId),
         httpMethod: 'GET',
     });
 
