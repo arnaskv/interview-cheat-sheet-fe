@@ -1,40 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
-import { fetchCategories } from '../../services/categoryService';
 import styles from './Categories.module.css';
+import { useNavigate } from 'react-router-dom';
 import Loader from '../shared/Loader';
+import CategoryItem from './CategoryItem';
+import useQuery from '../../hooks/useQuery';
+import { ENDPOINTS } from '../../constants/endpoints';
 
 const Categories: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const {
+        data: categories,
+        isLoading,
+        errors,
+        getData
+    } = useQuery<Category[]>({
+        url: ENDPOINTS.CATEGORY.GET_ALL,
+        httpMethod: 'GET',
+    });
 
     useEffect(() => {
-        setLoading(true);
+        if (!categories) {
+            getData();
+        }
+    }, [categories, getData]);
 
-        fetchCategories()
-            .then(data => {
-                setCategories(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                setError(error.message);
-                setLoading(false);
-            });
-    }, []);
+    const navigate = useNavigate();
 
-    if (loading) return <Loader />;
-    if (error) return <div className={styles.Error}>{error}</div>;
+    const handleCategoryClick = (categoryId: number) => {
+        navigate(`/category/${categoryId}`);
+    };
+
+    if (isLoading) return <Loader />;
+    if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
+    if (!categories || categories.length === 0) return <div>No categories found</div>;
 
     return (
-        <div className={styles.ListOfCategories}>
+        <List component="nav" aria-label="categories">
             {categories.map(category => (
-                <div className={styles.CategoryItem} key={category.id}>
-                    {category.name}
-                </div>
+                <CategoryItem
+                    key={category.id}
+                    category={category}
+                    onClick={() => handleCategoryClick(category.id)}
+                />
             ))}
-        </div>
-
+        </List>
     );
 };
 
