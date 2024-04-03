@@ -6,7 +6,6 @@ import TextArea from '../TextArea/TextArea';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
-import styles from '../categories/Categories.module.css';
 import Loader from '../shared/Loader';
 
 const CategoryAddDialog: React.FC = () => {
@@ -61,7 +60,7 @@ const CategoryAddDialog: React.FC = () => {
           />
         )}
       </ActionDialog>
-      {errors && <div className={styles.Error}>{errors.join(', ')}</div>}
+      {errors && <div style={{ color: '#c70014', textAlign: 'center' }}>{errors.join(', ')}</div>}
     </>
   );
 };
