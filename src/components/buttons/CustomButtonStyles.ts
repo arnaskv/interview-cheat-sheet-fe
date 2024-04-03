@@ -15,19 +15,19 @@ export const StyledButton = styled(Button)<ButtonProps>(({ color }) => ({
     backgroundColor: '#000048',
     border: '1px solid #000048',
     color: '#fff',
-    '&:hover': {
-      backgroundColor: '#1a1a66',
-    },
   }),
   ...(color === 'secondary' && {
     backgroundColor: '#fff',
     border: '1px solid #DDD',
     color: '#000048',
-    '&:hover': {
-      backgroundColor: '#c2c2c2',
-    },
   }),
   '&:hover': {
     boxShadow: 'none',
+    ...(color === 'primary' && {
+      backgroundColor: '#1a1a66',
+    }),
+    ...(color === 'secondary' && {
+      backgroundColor: '#c2c2c2',
+    }),
   },
 }));

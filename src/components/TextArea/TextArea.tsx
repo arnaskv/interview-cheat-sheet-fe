@@ -14,13 +14,7 @@ const TextArea: React.FC<Props> = ({ contentType, ...textFieldProps }) => {
       </DialogContentText>
       <TextField
         name={contentType.toLowerCase()}
-        variant="outlined"
-        onChange={textFieldProps.onChange}
-        multiline={textFieldProps.multiline}
-        rows={textFieldProps.rows}
-        fullWidth
-        required
-        margin="dense"
+        {...textFieldProps}
         sx={{
           '& .MuiOutlinedInput-root': {
             borderRadius: '8px',
