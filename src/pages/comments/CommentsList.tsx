@@ -2,6 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import CommentCard from '../../components/comments/CommentCard';
 import { Comment } from '../../interfaces/Comment';
 import styles from './CommentsList.module.css';
+import AddComment from '../../components/comments/AddComment/AddComment';
 
 function CommentsList() {
   const comments: Comment[] = [
@@ -10,12 +11,15 @@ function CommentsList() {
   ];
 
   return (
-    <Grid className={styles.Grid}>
-      <Typography variant="h3">Comments list</Typography>
-      {comments.map(comment => (
-        <CommentCard key={comment.id} comment={comment} />
-      ))}
-    </Grid>
+    <>
+      <Grid className={styles.Grid}>
+        <Typography variant="h3">Comments list</Typography>
+        {comments.map(comment => (
+          <CommentCard key={comment.id} comment={comment} />
+        ))}
+      </Grid>
+      <AddComment />
+    </>
   );
 }
 
