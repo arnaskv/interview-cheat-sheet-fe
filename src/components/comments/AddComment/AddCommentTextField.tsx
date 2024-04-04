@@ -1,21 +1,35 @@
 import React, { useState } from 'react';
 import { InputAdornment, TextField, Box } from '@mui/material';
-import AddCommentButton from './AddCommentButton';
+import SentButton from '../../buttons/SendButton';
+import useQuery from '../../../hooks/useQuery';
+import { ENDPOINTS } from '../../../constants/endpoints';
+import { HTTP_METHODS } from '../../../constants/http';
+import { Comment } from '../../../interfaces/Comment';
+
+const MAX_LENGTH = 255;
 
 function AddCommentTextbox() {
-  const [text, setText] = useState('');
+  const [commentText, setCommentText] = useState('');
 
-  const addComment = () => {
-    if (text) {
-      console.log(text);
-      setText('');
-    }
+  const onSuccess = () => {
+    setCommentText('');
+  };
+
+  const createCommentQuery = useQuery({
+    url: ENDPOINTS.COMMENT.CREATE,
+    httpMethod: HTTP_METHODS.POST,
+    onSucess: onSuccess,
+  });
+
+  const handleSubmit = async () => {
+    const comment: Comment = { content: commentText };
+    await createCommentQuery.sendData(comment);
   };
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      addComment();
+      handleSubmit();
     }
   };
 
@@ -27,20 +41,20 @@ function AddCommentTextbox() {
       fullWidth
       variant="outlined"
       rows={4}
-      value={text}
-      onChange={event => setText(event.target.value)}
+      value={commentText}
+      onChange={event => setCommentText(event.target.value)}
       onKeyDown={handleEnter}
       sx={{
         '& fieldset': {
           borderRadius: '16px',
         },
       }}
-      inputProps={{ maxLength: 255 }}
+      inputProps={{ maxLength: MAX_LENGTH }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
             <Box sx={{ height: '100%' }}>
-              <AddCommentButton disabled={!text ? true : false} onClick={addComment} />
+              <SentButton disabled={!commentText} onClick={handleSubmit} />
             </Box>
           </InputAdornment>
         ),

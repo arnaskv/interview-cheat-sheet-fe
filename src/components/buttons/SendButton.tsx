@@ -9,8 +9,8 @@ type Props = {
 
 const AddCommentButton: React.FC<Props> = ({ disabled, onClick }) => {
   return (
-    <IconButton onClick={onClick}>
-      <SendIcon color={disabled ? 'disabled' : 'primary'} />
+    <IconButton disabled={disabled} color={disabled ? 'default' : 'primary'} onClick={onClick}>
+      <SendIcon />
     </IconButton>
   );
 };
