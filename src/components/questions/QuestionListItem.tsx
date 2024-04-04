@@ -21,11 +21,13 @@ const QuestionListItem: React.FC<Props> = ({ question }) => {
   const handleCommentClick = () => {};
   const handleLikeClick = () => {};
 
+  console.log('Tekstas: ' + question.title);
+
   return (
     <QuestionItem>
       <QuestionInfoContainer>
         <Box sx={{ lineHeight: '24px' }}>
-          <QuestionText>{question.text}</QuestionText>
+          <QuestionText>{question.title}</QuestionText>
         </Box>
         <Box>
           <QuestionStats category="Category" />
