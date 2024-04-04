@@ -1,4 +1,4 @@
-const BASE_URL = 'https://givgai-api.devbstaging.com/api/v1';
+const BASE_URL = 'https://gvigai-api.devbstaging.com/api/v1';
 
 export const ENDPOINTS = {
   CATEGORY: {
