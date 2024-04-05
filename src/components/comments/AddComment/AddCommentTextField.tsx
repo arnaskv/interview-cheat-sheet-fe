@@ -16,7 +16,7 @@ function AddCommentTextbox() {
   };
 
   const createCommentQuery = useQuery({
-    url: ENDPOINTS.COMMENT.CREATE,
+    url: ENDPOINTS.COMMENT.POST,
     httpMethod: HTTP_METHODS.POST,
     onSucess: onSuccess,
   });
