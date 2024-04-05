@@ -12,7 +12,7 @@ const CategoryAddDialog: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [categoryTitle, setCategoryTitle] = useState<string | null>(null);
   const { sendData, isLoading, errors } = useQuery({
-    url: ENDPOINTS.CATEGORY.POST,
+    url: ENDPOINTS.CATEGORY.CREATE,
     httpMethod: HTTP_METHODS.POST,
   });
 
