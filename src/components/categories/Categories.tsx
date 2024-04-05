@@ -8,6 +8,7 @@ import CategoryItem from './CategoryItem';
 import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
 import CategoryAddDialog from '../dialogs/CategoryAddDialog';
+import { HTTP_METHODS } from '../../constants/http';
 
 const Categories: React.FC = () => {
   const {
@@ -17,7 +18,7 @@ const Categories: React.FC = () => {
     getData,
   } = useQuery<Category[]>({
     url: ENDPOINTS.CATEGORY.GET_ALL,
-    httpMethod: 'GET',
+    httpMethod: HTTP_METHODS.GET,
   });
 
   useEffect(() => {
