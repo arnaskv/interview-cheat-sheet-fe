@@ -2,10 +2,11 @@ import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import QuestionListItem from './QuestionListItem';
 import styled from '@emotion/styled';
-import Question from '../../models/Question.interface';
+import Question from '../../interfaces/Question.interface';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
 import Loader from '../shared/Loader';
+import { HTTP_METHODS } from '../../constants/http';
 
 const QuestionContainer = styled(Box)`
   display: flex;
@@ -24,7 +25,7 @@ const QuestionList = () => {
     getData,
   } = useQuery<Question[]>({
     url: ENDPOINTS.QUESTION.GET_ALL,
-    httpMethod: 'GET',
+    httpMethod: HTTP_METHODS.GET,
   });
 
   useEffect(() => {

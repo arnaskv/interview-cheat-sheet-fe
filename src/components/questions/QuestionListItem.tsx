@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from '../../models/Question.interface';
+import Question from '../../interfaces/Question.interface';
 import { Box } from '@mui/material';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
@@ -20,8 +20,6 @@ const QuestionListItem: React.FC<Props> = ({ question }) => {
   //Handle logic later
   const handleCommentClick = () => {};
   const handleLikeClick = () => {};
-
-  console.log('Tekstas: ' + question.title);
 
   return (
     <QuestionItem>
