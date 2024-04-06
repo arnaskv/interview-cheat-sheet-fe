@@ -6,14 +6,13 @@ import TextArea from '../TextArea/TextArea';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
-import styles from '../categories/Categories.module.css';
 import Loader from '../shared/Loader';
 
 const CategoryAddDialog: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [categoryTitle, setCategoryTitle] = useState<string | null>(null);
   const { sendData, isLoading, errors } = useQuery({
-    url: ENDPOINTS.CATEGORY.POST,
+    url: ENDPOINTS.CATEGORY.CREATE,
     httpMethod: HTTP_METHODS.POST,
   });
 
@@ -61,7 +60,7 @@ const CategoryAddDialog: React.FC = () => {
           />
         )}
       </ActionDialog>
-      {errors && <div className={styles.Error}>{errors.join(', ')}</div>}
+      {errors && <div style={{ color: '#c70014', textAlign: 'center' }}>{errors.join(', ')}</div>}
     </>
   );
 };
