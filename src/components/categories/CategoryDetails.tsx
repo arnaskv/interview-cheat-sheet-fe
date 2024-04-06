@@ -5,6 +5,7 @@ import Loader from '../shared/Loader';
 import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
 import CategoryDeleteDialog from '../dialogs/CategoryDeleteDialog';
+import { HTTP_METHODS } from '../../constants/http';
 
 interface CategoryDetailsProps {
   categoryId: string;
@@ -18,7 +19,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
     getData,
   } = useQuery<Category>({
     url: ENDPOINTS.CATEGORY.GET_ONE(categoryId),
-    httpMethod: 'GET',
+    httpMethod: HTTP_METHODS.GET,
   });
 
   useEffect(() => {
