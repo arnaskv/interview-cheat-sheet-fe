@@ -7,45 +7,44 @@ import Loader from '../shared/Loader';
 import CategoryItem from './CategoryItem';
 import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
+import CategoryAddDialog from '../dialogs/CategoryAddDialog';
+import { HTTP_METHODS } from '../../constants/http';
 
 const Categories: React.FC = () => {
-    const {
-        data: categories,
-        isLoading,
-        errors,
-        getData
-    } = useQuery<Category[]>({
-        url: ENDPOINTS.CATEGORY.GET_ALL,
-        httpMethod: 'GET',
-    });
+  const {
+    data: categories,
+    isLoading,
+    errors,
+    getData,
+  } = useQuery<Category[]>({
+    url: ENDPOINTS.CATEGORY.GET_ALL,
+    httpMethod: HTTP_METHODS.GET,
+  });
 
-    useEffect(() => {
-        if (!categories) {
-            getData();
-        }
-    }, [categories, getData]);
+  useEffect(() => {
+    if (!categories) {
+      getData();
+    }
+  }, [categories, getData]);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleCategoryClick = (categoryId: number) => {
-        navigate(`/category/${categoryId}`);
-    };
+  const handleCategoryClick = (categoryId: number) => {
+    navigate(`/category/${categoryId}`);
+  };
 
-    if (isLoading) return <Loader />;
-    if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
-    if (!categories || categories.length === 0) return <div>No categories found</div>;
+  if (isLoading) return <Loader />;
+  if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
+  if (!categories || categories.length === 0) return <div>No categories found</div>;
 
-    return (
-        <List component="nav" aria-label="categories">
-            {categories.map(category => (
-                <CategoryItem
-                    key={category.id}
-                    category={category}
-                    onClick={() => handleCategoryClick(category.id)}
-                />
-            ))}
-        </List>
-    );
+  return (
+    <List component="nav" aria-label="categories">
+      <CategoryAddDialog />
+      {categories.map(category => (
+        <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
+      ))}
+    </List>
+  );
 };
 
 export default Categories;
