@@ -4,6 +4,7 @@ export const ENDPOINTS = {
   CATEGORY: {
     GET_ALL: `${BASE_URL}/category`,
     GET_ONE: (id: string) => `${BASE_URL}/category/${id}`,
+    CREATE: `${BASE_URL}/category`,
   },
   QUESTION: {
     CREATE: `${BASE_URL}/question`,

@@ -2,6 +2,8 @@ import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import QuestionListItem from './QuestionListItem';
 import styled from '@emotion/styled';
+import QuestionCreateButton from './components/QuestionCreateButton';
+import style from './QuestionPage.module.css';
 import Question from '../../interfaces/Question.interface';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
@@ -41,6 +43,9 @@ const QuestionList = () => {
   return (
     <>
       <Box width="100%">
+        <div className={style.ButtonContainer}>
+          <QuestionCreateButton />
+        </div>
         <QuestionContainer>
           {questions.map(question => {
             return <QuestionListItem key={question.id} question={question} />;
