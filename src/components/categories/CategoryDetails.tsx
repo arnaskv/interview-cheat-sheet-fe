@@ -3,8 +3,8 @@ import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
 import Loader from '../shared/Loader';
 import useQuery from '../../hooks/useQuery';
-import { ENDPOINTS } from '../../constants/endpoints';
 import CategoryDeleteDialog from '../dialogs/CategoryDeleteDialog';
+import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 
 interface CategoryDetailsProps {
@@ -35,7 +35,12 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
   return (
     <div>
       <h2>{category.title}</h2>
-      <CategoryDeleteDialog categoryId={categoryId} />
+      <CategoryDeleteDialog
+        itemId={categoryId}
+        deleteEndpoint={ENDPOINTS.CATEGORY.DELETE}
+        dialogTitle="Delete this Category?"
+        dialogDescription="If you delete this category, all follow up questions would be deleted. Are you sure?"
+      />
     </div>
   );
 };

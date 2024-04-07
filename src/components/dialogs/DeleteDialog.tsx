@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import useQuery from '../../hooks/useQuery';
-import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import ActionButton from '../buttons/ActionButton';
@@ -8,13 +7,21 @@ import ActionDialog from './ActionDialog';
 import Loader from '../shared/Loader';
 
 type CategoryDeleteProps = {
-  categoryId: string;
+  itemId: string;
+  deleteEndpoint: (id: string) => string;
+  dialogTitle: string;
+  dialogDescription: string | React.ReactNode;
 };
 
-const CategoryDeleteDialog: React.FC<CategoryDeleteProps> = ({ categoryId }) => {
+const CategoryDeleteDialog: React.FC<CategoryDeleteProps> = ({
+  itemId,
+  deleteEndpoint,
+  dialogTitle,
+  dialogDescription,
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const { sendData, isLoading, errors } = useQuery({
-    url: ENDPOINTS.CATEGORY.DELETE(categoryId),
+    url: deleteEndpoint(itemId),
     httpMethod: HTTP_METHODS.DELETE,
   });
 
@@ -23,12 +30,12 @@ const CategoryDeleteDialog: React.FC<CategoryDeleteProps> = ({ categoryId }) => 
   };
 
   const handleSubmit = useCallback(async () => {
-    if (categoryId) {
-      await sendData({ id: categoryId });
+    if (itemId) {
+      await sendData({ id: itemId });
       toggleDialog();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId, sendData]);
+  }, [itemId, sendData]);
 
   return (
     <>
@@ -36,17 +43,13 @@ const CategoryDeleteDialog: React.FC<CategoryDeleteProps> = ({ categoryId }) => 
         Delete
       </ActionButton>
       <ActionDialog
-        title="Delete this Category?"
+        title={dialogTitle}
         open={open}
         handleClose={toggleDialog}
         submitButtonLabel="Delete"
         onSubmit={() => handleSubmit()}
       >
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>If you delete this category, all follow up questions would be deleted. Are you sure?</>
-        )}
+        {isLoading ? <Loader /> : <>{dialogDescription}</>}
       </ActionDialog>
       {errors && <div style={{ color: '#c70014', textAlign: 'center' }}>{errors.join(', ')}</div>}
     </>
