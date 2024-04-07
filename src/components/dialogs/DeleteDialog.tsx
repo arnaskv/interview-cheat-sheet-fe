@@ -6,14 +6,14 @@ import ActionButton from '../buttons/ActionButton';
 import ActionDialog from './ActionDialog';
 import Loader from '../shared/Loader';
 
-type CategoryDeleteProps = {
+type DeleteProps = {
   itemId: string;
   deleteEndpoint: (id: string) => string;
   dialogTitle: string;
   dialogDescription: string | React.ReactNode;
 };
 
-const CategoryDeleteDialog: React.FC<CategoryDeleteProps> = ({
+const CategoryDeleteDialog: React.FC<DeleteProps> = ({
   itemId,
   deleteEndpoint,
   dialogTitle,
