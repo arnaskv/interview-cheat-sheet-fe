@@ -3,7 +3,7 @@ import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
 import Loader from '../shared/Loader';
 import useQuery from '../../hooks/useQuery';
-import CategoryDeleteDialog from '../dialogs/CategoryDeleteDialog';
+import CategoryDeleteDialog from '../dialogs/DeleteDialog';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 
