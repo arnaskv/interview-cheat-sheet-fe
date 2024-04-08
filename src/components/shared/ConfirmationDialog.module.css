@@ -1,0 +1,37 @@
+.DialogWrapper {
+    padding: 2em 2em 1em 2em;
+}
+
+.Title{
+    font-size: 20px;
+    text-align: center;
+}
+
+.ButtonWrapper {
+    padding: 1em;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.DeleteButton {
+    margin-left:1em;
+    margin-right:1em;
+    background-color: green;
+}
+
+.DeleteButton:hover {
+    background-color: #187018;
+}
+
+.CancelButton {
+    margin-left:1em;
+    margin-right:1em;
+    background-color: red;
+}
+
+
+.CancelButton:hover {
+    background-color: #b82323;
+}

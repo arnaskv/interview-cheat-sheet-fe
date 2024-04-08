@@ -1,4 +1,4 @@
-import Question from '../models/Question.interface';
+import Question from '../interfaces/Question';
 
 const questions: Question[] = [
   {

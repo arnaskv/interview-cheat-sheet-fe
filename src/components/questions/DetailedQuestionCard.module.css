@@ -1,0 +1,60 @@
+.Box {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    z-index: 1;
+    height: 100vh;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.Header {
+    padding: 1.5rem;
+}
+
+.CloseButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.Info {
+    padding: 1.5rem 1rem;
+    color: #666666;
+    font-size: smaller;
+}
+
+.TitleBox {
+    padding: 1rem;
+    color: #666666;
+    font-size: 2.2rem;
+    color: #000048;
+}
+
+.ActionBar {
+    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #666666;
+}
+
+.Social {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+}
+
+.ActionButton {
+    background-color: red;
+}
+
+.ActionButton:hover {
+    background-color: #b82323;
+}
