@@ -15,7 +15,7 @@ function AddCommentTextbox() {
     setCommentText('');
   };
 
-  const createCommentQuery = useQuery({
+  const commentQuery = useQuery<Comment>({
     url: ENDPOINTS.COMMENT.POST,
     httpMethod: HTTP_METHODS.POST,
     onSucess: onSuccess,
@@ -23,7 +23,7 @@ function AddCommentTextbox() {
 
   const handleSubmit = async () => {
     const comment: Comment = { content: commentText };
-    await createCommentQuery.sendData(comment);
+    await commentQuery.sendData(comment);
   };
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
