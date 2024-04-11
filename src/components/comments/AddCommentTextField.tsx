@@ -9,21 +9,19 @@ import Comment from '../../interfaces/Comment';
 const MAX_LENGTH = 255;
 
 type Props = {
-  sendSuccess: () => void;
+  onSuccess: () => void;
 };
 
-const AddCommentTextField: React.FC<Props> = ({ sendSuccess }) => {
+const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
   const [content, setContent] = useState('');
-
-  const onSuccess = () => {
-    setContent('');
-    sendSuccess();
-  };
 
   const commentQuery = useQuery<Comment>({
     url: ENDPOINTS.COMMENT.POST,
     httpMethod: HTTP_METHODS.POST,
-    onSucess: onSuccess,
+    onSuccess: () => {
+      setContent('');
+      onSuccess();
+    },
   });
 
   const handleSubmit = async () => {

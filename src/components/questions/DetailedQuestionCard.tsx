@@ -68,7 +68,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
           </Grid>
           <Grid item>
-            <AddCommentTextField sendSuccess={() => setCommentsRefresh(true)} />
+            <AddCommentTextField onSuccess={() => setCommentsRefresh(true)} />
           </Grid>
         </Grid>
       </div>

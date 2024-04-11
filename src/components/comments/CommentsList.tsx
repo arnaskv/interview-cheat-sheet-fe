@@ -21,7 +21,7 @@ const CommentsList: React.FC<Props> = ({ refresh, onSuccess }) => {
   } = useQuery<Comment[]>({
     url: ENDPOINTS.COMMENT.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
-    onSucess: onSuccess,
+    onSuccess: onSuccess,
   });
 
   useEffect(() => {

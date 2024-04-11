@@ -21,7 +21,7 @@ const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
   const createQuestionCommand = useQuery({
     url: ENDPOINTS.QUESTION.CREATE,
     httpMethod: HTTP_METHODS.POST,
-    onSucess: onSuccess,
+    onSuccess: onSuccess,
   });
 
   const initialValues = {
