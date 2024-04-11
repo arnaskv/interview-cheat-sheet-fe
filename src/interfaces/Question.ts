@@ -1,6 +1,6 @@
 interface Question {
-  id: number;
-  text: string;
+  id?: number;
+  title: string;
 }
 
 export default Question;

@@ -24,9 +24,9 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId }) => {
 
   return (
     <QuestionItem>
-      <QuestionInfoContainer onClick={() => setQuestionId(question.id)}>
+      <QuestionInfoContainer onClick={() => setQuestionId(question.id || null)}>
         <Box sx={{ lineHeight: '24px' }}>
-          <QuestionText>{question.text}</QuestionText>
+          <QuestionText>{question.title}</QuestionText>
         </Box>
         <Box>
           <QuestionStats category="Category" />

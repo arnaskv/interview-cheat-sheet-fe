@@ -47,7 +47,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
         </div>
         <div className={style.Info}>Date placehodler &bull; type placeholder</div>
         <div className={style.TitleBox}>
-          {data?.text}
+          {data?.title}
           Give me an example of a time you had a conflict with a team member. How did you handle it?
         </div>
         <div className={style.ActionBar}>
