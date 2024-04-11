@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from '../../models/Question.interface';
+import Question from '../../interfaces/Question.interface';
 import { Box } from '@mui/material';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
@@ -25,7 +25,7 @@ const QuestionListItem: React.FC<Props> = ({ question }) => {
     <QuestionItem>
       <QuestionInfoContainer>
         <Box sx={{ lineHeight: '24px' }}>
-          <QuestionText>{question.text}</QuestionText>
+          <QuestionText>{question.title}</QuestionText>
         </Box>
         <Box>
           <QuestionStats category="Category" />
