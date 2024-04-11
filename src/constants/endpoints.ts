@@ -1,4 +1,4 @@
-const BASE_URL = 'https://gvigai-api.devbstaging.com/api/v1';
+const BASE_URL = 'http://localhost:8080/api/v1';
 
 export const ENDPOINTS = {
   CATEGORY: {
@@ -10,6 +10,7 @@ export const ENDPOINTS = {
   QUESTION: {
     CREATE: `${BASE_URL}/question`,
     GET_ONE: (id: string) => `${BASE_URL}/interview-questions/${id}`,
+    GET_ALL: `${BASE_URL}/interview-questions`,
   },
   COMMENT: {
     GET_ALL: `${BASE_URL}/comment`,

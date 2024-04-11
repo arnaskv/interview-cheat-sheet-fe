@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ConfirmationDialog from '../shared/ConfirmationDialog';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
+import Loader from '../shared/Loader';
 
 type Props = {
   questionId: number;
@@ -16,25 +17,23 @@ type Props = {
 };
 
 const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
-  const [data, setData] = useState<Question | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [commentsRefresh, setCommentsRefresh] = useState(false);
 
-  const questionQuery = useQuery<Question>({
+  const {
+    data: question,
+    isLoading,
+    getData,
+  } = useQuery<Question>({
     httpMethod: HTTP_METHODS.GET,
     url: ENDPOINTS.QUESTION.GET_ONE(questionId.toString()),
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      await questionQuery.getData();
-      if (!questionQuery.isLoading) {
-        setData(questionQuery.data);
-      }
-    };
-
-    fetchData();
-  }, [questionId]);
+    if (!question) {
+      getData();
+    }
+  }, [question, getData]);
 
   return (
     <>
@@ -46,8 +45,9 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             </IconButton>
           </div>
         </div>
-        <div className={style.Info}>Date placehodler &bull; type placeholder</div>
-        <div className={style.TitleBox}>{data?.title}</div>
+        <div className={style.Info}>Date placeholder &bull; type placeholder</div>
+
+        <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
         <div className={style.ActionBar}>
           <div className={style.Social}>
             <div>Comments placeholder</div>
