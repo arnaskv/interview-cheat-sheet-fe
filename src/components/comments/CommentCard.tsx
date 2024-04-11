@@ -1,15 +1,12 @@
-import { Comment } from '../../interfaces/Comment';
-import { Avatar, Card, Stack } from '@mui/material';
+import { Card } from '@mui/material';
+import Comment from '../../interfaces/Comment';
 import styles from './CommentCard.module.css';
 
 function CommentCard({ comment }: { comment: Comment }) {
   return (
-    <Stack direction="row" spacing={2}>
-      <Avatar />
-      <Card className={styles.CardWrapper}>
-        <div className={styles.Comment}>{comment.content}</div>
-      </Card>
-    </Stack>
+    <Card>
+      <div className={styles.Comment}>{comment.content}</div>
+    </Card>
   );
 }
 

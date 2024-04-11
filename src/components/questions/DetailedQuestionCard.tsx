@@ -7,8 +7,8 @@ import style from './DetailedQuestionCard.module.css';
 import { Button, Grid, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ConfirmationDialog from '../shared/ConfirmationDialog';
-import AddComment from '../comments/AddComment/AddComment';
 import CommentsList from '../comments/CommentsList';
+import AddCommentTextField from '../comments/AddCommentTextField';
 
 type Props = {
   questionId: number;
@@ -65,16 +65,14 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             title="Are you sure you want to delete this question?"
           />
         </div>
-        <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2, width: 1 }}>
-          {/* TODO: switch height to vh percentage values accros the compoent */}
-          <Grid item style={{ maxHeight: '50vh', overflow: 'auto' }}>
+        <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
+          <Grid item style={{ height: '50vh', overflow: 'auto' }}>
             <CommentsList />
           </Grid>
           <Grid item>
-            <AddComment />
+            <AddCommentTextField />
           </Grid>
         </Grid>
-        {/* TODO: get all questions and delete question */}
       </div>
     </>
   );

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { InputAdornment, TextField, Box } from '@mui/material';
-import SentButton from '../../buttons/SendButton';
-import useQuery from '../../../hooks/useQuery';
-import { ENDPOINTS } from '../../../constants/endpoints';
-import { HTTP_METHODS } from '../../../constants/http';
-import { Comment } from '../../../interfaces/Comment';
+import SentButton from '../buttons/SendButton';
+import useQuery from '../../hooks/useQuery';
+import { ENDPOINTS } from '../../constants/endpoints';
+import { HTTP_METHODS } from '../../constants/http';
+import Comment from '../../interfaces/Comment';
 
 const MAX_LENGTH = 255;
 
-function AddCommentTextbox() {
-  const [commentText, setCommentText] = useState('');
+function AddCommentTextField() {
+  const [content, setContent] = useState('');
 
   const onSuccess = () => {
-    setCommentText('');
+    setContent('');
   };
 
   const commentQuery = useQuery<Comment>({
@@ -22,8 +22,7 @@ function AddCommentTextbox() {
   });
 
   const handleSubmit = async () => {
-    const comment: Comment = { content: commentText };
-    await commentQuery.sendData(comment);
+    await commentQuery.sendData({ content });
   };
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -41,8 +40,8 @@ function AddCommentTextbox() {
       fullWidth
       variant="outlined"
       rows={4}
-      value={commentText}
-      onChange={event => setCommentText(event.target.value)}
+      value={content}
+      onChange={event => setContent(event.target.value)}
       onKeyDown={handleEnter}
       sx={{
         '& fieldset': {
@@ -54,7 +53,7 @@ function AddCommentTextbox() {
         endAdornment: (
           <InputAdornment position="end">
             <Box sx={{ height: '100%' }}>
-              <SentButton disabled={!commentText} onClick={handleSubmit} />
+              <SentButton disabled={!content} onClick={handleSubmit} />
             </Box>
           </InputAdornment>
         ),
@@ -63,4 +62,4 @@ function AddCommentTextbox() {
   );
 }
 
-export default AddCommentTextbox;
+export default AddCommentTextField;
