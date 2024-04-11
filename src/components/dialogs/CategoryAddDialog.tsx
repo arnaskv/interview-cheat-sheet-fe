@@ -26,7 +26,7 @@ const CategoryAddDialog: React.FC = () => {
   const handleSubmit = useCallback(async () => {
     if (categoryTitle) {
       const formattedCategoryData = { title: categoryTitle };
-      await sendData({ body: formattedCategoryData });
+      await sendData(formattedCategoryData);
       toggleDialog();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
