@@ -13,12 +13,7 @@ type DeleteProps = {
   dialogDescription: string | React.ReactNode;
 };
 
-const CategoryDeleteDialog: React.FC<DeleteProps> = ({
-  itemId,
-  deleteEndpoint,
-  dialogTitle,
-  dialogDescription,
-}) => {
+const CategoryDeleteDialog: React.FC<DeleteProps> = ({ itemId, deleteEndpoint, dialogTitle, dialogDescription }) => {
   const [open, setOpen] = useState<boolean>(false);
   const { sendData, isLoading, errors } = useQuery({
     url: deleteEndpoint(itemId),
