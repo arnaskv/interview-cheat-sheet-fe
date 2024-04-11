@@ -8,11 +8,16 @@ import Comment from '../../interfaces/Comment';
 
 const MAX_LENGTH = 255;
 
-function AddCommentTextField() {
+type Props = {
+  sendSuccess: () => void;
+};
+
+const AddCommentTextField: React.FC<Props> = ({ sendSuccess }) => {
   const [content, setContent] = useState('');
 
   const onSuccess = () => {
     setContent('');
+    sendSuccess();
   };
 
   const commentQuery = useQuery<Comment>({
@@ -60,6 +65,6 @@ function AddCommentTextField() {
       }}
     />
   );
-}
+};
 
 export default AddCommentTextField;

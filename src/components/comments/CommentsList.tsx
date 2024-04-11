@@ -7,7 +7,12 @@ import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import Loader from '../shared/Loader';
 
-const CommentsList = () => {
+type Props = {
+  refresh: boolean;
+  onSuccess: () => void;
+};
+
+const CommentsList: React.FC<Props> = ({ refresh, onSuccess }) => {
   const {
     data: comments,
     isLoading,
@@ -16,11 +21,14 @@ const CommentsList = () => {
   } = useQuery<Comment[]>({
     url: ENDPOINTS.COMMENT.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
+    onSucess: onSuccess,
   });
 
   useEffect(() => {
-    if (!comments) getData();
-  }, [comments, getData]);
+    if (!comments || refresh) {
+      getData();
+    }
+  }, [comments, getData, refresh]);
 
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;

@@ -18,6 +18,7 @@ type Props = {
 const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
   const [data, setData] = useState<Question | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [commentsRefresh, setCommentsRefresh] = useState(false);
 
   const questionQuery = useQuery<Question>({
     httpMethod: HTTP_METHODS.GET,
@@ -27,7 +28,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
   useEffect(() => {
     const fetchData = async () => {
       await questionQuery.getData();
-      if (questionQuery.isLoading) {
+      if (!questionQuery.isLoading) {
         setData(questionQuery.data);
       }
     };
@@ -46,10 +47,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
           </div>
         </div>
         <div className={style.Info}>Date placehodler &bull; type placeholder</div>
-        <div className={style.TitleBox}>
-          {data?.title}
-          Give me an example of a time you had a conflict with a team member. How did you handle it?
-        </div>
+        <div className={style.TitleBox}>{data?.title}</div>
         <div className={style.ActionBar}>
           <div className={style.Social}>
             <div>Comments placeholder</div>
@@ -67,10 +65,10 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
         </div>
         <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
           <Grid item style={{ height: '50vh', overflow: 'auto' }}>
-            <CommentsList />
+            <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
           </Grid>
           <Grid item>
-            <AddCommentTextField />
+            <AddCommentTextField sendSuccess={() => setCommentsRefresh(true)} />
           </Grid>
         </Grid>
       </div>
