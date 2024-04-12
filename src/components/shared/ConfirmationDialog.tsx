@@ -17,7 +17,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title }: ConfirmationDia
                     {title}
                 </div>
                 <div className={style.ButtonWrapper}>
-                    <Button variant="contained" className={style.DeleteButton} onClick={() => onConfirm}>
+                    <Button variant="contained" className={style.DeleteButton} onClick={onConfirm}>
                         Confirm
                     </Button>
                     <Button variant="contained" className={style.CancelButton} onClick={onClose}>
