@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
@@ -7,6 +7,8 @@ import { Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
 import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
+import ActionButton from '../../buttons/ActionButton';
+import { StyledDialogActions } from '../../dialogs/DialogStyles';
 
 type QuestionCreateDialogProps = {
   open: boolean;
@@ -67,15 +69,14 @@ const QuestionCreateDialog = ({ open, setOpen, handleSubmit }: QuestionCreateDia
                 </Grid>
               </Grid>
             </DialogContent>
-            <div className={style.BlankLine}></div>
-            <DialogActions>
-              <Button onClick={() => setOpen(false)} className={style.CancleButton}>
+            <StyledDialogActions>
+              <ActionButton onClick={() => setOpen(false)} variant="contained" color="secondary">
                 Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting} className={style.SubmitButton}>
+              </ActionButton>
+              <ActionButton type="submit" disabled={isSubmitting} variant="contained" color="primary">
                 Add Question
-              </Button>
-            </DialogActions>
+              </ActionButton>
+            </StyledDialogActions>
           </Form>
         )}
       </Formik>
