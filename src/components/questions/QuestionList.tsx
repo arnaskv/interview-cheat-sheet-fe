@@ -4,11 +4,12 @@ import QuestionListItem from './QuestionListItem';
 import styled from '@emotion/styled';
 import QuestionCreateButton from './components/QuestionCreateButton';
 import style from './QuestionPage.module.css';
-import Question from '../../interfaces/Question.interface';
+import Question from '../../interfaces/Question';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
 import Loader from '../shared/Loader';
 import { HTTP_METHODS } from '../../constants/http';
+import DetailedQuestionCard from './DetailedQuestionCard';
 
 const QuestionContainer = styled(Box)`
   display: flex;
@@ -20,6 +21,8 @@ const QuestionContainer = styled(Box)`
 `;
 
 const QuestionList = () => {
+  const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
+
   const {
     data: questions,
     isLoading,
@@ -55,13 +58,17 @@ const QuestionList = () => {
 
   return (
     <>
+      {detailedQuestionId !== null && (
+        <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} />
+      )}
+
       <Box width="100%">
         <div className={style.ButtonContainer}>
           <QuestionCreateButton handleSubmit={handleCreateQuestion} />
         </div>
         <QuestionContainer>
           {questions.map(question => {
-            return <QuestionListItem key={question.id} question={question} />;
+            return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
           })}
         </QuestionContainer>
       </Box>

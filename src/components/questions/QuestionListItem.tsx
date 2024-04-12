@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from '../../interfaces/Question.interface';
+import Question from '../../interfaces/Question';
 import { Box } from '@mui/material';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
@@ -14,16 +14,17 @@ import QuestionStats from './QuestionStats';
 
 type Props = {
   question: Question;
+  setQuestionId: (id: number | null) => void;
 };
 
-const QuestionListItem: React.FC<Props> = ({ question }) => {
+const QuestionListItem: React.FC<Props> = ({ question, setQuestionId }) => {
   //Handle logic later
   const handleCommentClick = () => {};
   const handleLikeClick = () => {};
 
   return (
     <QuestionItem>
-      <QuestionInfoContainer>
+      <QuestionInfoContainer onClick={() => setQuestionId(question.id || null)}>
         <Box sx={{ lineHeight: '24px' }}>
           <QuestionText>{question.title}</QuestionText>
         </Box>

@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconBu
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
-import { Question } from '../../../interfaces/Question';
+import Question from '../../../interfaces/Question';
 import { Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,7 +22,7 @@ const QuestionCreateDialog = ({ open, setOpen, handleSubmit }: QuestionCreateDia
   const createQuestionCommand = useQuery({
     url: ENDPOINTS.QUESTION.CREATE,
     httpMethod: HTTP_METHODS.POST,
-    onSucess: onSuccess,
+    onSuccess: onSuccess,
   });
 
   const initialValues = {

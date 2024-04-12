@@ -1,14 +1,13 @@
 .CardWrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    padding: 0rem 2rem;
-    width: 60%;
-    min-width: 550px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0rem 2rem;
+  width: 100%;
 }
 
 .Comment {
-    font-size: 1.2rem;
-    padding: 1rem;
+  font-size: 1.2rem;
+  padding: 1rem;
 }
