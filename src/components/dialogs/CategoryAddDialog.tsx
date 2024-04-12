@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Add as AddIcon } from '@mui/icons-material';
 import ActionButton from '../buttons/ActionButton';
 import ActionDialog from './ActionDialog';
-import TextArea from '../TextArea/TextArea';
+import TextArea from '../textArea/TextArea';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
@@ -26,7 +26,7 @@ const CategoryAddDialog: React.FC = () => {
   const handleSubmit = useCallback(async () => {
     if (categoryTitle) {
       const formattedCategoryData = { title: categoryTitle };
-      await sendData({ body: formattedCategoryData });
+      await sendData(formattedCategoryData);
       toggleDialog();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
