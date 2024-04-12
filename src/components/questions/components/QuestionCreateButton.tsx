@@ -1,23 +1,24 @@
-import { IconButton } from "@mui/material";
-import { useState } from "react";
-import QuestionCreateDialog from "./QuestionCreateDialog";
+import { IconButton } from '@mui/material';
+import { useState } from 'react';
+import QuestionCreateDialog from './QuestionCreateDialog';
 import style from './Question.module.css';
 import AddIcon from '@mui/icons-material/Add';
 
-const QuestionCreateButton = () => {
-    const [open, setOpen] = useState(false);
+type Props = {
+  handleSubmit: () => void;
+};
 
-    return (
-        <>
-            <IconButton onClick={() => setOpen(true)} className={style.CreateButton} disableRipple>
-                <AddIcon style={{fontSize: '25px'}} /> Add Question
-            </IconButton>
-            <QuestionCreateDialog
-                open={open}
-                setOpen={setOpen}
-            />
-        </>
-    )
-}
+const QuestionCreateButton: React.FC<Props> = ({ handleSubmit }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <IconButton onClick={() => setOpen(true)} className={style.CreateButton} disableRipple>
+        <AddIcon style={{ fontSize: '25px' }} /> Add Question
+      </IconButton>
+      <QuestionCreateDialog open={open} setOpen={setOpen} handleSubmit={handleSubmit} />
+    </>
+  );
+};
 
 export default QuestionCreateButton;

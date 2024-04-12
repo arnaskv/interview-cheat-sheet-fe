@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
 import styled from '@emotion/styled';
 import QuestionCreateButton from './components/QuestionCreateButton';
@@ -30,11 +30,24 @@ const QuestionList = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
+  //state for knowing when to rerender component after POST
+  const [addedQuestions, setAddedQuestions] = useState<number>(0);
+
+  const handleCreateQuestion = () => {
+    setAddedQuestions(addedQuestions + 1);
+  };
+
   useEffect(() => {
     if (!questions) {
       getData();
     }
   }, [questions, getData]);
+
+  useEffect(() => {
+    //No need to fetch data before POST if we already have questions
+    questions && getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addedQuestions]);
 
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
@@ -44,7 +57,7 @@ const QuestionList = () => {
     <>
       <Box width="100%">
         <div className={style.ButtonContainer}>
-          <QuestionCreateButton />
+          <QuestionCreateButton handleSubmit={handleCreateQuestion} />
         </div>
         <QuestionContainer>
           {questions.map(question => {
