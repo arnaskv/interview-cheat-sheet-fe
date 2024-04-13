@@ -19,6 +19,7 @@ type QuestionCreateDialogProps = {
 const QuestionCreateDialog = ({ open, setOpen, handleSubmit }: QuestionCreateDialogProps) => {
   const onSuccess = () => {
     setOpen(false);
+    handleSubmit();
   };
 
   const createQuestionCommand = useQuery({
@@ -32,7 +33,7 @@ const QuestionCreateDialog = ({ open, setOpen, handleSubmit }: QuestionCreateDia
   };
 
   const onSubmit = async (values: Question) => {
-    await createQuestionCommand.sendData(values).then(handleSubmit);
+    await createQuestionCommand.sendData(values);
   };
 
   return (
