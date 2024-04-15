@@ -13,13 +13,13 @@ import { StyledDialogActions } from '../../dialogs/DialogStyles';
 type QuestionCreateDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  handleSubmit: () => void;
+  refreshData: () => void;
 };
 
-const QuestionCreateDialog = ({ open, setOpen, handleSubmit }: QuestionCreateDialogProps) => {
+const QuestionCreateDialog = ({ open, setOpen, refreshData }: QuestionCreateDialogProps) => {
   const onSuccess = () => {
     setOpen(false);
-    handleSubmit();
+    refreshData();
   };
 
   const createQuestionCommand = useQuery({

@@ -51,7 +51,7 @@ const QuestionList = () => {
 
       <Box width="100%">
         <div className={style.ButtonContainer}>
-          <QuestionCreateButton handleSubmit={getData} />
+          <QuestionCreateButton refreshData={getData} />
         </div>
         <QuestionContainer>
           {questions.map(question => {
