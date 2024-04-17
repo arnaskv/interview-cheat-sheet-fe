@@ -1,29 +1,12 @@
 import { Card } from '@mui/material';
 import Comment from '../../interfaces/Comment';
 import styles from './CommentCard.module.css';
-import ConfirmationDialog from '../shared/ConfirmationDialog';
 import { useState } from 'react';
-import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
-import { HTTP_METHODS } from '../../constants/http';
+import DeleteDialog from '../dialogs/DeleteDialog';
 
 function CommentCard({ comment, refreshData }: { comment: Comment, refreshData: () => void }) {
   const [open, setOpen] = useState(false);
-
-  const onSuccess = () => {
-    setOpen(false);
-    refreshData();
-  };
-
-  const commentDeleteQuery = useQuery<Comment>({
-    url: ENDPOINTS.COMMENT.DELETE(comment.id.toString()),
-    httpMethod: HTTP_METHODS.DELETE,
-    onSuccess: onSuccess,
-  });
-
-  const handleDelete = async () => {
-    await commentDeleteQuery.sendData();
-  };
 
   return (
     <>
@@ -32,17 +15,17 @@ function CommentCard({ comment, refreshData }: { comment: Comment, refreshData: 
       </Card>
 
       <div className={styles.Info}>
-          <span className={styles.InfoDate}>Date placeholder</span> &bull;
-          <span className={styles.InfoItem}>Like</span> &bull;
-          <span className={styles.InfoItem}>Reply</span> &bull;
-          <span className={styles.InfoItem} onClick={() => setOpen(true)}>Delete</span>
-        </div>
-        <ConfirmationDialog
-          open={open}
-          title={'Are you sure you want to delete this comment?'}
-          onConfirm={handleDelete}
-          onClose={() => setOpen(false)}
-        />
+        <span className={styles.InfoItem} onClick={() => setOpen(true)}>Delete</span>
+        <DeleteDialog
+            itemId={comment.id.toString()}
+            deleteEndpoint={ENDPOINTS.COMMENT.DELETE}
+            dialogTitle="Do you really want to delete this comment?"
+            dialogDescription="This action cannot be undone."
+            refreshData={refreshData}
+            open={open}
+            setOpen={setOpen}
+          />
+      </div>
     </>
   );
 }

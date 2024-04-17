@@ -1,8 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import useQuery from '../../hooks/useQuery';
 import { HTTP_METHODS } from '../../constants/http';
-import { Delete as DeleteIcon } from '@mui/icons-material';
-import ActionButton from '../buttons/ActionButton';
 import ActionDialog from './ActionDialog';
 import Loader from '../shared/Loader';
 
@@ -10,14 +8,30 @@ type DeleteProps = {
   itemId: string;
   deleteEndpoint: (id: string) => string;
   dialogTitle: string;
-  dialogDescription: string | React.ReactNode;
+  dialogDescription?: string | React.ReactNode;
+  refreshData?: () => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 };
 
-const CategoryDeleteDialog: React.FC<DeleteProps> = ({ itemId, deleteEndpoint, dialogTitle, dialogDescription }) => {
-  const [open, setOpen] = useState<boolean>(false);
+const DeleteDialog: React.FC<DeleteProps> = ({ 
+  itemId, 
+  deleteEndpoint, 
+  dialogTitle, 
+  dialogDescription, 
+  refreshData, 
+  open, 
+  setOpen 
+}) => {
+
+  const onSuccess = () => {
+    refreshData && refreshData();
+  };
+
   const { sendData, isLoading, errors } = useQuery({
     url: deleteEndpoint(itemId),
     httpMethod: HTTP_METHODS.DELETE,
+    onSuccess,
   });
 
   const toggleDialog = () => {
@@ -34,9 +48,6 @@ const CategoryDeleteDialog: React.FC<DeleteProps> = ({ itemId, deleteEndpoint, d
 
   return (
     <>
-      <ActionButton onClick={toggleDialog} startIcon={<DeleteIcon />} variant="contained" color="error">
-        Delete
-      </ActionButton>
       <ActionDialog
         title={dialogTitle}
         open={open}
@@ -51,4 +62,4 @@ const CategoryDeleteDialog: React.FC<DeleteProps> = ({ itemId, deleteEndpoint, d
   );
 };
 
-export default CategoryDeleteDialog;
+export default DeleteDialog;
