@@ -39,7 +39,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
   return (
     <div>
       <h2>{category.title}</h2>
-      <ActionButton onClick={() => setOpen(true)} startIcon={<DeleteIcon />} variant="contained" color="error">
+      <ActionButton onClick={() => setOpen(true)} startIcon={<DeleteIcon />} variant="contained" color="primary">
         Delete
       </ActionButton>
       <DeleteDialog
