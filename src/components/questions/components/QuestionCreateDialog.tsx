@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
@@ -7,6 +7,7 @@ import { Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
 import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
+import ActionButton from '../../buttons/ActionButton';
 
 type QuestionCreateDialogProps = {
   open: boolean;
@@ -33,7 +34,13 @@ const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+    <Dialog 
+      open={open} 
+      onClose={() => setOpen(false)} 
+      fullWidth 
+      maxWidth="md" 
+      disableRestoreFocus
+    >
       <div className={style.CloseButton}>
         <IconButton>
           <CloseIcon onClick={() => setOpen(false)} />
@@ -52,6 +59,7 @@ const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
                   <TextField
                     fullWidth
                     multiline
+                    autoFocus
                     name="title"
                     className={style.TextField}
                     value={values.title}
@@ -68,12 +76,12 @@ const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
             </DialogContent>
             <div className={style.BlankLine}></div>
             <DialogActions>
-              <Button onClick={() => setOpen(false)} className={style.CancleButton}>
+              <ActionButton onClick={() => setOpen(false)} color="secondary" variant="contained">
                 Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting} className={style.SubmitButton}>
+              </ActionButton>
+              <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
                 Add Question
-              </Button>
+              </ActionButton>
             </DialogActions>
           </Form>
         )}

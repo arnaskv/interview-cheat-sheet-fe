@@ -1,17 +1,16 @@
-import { IconButton } from "@mui/material";
 import { useState } from "react";
 import QuestionCreateDialog from "./QuestionCreateDialog";
-import style from './Question.module.css';
 import AddIcon from '@mui/icons-material/Add';
+import ActionButton from "../../buttons/ActionButton";
 
 const QuestionCreateButton = () => {
     const [open, setOpen] = useState(false);
 
     return (
         <>
-            <IconButton onClick={() => setOpen(true)} className={style.CreateButton} disableRipple>
+            <ActionButton onClick={() => setOpen(true)} color="primary" variant="contained">
                 <AddIcon style={{fontSize: '25px'}} /> Add Question
-            </IconButton>
+            </ActionButton>
             <QuestionCreateDialog
                 open={open}
                 setOpen={setOpen}
