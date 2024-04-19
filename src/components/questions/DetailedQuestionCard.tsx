@@ -4,9 +4,8 @@ import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Question from '../../interfaces/Question';
 import style from './DetailedQuestionCard.module.css';
-import { Button, Grid, IconButton } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import ConfirmationDialog from '../shared/ConfirmationDialog';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
@@ -17,7 +16,6 @@ type Props = {
 };
 
 const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
   const [commentsRefresh, setCommentsRefresh] = useState(false);
 
   const {
@@ -53,15 +51,6 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             <div>Comments placeholder</div>
             <div>Likes placeholder</div>
           </div>
-          <Button variant="contained" className={style.ActionButton} onClick={() => setShowConfirmation(true)}>
-            Delete
-          </Button>
-          <ConfirmationDialog
-            open={showConfirmation}
-            onClose={() => setShowConfirmation(false)}
-            onConfirm={() => console.log('Delete')}
-            title="Are you sure you want to delete this question?"
-          />
         </div>
         <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
           <Grid item style={{ height: '50vh', overflow: 'auto' }}>
