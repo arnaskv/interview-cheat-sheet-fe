@@ -35,7 +35,7 @@ const CommentsList: React.FC<Props> = ({ refresh, onSuccess }) => {
 
   return (
     <Stack direction={'column'} spacing={2}>
-      {comments !== null && comments.map(comment => <CommentCard key={comment.id} comment={comment} />)}
+      {comments !== null && comments.map(comment => <CommentCard key={comment.id} comment={comment} refreshData={getData} />)}
     </Stack>
   );
 };

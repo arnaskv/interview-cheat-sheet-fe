@@ -38,7 +38,7 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+    <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md" disableRestoreFocus>
       <div className={style.CloseButton}>
         <IconButton>
           <CloseIcon onClick={() => setOpen(false)} />
@@ -57,6 +57,7 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                   <TextField
                     fullWidth
                     multiline
+                    autoFocus
                     name="title"
                     className={style.TextField}
                     value={values.title}
