@@ -13,7 +13,12 @@ const QuestionCreateButton: React.FC<Props> = ({ addQuestion }) => {
 
   return (
     <>
-      <ActionButton onClick={() => setOpen(true)} startIcon={<AddIcon />} variant="contained" color="primary">
+      <ActionButton
+        onClick={() => setOpen(true)}
+        startIcon={<AddIcon style={{ fontSize: '25px' }} />}
+        color="primary"
+        variant="contained"
+      >
         Add Question
       </ActionButton>
       <QuestionCreateDialog open={open} setOpen={setOpen} addQuestion={addQuestion} />

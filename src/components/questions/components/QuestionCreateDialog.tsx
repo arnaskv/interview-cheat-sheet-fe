@@ -73,10 +73,10 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
               </Grid>
             </DialogContent>
             <StyledDialogActions>
-              <ActionButton onClick={() => setOpen(false)} variant="contained" color="secondary">
+              <ActionButton onClick={() => setOpen(false)} color="secondary" variant="contained">
                 Cancel
               </ActionButton>
-              <ActionButton type="submit" disabled={isSubmitting} variant="contained" color="primary">
+              <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
                 Add Question
               </ActionButton>
             </StyledDialogActions>
