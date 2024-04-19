@@ -2,6 +2,10 @@ body {
   margin: 0 !important;
 }
 
+.FooterContainer {
+  margin-top: auto;
+}
+
 .FooterBox {
   display: flex;
   justify-content: space-between;
@@ -12,7 +16,7 @@ body {
 }
 
 .Copyright {
-  padding-left: 50px;
+  padding-left: 120px;
 }
 
 .PrivacyPolicy {
