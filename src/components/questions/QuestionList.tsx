@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
 import styled from '@emotion/styled';
 import QuestionCreateButton from './components/QuestionCreateButton';
@@ -22,6 +22,7 @@ const QuestionContainer = styled(Box)`
 
 const QuestionList = () => {
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
+  const [questionList, setQuestionList] = useState<Question[]>([]);
 
   const {
     data: questions,
@@ -33,15 +34,24 @@ const QuestionList = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
+  const addQuestion = (question: Question) => {
+    setQuestionList(currentQuestions => {
+      return [...currentQuestions, question];
+    });
+  };
+
   useEffect(() => {
     if (!questions) {
       getData();
     }
+
+    questionList.length === 0 && questions && setQuestionList(questions);
+    // eslint-disable-next-line
   }, [questions, getData]);
 
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
-  if (!questions || questions.length === 0) return <div>No questions found</div>;
+  if (!questionList || questionList.length === 0) return <div>No questions found</div>;
 
   return (
     <>
@@ -51,10 +61,10 @@ const QuestionList = () => {
 
       <Box width="100%">
         <div className={style.ButtonContainer}>
-          <QuestionCreateButton refreshData={getData} />
+          <QuestionCreateButton addQuestion={addQuestion} />
         </div>
         <QuestionContainer>
-          {questions.map(question => {
+          {questionList.map(question => {
             return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
           })}
         </QuestionContainer>
