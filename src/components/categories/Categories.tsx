@@ -13,12 +13,14 @@ import { HTTP_METHODS } from '../../constants/http';
 const Categories: React.FC = () => {
   const {
     data: categories,
+    setData: setCategories,
     isLoading,
     errors,
     getData,
   } = useQuery<Category[]>({
     url: ENDPOINTS.CATEGORY.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
+    shouldReverse: true,
   });
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const Categories: React.FC = () => {
 
   return (
     <List component="nav" aria-label="categories">
-      <CategoryAddDialog />
+      <CategoryAddDialog setCategories={setCategories} />
       {categories.map(category => (
         <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
       ))}
