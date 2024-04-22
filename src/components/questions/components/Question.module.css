@@ -1,28 +1,23 @@
 .CloseButton {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5rem;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 .FormTitle {
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    color: #000048;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #000048;
 }
 
 .TextTitle {
-    color: #666666;
-    font-size: 1rem;
+  color: #666666;
+  font-size: 1rem;
 }
 
 .TextTitle:after {
-    content:" *";
-    color: red;
-}
-
-.BlankLine {
-    margin-top: 1rem;
-    border: 1px solid #DDDDDD;
+  content: ' *';
+  color: red;
 }

@@ -1,22 +1,29 @@
-import { useState } from "react";
-import QuestionCreateDialog from "./QuestionCreateDialog";
+import { useState } from 'react';
+import QuestionCreateDialog from './QuestionCreateDialog';
 import AddIcon from '@mui/icons-material/Add';
-import ActionButton from "../../buttons/ActionButton";
+import ActionButton from '../../buttons/ActionButton';
+import Question from '../../../interfaces/Question';
 
-const QuestionCreateButton = () => {
-    const [open, setOpen] = useState(false);
+type Props = {
+  addQuestion: (question: Question) => void;
+};
 
-    return (
-        <>
-            <ActionButton onClick={() => setOpen(true)} color="primary" variant="contained">
-                <AddIcon style={{fontSize: '25px'}} /> Add Question
-            </ActionButton>
-            <QuestionCreateDialog
-                open={open}
-                setOpen={setOpen}
-            />
-        </>
-    )
-}
+const QuestionCreateButton: React.FC<Props> = ({ addQuestion }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <ActionButton
+        onClick={() => setOpen(true)}
+        startIcon={<AddIcon style={{ fontSize: '25px' }} />}
+        color="primary"
+        variant="contained"
+      >
+        Add Question
+      </ActionButton>
+      <QuestionCreateDialog open={open} setOpen={setOpen} addQuestion={addQuestion} />
+    </>
+  );
+};
 
 export default QuestionCreateButton;

@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
@@ -8,15 +8,19 @@ import { questionSchema } from '../../../validation/question';
 import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
+import { StyledDialogActions } from '../../dialogs/DialogStyles';
 
 type QuestionCreateDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
+  addQuestion: (question: Question) => void;
 };
 
-const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
-  const onSuccess = () => {
+const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDialogProps) => {
+  const onSuccess = (response: Question) => {
+    const question: Question = response;
     setOpen(false);
+    addQuestion(question);
   };
 
   const createQuestionCommand = useQuery({
@@ -34,13 +38,7 @@ const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={() => setOpen(false)} 
-      fullWidth 
-      maxWidth="md" 
-      disableRestoreFocus
-    >
+    <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md" disableRestoreFocus>
       <div className={style.CloseButton}>
         <IconButton>
           <CloseIcon onClick={() => setOpen(false)} />
@@ -74,15 +72,14 @@ const QuestionCreateDialog = ({ open, setOpen }: QuestionCreateDialogProps) => {
                 </Grid>
               </Grid>
             </DialogContent>
-            <div className={style.BlankLine}></div>
-            <DialogActions>
+            <StyledDialogActions>
               <ActionButton onClick={() => setOpen(false)} color="secondary" variant="contained">
                 Cancel
               </ActionButton>
               <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
                 Add Question
               </ActionButton>
-            </DialogActions>
+            </StyledDialogActions>
           </Form>
         )}
       </Formik>
