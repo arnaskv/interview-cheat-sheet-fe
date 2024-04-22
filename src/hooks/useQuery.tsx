@@ -10,7 +10,6 @@ type UseQueryArguments<T> = {
   id?: number;
   mapper?: (data: any) => T;
   onSuccess?: (data: T) => void;
-  shouldReverse?: boolean;
 };
 
 export default function useQuery<T>({
@@ -20,7 +19,6 @@ export default function useQuery<T>({
   queryParams,
   mapper = data => data as T,
   onSuccess = () => { },
-  shouldReverse = false,
 }: UseQueryArguments<T>) {
   if (!url) {
     throw new Error('URL is required');
@@ -43,10 +41,7 @@ export default function useQuery<T>({
       if ('message' in response) {
         setErrors([response.message]);
       } else {
-        let mappedData = mapper(response.data);
-        if (shouldReverse && Array.isArray(mappedData)) {
-          mappedData = (mappedData as any).reverse();
-        }
+        const mappedData = mapper(response.data);
         setData(mappedData);
         onSuccess(mappedData);
       }

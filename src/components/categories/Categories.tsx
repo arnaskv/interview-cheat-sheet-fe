@@ -20,7 +20,6 @@ const Categories: React.FC = () => {
   } = useQuery<Category[]>({
     url: ENDPOINTS.CATEGORY.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
-    shouldReverse: true,
   });
 
   useEffect(() => {
