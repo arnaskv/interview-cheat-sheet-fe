@@ -1,7 +1,8 @@
 import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, DialogProps } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, IconButton, DialogProps } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ActionButton from '../buttons/ActionButton';
+import { StyledDialogActions } from './DialogStyles';
 
 interface ActionDialogProps extends DialogProps {
   title: string;
@@ -52,14 +53,14 @@ const ActionDialog: React.FC<ActionDialogProps> = ({
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ paddingBottom: '40px' }}>{children}</DialogContent>
-      <DialogActions sx={{ borderTop: '1px solid #DDD', padding: '15px' }}>
+      <StyledDialogActions>
         <ActionButton onClick={handleClose} color="secondary" variant="contained">
           Cancel
         </ActionButton>
         <ActionButton type="submit" color="primary" variant="contained">
           {submitButtonLabel}
         </ActionButton>
-      </DialogActions>
+      </StyledDialogActions>
     </Dialog>
   );
 };
