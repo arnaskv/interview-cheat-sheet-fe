@@ -18,7 +18,7 @@ export default function useQuery<T>({
   httpMethod,
   queryParams,
   mapper = data => data as T,
-  onSuccess = () => {},
+  onSuccess = () => { },
 }: UseQueryArguments<T>) {
   if (!url) {
     throw new Error('URL is required');
@@ -54,32 +54,33 @@ export default function useQuery<T>({
 
   const sendData = async (values?: Query) => {
     setIsLoading(true);
-    const saniziteValues = values ? queryService.sanitize(values) : '';
-    const query = id ? { id } : undefined;
-
+    const sanitizedValues = values ? queryService.sanitize(values) : undefined;
     try {
       const response = await apiService.makeRequestAsync<T>({
         url,
-        queryParams: query,
-        body: saniziteValues,
+        queryParams: id ? { id } : undefined,
+        body: sanitizedValues,
         httpMethod: httpMethod || HTTP_METHODS.POST,
       });
       if ('message' in response) {
         setErrors([response.message]);
       } else {
         onSuccess(response.data);
+        return response;
       }
     } catch (error) {
       setErrors([error as string]);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
+    return null;
   };
 
   return {
     data,
     isLoading,
     errors,
+    setData,
     getData,
     sendData,
   };
