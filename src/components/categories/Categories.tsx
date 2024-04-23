@@ -36,14 +36,17 @@ const Categories: React.FC = () => {
 
   if (isLoading) return <Loader />;
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
-  if (!categories || categories.length === 0) return <div>No categories found</div>;
 
   return (
     <List component="nav" aria-label="categories">
       <CategoryAddDialog setCategories={setCategories} />
-      {categories.map(category => (
-        <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
-      ))}
+      {!categories || categories.length === 0 ? (
+        <div>No categories found</div>
+      ) : (
+        categories.map(category => (
+          <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
+        ))
+      )}
     </List>
   );
 };
