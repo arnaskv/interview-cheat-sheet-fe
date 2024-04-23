@@ -41,7 +41,6 @@ const QuestionList = () => {
 
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
-  if (!questionList || questionList.length === 0) return <div>No questions found</div>;
 
   return (
     <>
@@ -55,11 +54,16 @@ const QuestionList = () => {
             <QuestionCreateButton addQuestion={addQuestion} />
           </ButtonContainer>
         </HeaderContainer>
-        <QuestionContainer>
-          {questionList.map(question => {
-            return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
-          })}
-        </QuestionContainer>
+
+        {!questionList || questionList.length === 0 ? (
+          <div>No questions found</div>
+        ) : (
+          <QuestionContainer>
+            {questionList.map(question => {
+              return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
+            })}
+          </QuestionContainer>
+        )}
       </Box>
     </>
   );
