@@ -5,6 +5,7 @@ import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import Comment from '../../interfaces/Comment';
+import styles from './AddCommentTextField.module.css';
 
 const MAX_LENGTH = 255;
 
@@ -37,6 +38,7 @@ const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
 
   return (
     <TextField
+      className={styles.TextField}
       id="new-comment"
       placeholder="Add a note on candidate answer"
       multiline
@@ -49,6 +51,7 @@ const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
       sx={{
         '& fieldset': {
           borderRadius: '16px',
+          border: 'none',
         },
       }}
       inputProps={{ maxLength: MAX_LENGTH }}

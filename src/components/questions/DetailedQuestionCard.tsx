@@ -4,7 +4,7 @@ import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Question from '../../interfaces/Question';
 import style from './DetailedQuestionCard.module.css';
-import { Grid, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
@@ -33,6 +33,14 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
     }
   }, [question, getData]);
 
+  useEffect(() => {
+    let handler = () => {
+      setQuestionId(null);
+    };
+
+    document.addEventListener('mousedown', handler);
+  });
+
   return (
     <>
       <div className={style.Box}>
@@ -44,7 +52,6 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
           </div>
         </div>
         <div className={style.Info}>Date placeholder &bull; type placeholder</div>
-
         <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
         <div className={style.ActionBar}>
           <div className={style.Social}>
@@ -52,14 +59,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             <div>Likes placeholder</div>
           </div>
         </div>
-        <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
-          <Grid item style={{ height: '50vh', overflow: 'auto' }}>
-            <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
-          </Grid>
-          <Grid item>
-            <AddCommentTextField onSuccess={() => setCommentsRefresh(true)} />
-          </Grid>
-        </Grid>
+        <div className={style.List}>
+          <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
+        </div>
+        <div className={style.TextField}>
+          <AddCommentTextField onSuccess={() => setCommentsRefresh(true)} />
+        </div>
       </div>
     </>
   );

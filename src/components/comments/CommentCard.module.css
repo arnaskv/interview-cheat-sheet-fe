@@ -1,13 +1,13 @@
-.CardWrapper {
+.CommentCard {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  padding: 0rem 2rem;
-  width: 100%;
+  flex-direction: column;
+  row-gap: 0.4rem;
 }
 
 .Comment {
+  background-color: #f1f2f5;
+  word-wrap: break-word;
+  border-radius: 16px;
   font-size: 1.2rem;
   padding: 1rem;
 }

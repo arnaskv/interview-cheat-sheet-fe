@@ -49,18 +49,20 @@ const QuestionList = () => {
         <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} />
       )}
 
-      <Box width="100%">
-        <HeaderContainer>
-          <ButtonContainer>
-            <QuestionCreateButton addQuestion={addQuestion} />
-          </ButtonContainer>
-        </HeaderContainer>
-        <QuestionContainer>
-          {questionList.map(question => {
-            return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
-          })}
-        </QuestionContainer>
-      </Box>
+      <div style={{ width: detailedQuestionId !== null ? 'calc((100% - 100px) * 0.7)' : '100%' }}>
+        <Box>
+          <HeaderContainer>
+            <ButtonContainer>
+              <QuestionCreateButton addQuestion={addQuestion} />
+            </ButtonContainer>
+          </HeaderContainer>
+          <QuestionContainer>
+            {questionList.map(question => {
+              return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
+            })}
+          </QuestionContainer>
+        </Box>
+      </div>
     </>
   );
 };
