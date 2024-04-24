@@ -11,18 +11,26 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { categorySchema } from '../../validation/category';
 import ActionDialog from './ActionDialog';
 
-interface CategoryAddDialogProps {
-  setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
-}
+type CategoryAddDialogProps = {
+  addCategory: (category: Category) => void;
+};
 
-const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ setCategories }) => {
+const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) => {
   const [open, setOpen] = useState<boolean>(false);
   const initialValues = {
     title: '',
   };
+
+  const onSuccess = (response: Category) => {
+    const category: Category = response;
+    setOpen(false);
+    addCategory(category);
+  };
+
   const { sendData } = useQuery<Category>({
     url: ENDPOINTS.CATEGORY.CREATE,
     httpMethod: HTTP_METHODS.POST,
+    onSuccess: onSuccess,
   });
 
   const toggleDialog = () => {
@@ -30,17 +38,10 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ setCategories }) 
   };
 
   const handleSubmit = useCallback(async () => {
-    const response = await sendData(initialValues);
-    if (response && 'data' in response && !('message' in response)) {
-      setCategories(prevCategories => {
-        const categoriesArray = prevCategories || [];
-        const newCategory = response.data as Category;
-        return [newCategory, ...categoriesArray];
-      });
-    }
+    await sendData(initialValues);
     toggleDialog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sendData, setCategories]);
+  }, [sendData]);
 
   return (
     <>
@@ -62,6 +63,7 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ setCategories }) 
                   fullWidth
                   multiline
                   rows={4}
+                  autoFocues
                   error={touched.title && Boolean(errors.title)}
                 />
                 <div style={{ color: 'red' }}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
@@ -11,9 +11,10 @@ import CategoryAddDialog from '../dialogs/CategoryAddDialog';
 import { HTTP_METHODS } from '../../constants/http';
 
 const Categories: React.FC = () => {
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+
   const {
     data: categories,
-    setData: setCategories,
     isLoading,
     errors,
     getData,
@@ -22,10 +23,19 @@ const Categories: React.FC = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
+  const addCategory = (category: Category) => {
+    setCategoryList(currentCategories => {
+      return [...currentCategories, category];
+    });
+  };
+
   useEffect(() => {
     if (!categories) {
       getData();
     }
+
+    categoryList.length === 0 && categories && setCategoryList(categories);
+    // eslint-disable-next-line
   }, [categories, getData]);
 
   const navigate = useNavigate();
@@ -39,11 +49,11 @@ const Categories: React.FC = () => {
 
   return (
     <List component="nav" aria-label="categories">
-      <CategoryAddDialog setCategories={setCategories} />
-      {!categories || categories.length === 0 ? (
+      <CategoryAddDialog addCategory={addCategory} />
+      {!categoryList || categoryList.length === 0 ? (
         <div>No categories found</div>
       ) : (
-        categories.map(category => (
+        categoryList.map(category => (
           <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
         ))
       )}
