@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, List } from '@mui/material';
+import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +40,7 @@ const Categories: React.FC = () => {
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
   return (
-    <Box width="100%">
+    <>
       <HeaderContainer width="100%" marginTop="20px">
         <PageTitle title="Category bank" subTitle="Discover, create and improve existing interview categories" />
         <ButtonContainer>
@@ -57,7 +57,7 @@ const Categories: React.FC = () => {
           ))
         )}
       </List>
-    </Box>
+    </>
   );
 };
 
