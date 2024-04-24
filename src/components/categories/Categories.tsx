@@ -13,6 +13,7 @@ import { HTTP_METHODS } from '../../constants/http';
 const Categories: React.FC = () => {
   const {
     data: categories,
+    setData: setCategories,
     isLoading,
     errors,
     getData,
@@ -35,14 +36,17 @@ const Categories: React.FC = () => {
 
   if (isLoading) return <Loader />;
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
-  if (!categories || categories.length === 0) return <div>No categories found</div>;
 
   return (
     <List component="nav" aria-label="categories">
-      <CategoryAddDialog />
-      {categories.map(category => (
-        <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
-      ))}
+      <CategoryAddDialog setCategories={setCategories} />
+      {!categories || categories.length === 0 ? (
+        <div>No categories found</div>
+      ) : (
+        categories.map(category => (
+          <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
+        ))
+      )}
     </List>
   );
 };

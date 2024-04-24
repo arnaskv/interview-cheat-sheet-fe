@@ -7,11 +7,17 @@ import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Loader from '../shared/Loader';
+import { Category } from '../../interfaces/Category';
 
-const CategoryAddDialog: React.FC = () => {
+
+interface CategoryAddDialogProps {
+  setCategories: React.Dispatch<React.SetStateAction<Category[] | null>>;
+}
+
+const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ setCategories }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [categoryTitle, setCategoryTitle] = useState<string | null>(null);
-  const { sendData, isLoading, errors } = useQuery({
+  const { sendData, isLoading, errors } = useQuery<Category>({
     url: ENDPOINTS.CATEGORY.CREATE,
     httpMethod: HTTP_METHODS.POST,
   });
@@ -26,11 +32,18 @@ const CategoryAddDialog: React.FC = () => {
   const handleSubmit = useCallback(async () => {
     if (categoryTitle) {
       const formattedCategoryData = { title: categoryTitle };
-      await sendData(formattedCategoryData);
+      const response = await sendData(formattedCategoryData);
+      if (response && 'data' in response && !('message' in response)) {
+        setCategories(prevCategories => {
+          const categoriesArray = prevCategories || [];
+          const newCategory = response.data as Category;
+          return [newCategory, ...categoriesArray];
+        });
+      }
       toggleDialog();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryTitle, sendData]);
+  }, [categoryTitle, sendData, setCategories]);
 
   return (
     <>
