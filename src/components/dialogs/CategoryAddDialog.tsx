@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Add as AddIcon } from '@mui/icons-material';
 import ActionButton from '../buttons/ActionButton';
 import TextArea from '../textArea/TextArea';
@@ -23,11 +23,11 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
 
   const onSuccess = (response: Category) => {
     const category: Category = response;
-    setOpen(false);
     addCategory(category);
+    setOpen(false);
   };
 
-  const { sendData } = useQuery<Category>({
+  const createCategoryCommand = useQuery<Category>({
     url: ENDPOINTS.CATEGORY.CREATE,
     httpMethod: HTTP_METHODS.POST,
     onSuccess: onSuccess,
@@ -37,11 +37,9 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
     setOpen(!open);
   };
 
-  const handleSubmit = useCallback(async () => {
-    await sendData(initialValues);
-    toggleDialog();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sendData]);
+  const onSubmit = async (values: Category) => {
+    await createCategoryCommand.sendData(values);
+  };
 
   return (
     <>
@@ -49,9 +47,9 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
         Add Category
       </ActionButton>
       <ActionDialog title="Add Category" open={open} handleClose={toggleDialog}>
-        <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={categorySchema}>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={categorySchema}>
           {({ isSubmitting, touched, errors }) => (
-            <Form>
+            <Form method="POST">
               <div style={{ padding: '0 24px 24px 24px' }}>
                 <Field
                   as={TextArea}
@@ -63,7 +61,7 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
                   fullWidth
                   multiline
                   rows={4}
-                  autoFocues
+                  autoFocus
                   error={touched.title && Boolean(errors.title)}
                 />
                 <div style={{ color: 'red' }}>

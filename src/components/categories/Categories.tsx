@@ -54,7 +54,7 @@ const Categories: React.FC = () => {
         <div>No categories found</div>
       ) : (
         categoryList.map(category => (
-          <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
+          <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id!)} />
         ))
       )}
     </List>
