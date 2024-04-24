@@ -50,7 +50,7 @@ const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
       onKeyDown={handleEnter}
       sx={{
         '& fieldset': {
-          borderRadius: '16px',
+          borderRadius: '12px',
           border: 'none',
         },
       }}

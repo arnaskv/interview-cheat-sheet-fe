@@ -1,39 +1,39 @@
 body {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 
-.HeaderContainer{
-    margin-bottom: 4rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+.HeaderContainer {
+  margin-bottom: 4rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .HeaderBox {
-    width: 100%;
-    height: 4rem;
-    border-bottom: 1px solid #dddddd;
-    position: fixed;
-    left: 0;
-    background-color: white;
+  width: 100%;
+  height: 4rem;
+  border-bottom: 1px solid #dddddd;
+  position: fixed;
+  left: 0;
+  background-color: white;
 }
 
 .ButtonsBox {
-    display: flex;
-    width: 95%;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100%;
+  display: flex;
+  width: 95%;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
 }
 
 .Notification {
-    width: 1.8rem;
-    height: 1.8rem;
-    margin: 0 0.8rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin: 0 0.8rem;
 }
 
 .Profile {
-    width: 2.8rem;
-    height: 2.8rem;
-    margin: 0 0.8rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin: 0 0.8rem;
 }
