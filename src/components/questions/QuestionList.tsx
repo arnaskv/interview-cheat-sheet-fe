@@ -8,7 +8,9 @@ import useQuery from '../../hooks/useQuery';
 import Loader from '../shared/Loader';
 import { HTTP_METHODS } from '../../constants/http';
 import DetailedQuestionCard from './DetailedQuestionCard';
-import { HeaderContainer, QuestionContainer, ButtonContainer } from './QuestionPageStyles';
+import { QuestionContainer } from './QuestionPageStyles';
+import PageTitle from '../shared/PageTitle';
+import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 
 const QuestionList = () => {
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
@@ -48,25 +50,30 @@ const QuestionList = () => {
         <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} />
       )}
 
-      <div style={{ width: detailedQuestionId !== null ? 'calc((100% - 100px) * 0.7)' : '100%' }}>
-        <Box>
-          <HeaderContainer>
+      <Box width={detailedQuestionId !== null ? 'calc((100% - 100px) * 0.7)' : '100%'}>
+        <Box width="100%" display="flex" justifyContent="center">
+          {/*This mess with width will be fixed in separate task*/}
+          <HeaderContainer width="calc(90% + 48px)">
+            <PageTitle
+              title="Questions bank"
+              subTitle="Discover, create and improve existing interview questions and build interview templates"
+            />
             <ButtonContainer>
               <QuestionCreateButton addQuestion={addQuestion} />
             </ButtonContainer>
           </HeaderContainer>
-
-          {!questionList || questionList.length === 0 ? (
-            <div>No questions found</div>
-          ) : (
-            <QuestionContainer>
-              {questionList.map(question => {
-                return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
-              })}
-            </QuestionContainer>
-          )}
         </Box>
-      </div>
+
+        {!questionList || questionList.length === 0 ? (
+          <div>No questions found</div>
+        ) : (
+          <QuestionContainer>
+            {questionList.map(question => {
+              return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
+            })}
+          </QuestionContainer>
+        )}
+      </Box>
     </>
   );
 };
