@@ -9,6 +9,8 @@ import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
 import CategoryAddDialog from '../dialogs/CategoryAddDialog';
 import { HTTP_METHODS } from '../../constants/http';
+import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
+import PageTitle from '../shared/PageTitle';
 
 const Categories: React.FC = () => {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
@@ -48,16 +50,24 @@ const Categories: React.FC = () => {
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
   return (
-    <List component="nav" aria-label="categories">
-      <CategoryAddDialog addCategory={addCategory} />
-      {!categoryList || categoryList.length === 0 ? (
-        <div>No categories found</div>
-      ) : (
-        categoryList.map(category => (
-          <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id!)} />
-        ))
-      )}
-    </List>
+    <>
+      <HeaderContainer width="100%" marginTop="20px">
+        <PageTitle title="Category bank" subTitle="Discover, create and improve existing interview categories" />
+        <ButtonContainer>
+          <CategoryAddDialog addCategory={addCategory} />
+        </ButtonContainer>
+      </HeaderContainer>
+
+      <List component="nav" aria-label="categories">
+        {!categoryList || categoryList.length === 0 ? (
+          <div>No categories found</div>
+        ) : (
+          categoryList.map(category => (
+            <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id!)} />
+          ))
+        )}
+      </List>
+    </>
   );
 };
 
