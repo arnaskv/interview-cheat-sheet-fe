@@ -9,13 +9,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
+import QuestionEditButton from './components/QuestionEditButton';
 
 type Props = {
   questionId: number;
   setQuestionId: (id: number | null) => void;
+  updateQuestion: (question: Question) => void;
 };
 
-const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
+const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
 
   const {
@@ -33,6 +35,15 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
     }
   }, [question, getData]);
 
+  if(isLoading || !question) {
+    return <Loader />
+  }
+
+  const updateDetailedQuestion = (q: Question) => {
+    question.title = q.title;
+    updateQuestion(question);
+  }
+
   return (
     <>
       <div className={style.Box}>
@@ -45,12 +56,13 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
         </div>
         <div className={style.Info}>Date placeholder &bull; type placeholder</div>
 
-        <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
+        <div className={style.TitleBox}>{question.title}</div>
         <div className={style.ActionBar}>
           <div className={style.Social}>
             <div>Comments placeholder</div>
             <div>Likes placeholder</div>
           </div>
+          <QuestionEditButton question={question} updateQuestion={updateDetailedQuestion} />
         </div>
         <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
           <Grid item style={{ height: '50vh', overflow: 'auto' }}>

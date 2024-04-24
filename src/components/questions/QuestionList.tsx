@@ -32,6 +32,12 @@ const QuestionList = () => {
     });
   };
 
+  const updateQuestion = (question: Question) => {
+    setQuestionList(currentQuestions => {
+      return currentQuestions.map(q => (q.id === question.id ? question : q));
+    });
+  };
+
   useEffect(() => {
     if (!questions) {
       getData();
@@ -47,7 +53,7 @@ const QuestionList = () => {
   return (
     <>
       {detailedQuestionId !== null && (
-        <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} />
+        <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} updateQuestion={updateQuestion} />
       )}
 
       <Box width="100%">
