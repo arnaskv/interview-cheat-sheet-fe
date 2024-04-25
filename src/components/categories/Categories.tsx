@@ -41,7 +41,7 @@ const Categories: React.FC = () => {
 
   return (
     <>
-      <HeaderContainer width="100%" marginTop="20px">
+      <HeaderContainer width="100%">
         <PageTitle title="Category bank" subTitle="Discover, create and improve existing interview categories" />
         <ButtonContainer>
           <CategoryAddDialog setCategories={setCategories} />
