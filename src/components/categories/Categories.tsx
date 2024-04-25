@@ -27,7 +27,7 @@ const Categories: React.FC = () => {
 
   const addCategory = (category: Category) => {
     setCategoryList(currentCategories => {
-      return [...currentCategories, category];
+      return [category, ...currentCategories];
     });
   };
 
