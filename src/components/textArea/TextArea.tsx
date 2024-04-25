@@ -13,7 +13,7 @@ const TextArea: React.FC<Props> = ({ contentType, ...textFieldProps }) => {
         {contentType} <span style={{ color: 'red' }}>*</span>
       </DialogContentText>
       <TextField
-        name={contentType.toLowerCase()}
+        name={textFieldProps.name}
         {...textFieldProps}
         sx={{
           '& .MuiOutlinedInput-root': {
