@@ -5,6 +5,7 @@ import ActionDialog from './ActionDialog';
 import Loader from '../shared/Loader';
 import { StyledDialogActions } from './DialogStyles';
 import ActionButton from '../buttons/ActionButton';
+import { useNavigate } from 'react-router-dom';
 
 type DeleteProps = {
   itemId: string;
@@ -27,6 +28,8 @@ const DeleteDialog: React.FC<DeleteProps> = ({
   open,
   setOpen,
 }) => {
+  const navigate = useNavigate();
+
   const onSuccess = () => {
     refreshData && refreshData();
   };
@@ -45,19 +48,20 @@ const DeleteDialog: React.FC<DeleteProps> = ({
     if (itemId) {
       await sendData({ id: itemId });
       toggleDialog();
+      navigate(-1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, sendData]);
 
   return (
     <>
-      <ActionDialog title={dialogTitle} open={open} handleClose={toggleDialog} onSubmit={() => handleSubmit()}>
+      <ActionDialog title={dialogTitle} open={open} handleClose={toggleDialog}>
         {isLoading ? <Loader /> : <div style={{ padding: '24px' }}>{dialogDescription}</div>}
         <StyledDialogActions>
           <ActionButton onClick={toggleDialog} color="secondary" variant="contained">
             Cancel
           </ActionButton>
-          <ActionButton type="submit" color="primary" variant="contained">
+          <ActionButton type="submit" color="primary" variant="contained" onClick={handleSubmit}>
             {deleteLabel}
           </ActionButton>
         </StyledDialogActions>

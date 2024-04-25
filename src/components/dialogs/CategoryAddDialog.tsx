@@ -48,7 +48,7 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
       </ActionButton>
       <ActionDialog title="Add Category" open={open} handleClose={toggleDialog}>
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={categorySchema}>
-          {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
+          {({ values, handleChange, errors, touched, isSubmitting }) => (
             <Form>
               <div style={{ padding: '0 24px 24px 24px' }}>
                 <Field
@@ -61,10 +61,8 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
                   fullWidth
                   multiline
                   rows={4}
-                  autoFocus
                   value={values.title}
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   error={touched.title && Boolean(errors.title)}
                 />
                 <div style={{ color: 'red' }}>

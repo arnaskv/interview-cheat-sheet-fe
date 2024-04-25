@@ -5,24 +5,15 @@ import CloseIcon from '@mui/icons-material/Close';
 interface ActionDialogProps extends DialogProps {
   title: string;
   handleClose: () => void;
-  onSubmit?: (data: any) => void;
   children: React.ReactNode;
 }
 
-const ActionDialog: React.FC<ActionDialogProps> = ({ title, handleClose, onSubmit, children, ...dialogProps }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSubmit && onSubmit(event.currentTarget);
-    handleClose();
-  };
-
+const ActionDialog: React.FC<ActionDialogProps> = ({ title, handleClose, children, ...dialogProps }) => {
   return (
     <Dialog
       {...dialogProps}
       onClose={handleClose}
       PaperProps={{
-        component: 'form',
-        onSubmit: handleSubmit,
         sx: {
           border: '1px solid #fff',
           borderRadius: '8px',
