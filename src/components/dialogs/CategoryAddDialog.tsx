@@ -37,8 +37,8 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
     setOpen(!open);
   };
 
-  const onSubmit = async (values: Category) => {
-    await createCategoryCommand.sendData(values);
+  const onSubmit = async (category: Category) => {
+    await createCategoryCommand.sendData(category);
   };
 
   return (
@@ -48,8 +48,8 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
       </ActionButton>
       <ActionDialog title="Add Category" open={open} handleClose={toggleDialog}>
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={categorySchema}>
-          {({ isSubmitting, touched, errors }) => (
-            <Form method="POST">
+          {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
+            <Form>
               <div style={{ padding: '0 24px 24px 24px' }}>
                 <Field
                   as={TextArea}
@@ -62,6 +62,9 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
                   multiline
                   rows={4}
                   autoFocus
+                  value={values.title}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   error={touched.title && Boolean(errors.title)}
                 />
                 <div style={{ color: 'red' }}>
