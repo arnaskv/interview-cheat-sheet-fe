@@ -43,7 +43,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             </IconButton>
           </div>
         </div>
-        <div className={style.Info}>Date placeholder &bull; type placeholder</div>
+        <div className={style.Info}>
+            Date placeholder &bull;
+          <a href={`/category/${question?.category.id}`} className={style.Info}>
+            {question?.category.title}
+          </a>
+        </div>
 
         <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
         <div className={style.ActionBar}>

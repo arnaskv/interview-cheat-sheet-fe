@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, MenuItem, FormHelperText  } from '@mui/material';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
@@ -9,6 +9,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
 import { StyledDialogActions } from '../../dialogs/DialogStyles';
+import { Category } from '../../../interfaces/Category';
+import { useState, useEffect } from 'react';
 
 type QuestionCreateDialogProps = {
   open: boolean;
@@ -17,6 +19,10 @@ type QuestionCreateDialogProps = {
 };
 
 const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDialogProps) => {
+  const [selectedCategory, setSelectedCategory] = useState< string>('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryError, setCategoryError] = useState<string>('');
+
   const onSuccess = (response: Question) => {
     const question: Question = response;
     setOpen(false);
@@ -29,12 +35,44 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
     onSuccess: onSuccess,
   });
 
+  useEffect(() => {
+    if (!open) {
+      setSelectedCategory('');
+    }
+  }, [open]);
+
   const initialValues = {
     title: '',
+    category: {
+      id: 0,
+      title: ''
+    },
   };
 
+  const {
+    data: fetchedCategories,
+    getData: fetchCategories,
+  } = useQuery<Category[]>({
+    url: ENDPOINTS.CATEGORY.GET_ALL,
+    httpMethod: HTTP_METHODS.GET,
+  });
+
+  useEffect(() => {
+    if (fetchedCategories) {
+      setCategories(fetchedCategories);
+    } else {
+      fetchCategories();
+    }
+  }, [fetchedCategories, fetchCategories]);
+
   const onSubmit = async (values: Question) => {
-    await createQuestionCommand.sendData(values);
+    if (!selectedCategory) {
+      setCategoryError('Please select a category');
+      return;
+    }
+
+    const questionWithCategory = { ...values, categoryId: selectedCategory };
+    await createQuestionCommand.sendData(questionWithCategory);
   };
 
   return (
@@ -53,11 +91,11 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                 <Grid item xs={6} className={style.TextTitle}>
                   Question
                 </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
                     multiline
-                    autoFocus
                     name="title"
                     className={style.TextField}
                     value={values.title}
@@ -70,12 +108,45 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                     }}
                   />
                 </Grid>
+
+                <Grid item xs={6} className={style.TextTitle}>
+                  Category
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    select
+                    fullWidth
+                    className={style.TextField}
+                    name="category"
+                    value={selectedCategory}
+                    variant="outlined"
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                      setCategoryError('');
+                    }}
+                    onBlur={handleBlur}
+                    error={Boolean(categoryError)}
+
+                    SelectProps={{
+                      classes: { select: style.TextField },
+                    }}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id} className={style.TextField}>
+                        {category.title}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {Boolean(categoryError) && <FormHelperText error>{categoryError}</FormHelperText>}
+                </Grid>
               </Grid>
             </DialogContent>
             <StyledDialogActions>
               <ActionButton onClick={() => setOpen(false)} color="secondary" variant="contained">
                 Cancel
               </ActionButton>
+
               <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
                 Add Question
               </ActionButton>
