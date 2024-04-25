@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
@@ -13,9 +13,10 @@ import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import PageTitle from '../shared/PageTitle';
 
 const Categories: React.FC = () => {
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
+
   const {
     data: categories,
-    setData: setCategories,
     isLoading,
     errors,
     getData,
@@ -24,10 +25,19 @@ const Categories: React.FC = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
+  const addCategory = (category: Category) => {
+    setCategoryList(currentCategories => {
+      return [category, ...currentCategories];
+    });
+  };
+
   useEffect(() => {
     if (!categories) {
       getData();
     }
+
+    categoryList.length === 0 && categories && setCategoryList(categories);
+    // eslint-disable-next-line
   }, [categories, getData]);
 
   const navigate = useNavigate();
@@ -44,16 +54,16 @@ const Categories: React.FC = () => {
       <HeaderContainer width="100%" marginTop="20px">
         <PageTitle title="Category bank" subTitle="Discover, create and improve existing interview categories" />
         <ButtonContainer>
-          <CategoryAddDialog setCategories={setCategories} />
+          <CategoryAddDialog addCategory={addCategory} />
         </ButtonContainer>
       </HeaderContainer>
 
       <List component="nav" aria-label="categories">
-        {!categories || categories.length === 0 ? (
+        {!categoryList || categoryList.length === 0 ? (
           <div>No categories found</div>
         ) : (
-          categories.map(category => (
-            <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id)} />
+          categoryList.map(category => (
+            <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id!)} />
           ))
         )}
       </List>

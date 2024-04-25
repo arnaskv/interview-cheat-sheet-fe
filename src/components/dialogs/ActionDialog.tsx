@@ -1,38 +1,19 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogTitle, IconButton, DialogProps } from '@mui/material';
+import { Dialog, DialogTitle, IconButton, DialogProps } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import ActionButton from '../buttons/ActionButton';
-import { StyledDialogActions } from './DialogStyles';
 
 interface ActionDialogProps extends DialogProps {
   title: string;
   handleClose: () => void;
-  onSubmit: (data: any) => void;
-  submitButtonLabel: string;
   children: React.ReactNode;
 }
 
-const ActionDialog: React.FC<ActionDialogProps> = ({
-  title,
-  handleClose,
-  onSubmit,
-  submitButtonLabel,
-  children,
-  ...dialogProps
-}) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSubmit(event.currentTarget);
-    handleClose();
-  };
-
+const ActionDialog: React.FC<ActionDialogProps> = ({ title, handleClose, children, ...dialogProps }) => {
   return (
     <Dialog
       {...dialogProps}
       onClose={handleClose}
       PaperProps={{
-        component: 'form',
-        onSubmit: handleSubmit,
         sx: {
           border: '1px solid #fff',
           borderRadius: '8px',
@@ -52,15 +33,7 @@ const ActionDialog: React.FC<ActionDialogProps> = ({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ paddingBottom: '40px' }}>{children}</DialogContent>
-      <StyledDialogActions>
-        <ActionButton onClick={handleClose} color="secondary" variant="contained">
-          Cancel
-        </ActionButton>
-        <ActionButton type="submit" color="primary" variant="contained">
-          {submitButtonLabel}
-        </ActionButton>
-      </StyledDialogActions>
+      <div>{children}</div>
     </Dialog>
   );
 };
