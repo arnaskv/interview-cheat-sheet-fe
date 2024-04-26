@@ -1,4 +1,5 @@
-import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, MenuItem, FormHelperText  } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, MenuItem, FormHelperText } from '@mui/material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
@@ -97,6 +98,7 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                     fullWidth
                     multiline
                     name="title"
+                    autoFocus
                     className={style.TextField}
                     value={values.title}
                     onChange={handleChange}
@@ -130,6 +132,13 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
 
                     SelectProps={{
                       classes: { select: style.TextField },
+                      IconComponent: ExpandMore,
+                    }}
+
+                    sx={{
+                      '& .MuiSvgIcon-root':{
+                        color: '#000048',
+                      }
                     }}
                   >
                     {categories.map((category) => (
