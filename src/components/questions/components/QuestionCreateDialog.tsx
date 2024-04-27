@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
 import { StyledDialogActions } from '../../dialogs/DialogStyles';
+import SubQuestionList from './SubQuestionList';
 
 type QuestionCreateDialogProps = {
   open: boolean;
@@ -69,6 +70,9 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                       style: { color: '#000048' },
                     }}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <SubQuestionList />
                 </Grid>
               </Grid>
             </DialogContent>
