@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
-import QuestionEditButton from './components/QuestionEditButton';
+import QuestionFromButton from './components/QuestionFromButton';
 
 type Props = {
   questionId: number;
@@ -35,13 +35,28 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
     }
   }, [question, getData]);
 
+  const onUpdateSuccess = (response: Question) => {
+    if(!question) {
+      return;
+    }
+
+    question.title = response.title;
+    updateQuestion(question);
+  };
+
+  const updateQuestionCommand = useQuery({
+    url: ENDPOINTS.QUESTION.UPDATE,
+    httpMethod: HTTP_METHODS.PATCH,
+    onSuccess: onUpdateSuccess,
+  });
+
+  const onUpdateSubmit = async (values: Question) => {
+    values.id = questionId;
+    await updateQuestionCommand.sendData(values);
+  };
+
   if(isLoading || !question) {
     return <Loader />
-  }
-
-  const updateDetailedQuestion = (q: Question) => {
-    question.title = q.title;
-    updateQuestion(question);
   }
 
   return (
@@ -62,7 +77,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
             <div>Comments placeholder</div>
             <div>Likes placeholder</div>
           </div>
-          <QuestionEditButton question={question} updateQuestion={updateDetailedQuestion} />
+          <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
         <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
           <Grid item style={{ height: '50vh', overflow: 'auto' }}>
