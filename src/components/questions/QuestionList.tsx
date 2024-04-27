@@ -56,10 +56,9 @@ const QuestionList = () => {
         <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} updateQuestion={updateQuestion} />
       )}
 
-      <Box width="100%">
+      <div className="PageContainer">
         <Box width="100%" display="flex" justifyContent="center">
-          {/*This mess with width will be fixed in separate task*/}
-          <HeaderContainer width="calc(90% + 48px)">
+          <HeaderContainer>
             <PageTitle
               title="Questions bank"
               subTitle="Discover, create and improve existing interview questions and build interview templates"
@@ -79,7 +78,7 @@ const QuestionList = () => {
             })}
           </QuestionContainer>
         )}
-      </Box>
+      </div>
     </>
   );
 };

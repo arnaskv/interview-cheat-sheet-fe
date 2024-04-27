@@ -1,8 +1,4 @@
-  .PageContainer {
-    padding: 20px;
-  }
-  
-  .Error {
-    color: #c70014;
-    text-align: center;
-  }
+.Error {
+  color: #c70014;
+  text-align: center;
+}

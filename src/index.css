@@ -2,3 +2,7 @@ body {
   font-family: 'Inter';
   color: #000048;
 }
+
+.PageContainer {
+  padding: 40px;
+}

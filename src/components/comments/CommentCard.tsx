@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ENDPOINTS } from '../../constants/endpoints';
 import DeleteDialog from '../dialogs/DeleteDialog';
 
-function CommentCard({ comment, refreshData }: { comment: Comment, refreshData: () => void }) {
+function CommentCard({ comment, refreshData }: { comment: Comment; refreshData: () => void }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -15,16 +15,19 @@ function CommentCard({ comment, refreshData }: { comment: Comment, refreshData: 
       </Card>
 
       <div className={styles.Info}>
-        <span className={styles.InfoItem} onClick={() => setOpen(true)}>Delete</span>
+        <span className={styles.InfoItem} onClick={() => setOpen(true)}>
+          Delete
+        </span>
         <DeleteDialog
-            itemId={comment.id.toString()}
-            deleteEndpoint={ENDPOINTS.COMMENT.DELETE}
-            dialogTitle="Do you really want to delete this comment?"
-            dialogDescription="This action cannot be undone."
-            refreshData={refreshData}
-            open={open}
-            setOpen={setOpen}
-          />
+          itemId={comment.id.toString()}
+          deleteEndpoint={ENDPOINTS.COMMENT.DELETE}
+          dialogTitle="Do you really want to delete this comment?"
+          dialogDescription="This action cannot be undone."
+          refreshData={refreshData}
+          deleteLabel="Delete Comment"
+          open={open}
+          setOpen={setOpen}
+        />
       </div>
     </>
   );
