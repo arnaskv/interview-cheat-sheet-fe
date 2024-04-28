@@ -9,6 +9,7 @@ export const ENDPOINTS = {
   },
   QUESTION: {
     CREATE: `${BASE_URL}/interview-questions`,
+    UPDATE: `${BASE_URL}/interview-questions`,
     GET_ALL: `${BASE_URL}/interview-questions`,
     GET_ONE: (id: string) => `${BASE_URL}/interview-questions/${id}`,
   },
