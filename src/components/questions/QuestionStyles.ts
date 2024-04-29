@@ -17,9 +17,7 @@ export const QuestionItemContainer = styled(Box)`
   border: 1px solid;
   border-color: #dddddd;
   border-radius: 8px;
-  gap: 24px;
   margin-bottom: 5px;
-  width: 100%;
 `;
 
 export const QuestionItem = styled(Box)`
@@ -27,6 +25,7 @@ export const QuestionItem = styled(Box)`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 24px;
 `;
 
 export const QuestionInfoContainer = styled(Box)`
