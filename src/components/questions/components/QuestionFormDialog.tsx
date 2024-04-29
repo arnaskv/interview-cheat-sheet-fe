@@ -21,7 +21,7 @@ type QuestioneFormDialogProps = {
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFromDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
+const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
 
   const [selectedCategory, setSelectedCategory] = useState< string>('');
   const [categories, setCategories] = useState<Category[]>([]);
@@ -159,4 +159,4 @@ const QuestionFromDialog = ({ open, setOpen, question, category, onSubmit }: Que
   );
 };
 
-export default QuestionFromDialog;
+export default QuestionFormDialog;
