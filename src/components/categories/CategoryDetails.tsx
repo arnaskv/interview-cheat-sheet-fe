@@ -8,6 +8,7 @@ import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import ActionButton from '../buttons/ActionButton';
+import CategoryFormDialog from '../dialogs/CategoryFormDialog';
 
 interface CategoryDetailsProps {
   categoryId: string;
@@ -32,6 +33,25 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
     }
   }, [categoryId, getData, category]);
 
+  const onUpdateSuccess = (response: Category) => {
+    if (!category) {
+      return;
+    }
+
+    category.title = response.title;
+  };
+
+  const updateCategoryCommand = useQuery({
+    url: ENDPOINTS.CATEGORY.UPDATE,
+    httpMethod: HTTP_METHODS.PATCH,
+    onSuccess: onUpdateSuccess,
+  });
+
+  const handleUpdateSubmit = async (values: Category) => {
+    values.id = +categoryId;
+    await updateCategoryCommand.sendData(values);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
   if (!category) return <div>No category found</div>;
@@ -42,6 +62,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
       <ActionButton onClick={() => setOpen(true)} startIcon={<DeleteIcon />} variant="contained" color="primary">
         Delete
       </ActionButton>
+      <CategoryFormDialog onSubmit={handleUpdateSubmit} category={category} action="Edit Category" />
       <DeleteDialog
         itemId={categoryId}
         deleteEndpoint={ENDPOINTS.CATEGORY.DELETE}

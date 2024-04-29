@@ -5,6 +5,7 @@ export const ENDPOINTS = {
     GET_ALL: `${BASE_URL}/category`,
     GET_ONE: (id: string) => `${BASE_URL}/category/${id}`,
     CREATE: `${BASE_URL}/category`,
+    UPDATE: `${BASE_URL}/category`,
     DELETE: (id: string) => `${BASE_URL}/category/${id}`,
   },
   QUESTION: {

@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { Add as AddIcon } from '@mui/icons-material';
 import ActionButton from '../buttons/ActionButton';
 import TextArea from '../textArea/TextArea';
-import { ENDPOINTS } from '../../constants/endpoints';
-import { HTTP_METHODS } from '../../constants/http';
-import useQuery from '../../hooks/useQuery';
 import { Category } from '../../interfaces/Category';
 import { StyledDialogActions } from './DialogStyles';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -12,42 +9,33 @@ import { categorySchema } from '../../validation/category';
 import ActionDialog from './ActionDialog';
 
 type CategoryAddDialogProps = {
-  addCategory: (category: Category) => void;
+  onSubmit: (category: Category) => void;
+  category?: Category;
+  action: 'Add Category' | 'Edit Category';
 };
 
-const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) => {
+const CategoryFormDialog: React.FC<CategoryAddDialogProps> = ({ onSubmit, category, action }) => {
   const [open, setOpen] = useState<boolean>(false);
   const initialValues = {
-    title: '',
+    title: category ? category.title : '',
   };
-
-  const onSuccess = (response: Category) => {
-    const category: Category = response;
-    addCategory(category);
-    setOpen(false);
-  };
-
-  const createCategoryCommand = useQuery<Category>({
-    url: ENDPOINTS.CATEGORY.CREATE,
-    httpMethod: HTTP_METHODS.POST,
-    onSuccess: onSuccess,
-  });
 
   const toggleDialog = () => {
     setOpen(!open);
   };
 
-  const onSubmit = async (category: Category) => {
-    await createCategoryCommand.sendData(category);
+  const handleSubmit = (values: Category) => {
+    onSubmit(values);
+    toggleDialog();
   };
 
   return (
     <>
       <ActionButton onClick={toggleDialog} startIcon={<AddIcon />} variant="contained" color="primary">
-        Add Category
+        {action}
       </ActionButton>
-      <ActionDialog title="Add Category" open={open} handleClose={toggleDialog}>
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={categorySchema}>
+      <ActionDialog title={action} open={open} handleClose={toggleDialog}>
+        <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={categorySchema}>
           {({ values, handleChange, errors, touched, isSubmitting }) => (
             <Form>
               <div style={{ padding: '0 24px 24px 24px' }}>
@@ -79,7 +67,7 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
                   color="primary"
                   variant="contained"
                 >
-                  Add Category
+                  {action}
                 </ActionButton>
               </StyledDialogActions>
             </Form>
@@ -90,4 +78,4 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
   );
 };
 
-export default CategoryAddDialog;
+export default CategoryFormDialog;
