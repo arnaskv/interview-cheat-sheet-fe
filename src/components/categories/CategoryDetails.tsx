@@ -48,7 +48,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
   });
 
   const handleUpdateSubmit = async (values: Category) => {
-    values.id = +categoryId;
+    values.id = Number(categoryId);
     await updateCategoryCommand.sendData(values);
   };
 
