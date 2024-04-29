@@ -80,7 +80,7 @@ describe('Categories List', () => {
     const navigateMock = jest.fn();
     const categoryIdToNavigate = 1;
 
-    (useNavigate as jest.Mock).mockReturnValue(navigateMock);
+    useNavigateMock.mockReturnValue(navigateMock);
 
     render(
       <Router>
