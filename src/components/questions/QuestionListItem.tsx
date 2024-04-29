@@ -6,6 +6,7 @@ import LikeButton from '../buttons/LikeButton';
 import {
   QuestionInfoContainer,
   QuestionItem,
+  QuestionItemContainer,
   QuestionReaction,
   QuestionReactionContainer,
   QuestionText,
@@ -23,24 +24,26 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId }) => {
   const handleLikeClick = () => {};
 
   return (
-    <QuestionItem>
-      <QuestionInfoContainer onClick={() => setQuestionId(question.id || null)}>
-        <Box sx={{ lineHeight: '24px' }}>
-          <QuestionText>{question.title}</QuestionText>
-        </Box>
-        <Box>
-          <QuestionStats category="Category" />
-        </Box>
-      </QuestionInfoContainer>
-      <QuestionReactionContainer>
-        <QuestionReaction>
-          <CommentButton onClick={handleCommentClick} />
-        </QuestionReaction>
-        <QuestionReaction>
-          <LikeButton onClick={handleLikeClick} />
-        </QuestionReaction>
-      </QuestionReactionContainer>
-    </QuestionItem>
+    <QuestionItemContainer>
+      <QuestionItem>
+        <QuestionInfoContainer onClick={() => setQuestionId(question.id || null)}>
+          <Box sx={{ lineHeight: '24px' }}>
+            <QuestionText>{question.title}</QuestionText>
+          </Box>
+          <Box>
+            <QuestionStats category="Category" />
+          </Box>
+        </QuestionInfoContainer>
+        <QuestionReactionContainer>
+          <QuestionReaction>
+            <CommentButton onClick={handleCommentClick} />
+          </QuestionReaction>
+          <QuestionReaction>
+            <LikeButton onClick={handleLikeClick} />
+          </QuestionReaction>
+        </QuestionReactionContainer>
+      </QuestionItem>
+    </QuestionItemContainer>
   );
 };
 

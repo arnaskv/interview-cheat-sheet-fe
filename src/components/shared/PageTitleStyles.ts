@@ -9,7 +9,6 @@ export const HeaderContainer = styled(Box)`
   padding-left: 0px;
   width: ${props => (props.width ? `${props.width}` : '100%')};
   align-items: center;
-  margin-top: ${props => (props.marginTop ? `${props.marginTop}` : '40px')};
 `;
 
 export const ButtonContainer = styled(Box)`
