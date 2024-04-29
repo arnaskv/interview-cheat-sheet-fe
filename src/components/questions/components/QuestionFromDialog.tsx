@@ -1,8 +1,8 @@
 import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, MenuItem, FormHelperText } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import useQuery from '../../../hooks/useQuery';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
-import useQuery from '../../../hooks/useQuery';
 import Question from '../../../interfaces/Question';
 import { Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
@@ -13,28 +13,19 @@ import { StyledDialogActions } from '../../dialogs/DialogStyles';
 import { Category } from '../../../interfaces/Category';
 import { useState, useEffect } from 'react';
 
-type QuestionCreateDialogProps = {
+type QuestioneFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  addQuestion: (question: Question) => void;
+  question?: Question;
+  category?: Category; // Make sure category is defined in props
+  onSubmit: (question: Question) => void;
 };
 
-const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDialogProps) => {
+const QuestionFromDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
+
   const [selectedCategory, setSelectedCategory] = useState< string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
-
-  const onSuccess = (response: Question) => {
-    const question: Question = response;
-    setOpen(false);
-    addQuestion(question);
-  };
-
-  const createQuestionCommand = useQuery({
-    url: ENDPOINTS.QUESTION.CREATE,
-    httpMethod: HTTP_METHODS.POST,
-    onSuccess: onSuccess,
-  });
 
   useEffect(() => {
     if (!open) {
@@ -43,11 +34,8 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
   }, [open]);
 
   const initialValues = {
-    title: '',
-    category: {
-      id: 0,
-      title: ''
-    },
+    title: question ? question.title : '',
+    category: category ? category : { id: 0, title: '' },
   };
 
   const {
@@ -66,15 +54,21 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
     }
   }, [fetchedCategories, fetchCategories]);
 
-  const onSubmit = async (values: Question) => {
+  useEffect(() => {
+    if (question && question.category) {
+      setSelectedCategory(String(question.category.id));
+    }
+  }, [question]);
+
+  const handleSubmit = (values: Question) => {
     if (!selectedCategory) {
       setCategoryError('Please select a category');
       return;
     }
-
     const questionWithCategory = { ...values, categoryId: selectedCategory };
-    await createQuestionCommand.sendData(questionWithCategory);
-  };
+    onSubmit(questionWithCategory);
+    setOpen(false);
+  }
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md" disableRestoreFocus>
@@ -83,8 +77,8 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
           <CloseIcon onClick={() => setOpen(false)} />
         </IconButton>
       </div>
-      <DialogTitle className={style.FormTitle}>Add question</DialogTitle>
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={questionSchema}>
+      <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question' } </DialogTitle>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
         {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
           <Form>
             <DialogContent>
@@ -92,13 +86,12 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                 <Grid item xs={6} className={style.TextTitle}>
                   Question
                 </Grid>
-
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
                     multiline
-                    name="title"
                     autoFocus
+                    name="title"
                     className={style.TextField}
                     value={values.title}
                     onChange={handleChange}
@@ -155,9 +148,8 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
               <ActionButton onClick={() => setOpen(false)} color="secondary" variant="contained">
                 Cancel
               </ActionButton>
-
               <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
-                Add Question
+                {question ? 'Update Question' : 'Add Question' }
               </ActionButton>
             </StyledDialogActions>
           </Form>
@@ -167,4 +159,4 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
   );
 };
 
-export default QuestionCreateDialog;
+export default QuestionFromDialog;

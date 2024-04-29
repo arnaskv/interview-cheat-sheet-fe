@@ -47,6 +47,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId }) => {
         deleteEndpoint={ENDPOINTS.CATEGORY.DELETE}
         dialogTitle="Delete this Category?"
         dialogDescription="If you delete this category, all follow up questions would be deleted. Are you sure?"
+        deleteLabel="Delete Category"
         open={open}
         setOpen={setOpen}
       />

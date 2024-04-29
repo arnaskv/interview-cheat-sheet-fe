@@ -13,17 +13,20 @@ export const QuestionInfoText = styled(Typography)`
   color: #999999;
 `;
 
-export const QuestionItem = styled(Box)`
+export const QuestionItemContainer = styled(Box)`
   border: 1px solid;
   border-color: #dddddd;
   border-radius: 8px;
+  gap: 24px;
+  margin-bottom: 5px;
+  width: 100%;
+`;
+
+export const QuestionItem = styled(Box)`
+  padding: 16px 24px 16px 24px;
   display: flex;
   flex-direction: row;
-  gap: 24px;
   align-items: center;
-  margin-bottom: 5px;
-  padding: 16px 24px 16px 24px;
-  width: 90%;
 `;
 
 export const QuestionInfoContainer = styled(Box)`
