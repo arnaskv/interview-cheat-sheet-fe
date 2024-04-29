@@ -64,6 +64,7 @@ const CategoryAddDialog: React.FC<CategoryAddDialogProps> = ({ addCategory }) =>
                   value={values.title}
                   onChange={handleChange}
                   error={touched.title && Boolean(errors.title)}
+                  data-testid="category-title"
                 />
                 <div style={{ color: 'red' }}>
                   <ErrorMessage name="title" />
