@@ -1,7 +1,4 @@
 import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
-import { ENDPOINTS } from '../../../constants/endpoints';
-import { HTTP_METHODS } from '../../../constants/http';
-import useQuery from '../../../hooks/useQuery';
 import Question from '../../../interfaces/Question';
 import { Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
@@ -10,32 +7,23 @@ import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
 import { StyledDialogActions } from '../../dialogs/DialogStyles';
 
-type QuestionCreateDialogProps = {
+type QuestioneFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  addQuestion: (question: Question) => void;
+  question?: Question;
+  onSubmit: (question: Question) => void;
 };
 
-const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDialogProps) => {
-  const onSuccess = (response: Question) => {
-    const question: Question = response;
-    setOpen(false);
-    addQuestion(question);
-  };
-
-  const createQuestionCommand = useQuery({
-    url: ENDPOINTS.QUESTION.CREATE,
-    httpMethod: HTTP_METHODS.POST,
-    onSuccess: onSuccess,
-  });
+const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneFormDialogProps) => {
 
   const initialValues = {
-    title: '',
+    title: question ? question.title : ''
   };
 
-  const onSubmit = async (values: Question) => {
-    await createQuestionCommand.sendData(values);
-  };
+  const handleSubmit = (values: Question) => {
+    onSubmit(values);
+    setOpen(false);
+  }
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md" disableRestoreFocus>
@@ -44,8 +32,8 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
           <CloseIcon onClick={() => setOpen(false)} />
         </IconButton>
       </div>
-      <DialogTitle className={style.FormTitle}>Add question</DialogTitle>
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={questionSchema}>
+      <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question' } </DialogTitle>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
         {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
           <Form>
             <DialogContent>
@@ -77,7 +65,7 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                 Cancel
               </ActionButton>
               <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
-                Add Question
+                {question ? 'Update Question' : 'Add Question' }
               </ActionButton>
             </StyledDialogActions>
           </Form>
@@ -87,4 +75,4 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
   );
 };
 
-export default QuestionCreateDialog;
+export default QuestionFormDialog;

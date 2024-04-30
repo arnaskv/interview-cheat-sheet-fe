@@ -22,6 +22,7 @@ function CommentCard({ comment, refreshData }: { comment: Comment; refreshData: 
             dialogTitle="Do you really want to delete this comment?"
             dialogDescription="This action cannot be undone."
             refreshData={refreshData}
+            deleteLabel="Delete Comment"
             open={open}
             setOpen={setOpen}
           />

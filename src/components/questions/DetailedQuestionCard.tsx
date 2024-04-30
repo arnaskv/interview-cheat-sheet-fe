@@ -9,13 +9,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
+import QuestionFromButton from './components/QuestionFromButton';
 
 type Props = {
   questionId: number;
   setQuestionId: (id: number | null) => void;
+  updateQuestion: (question: Question) => void;
 };
 
-const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
+const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
 
   const {
@@ -32,6 +34,30 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
       getData();
     }
   }, [question, getData]);
+
+  const onUpdateSuccess = (response: Question) => {
+    if (!question) {
+      return;
+    }
+
+    question.title = response.title;
+    updateQuestion(question);
+  };
+
+  const updateQuestionCommand = useQuery({
+    url: ENDPOINTS.QUESTION.UPDATE,
+    httpMethod: HTTP_METHODS.PATCH,
+    onSuccess: onUpdateSuccess,
+  });
+
+  const onUpdateSubmit = async (values: Question) => {
+    values.id = questionId;
+    await updateQuestionCommand.sendData(values);
+  };
+
+  if (isLoading || !question) {
+    return <Loader />;
+  }
 
   return (
     <ClickAwayListener onClickAway={() => setQuestionId(null)}>
@@ -50,6 +76,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
             <div>Comments placeholder</div>
             <div>Likes placeholder</div>
           </div>
+          <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
         <div className={style.List}>
           <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
