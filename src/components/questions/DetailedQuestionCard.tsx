@@ -4,7 +4,7 @@ import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Question from '../../interfaces/Question';
 import style from './DetailedQuestionCard.module.css';
-import { IconButton } from '@mui/material';
+import { IconButton, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
@@ -33,16 +33,8 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
     }
   }, [question, getData]);
 
-  useEffect(() => {
-    let handler = () => {
-      setQuestionId(null);
-    };
-
-    document.addEventListener('mousedown', handler);
-  });
-
   return (
-    <>
+    <ClickAwayListener onClickAway={() => setQuestionId(null)}>
       <div className={style.Box}>
         <div className={style.Header}>
           <div className={style.CloseButton}>
@@ -66,7 +58,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId }: Props) => {
           <AddCommentTextField onSuccess={() => setCommentsRefresh(true)} />
         </div>
       </div>
-    </>
+    </ClickAwayListener>
   );
 };
 
