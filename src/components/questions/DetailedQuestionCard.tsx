@@ -81,10 +81,14 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
         </div>
         <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
           <Grid item style={{ height: '50vh', overflow: 'auto' }}>
-            <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
+            <CommentsList
+              questionId={questionId}
+              refresh={commentsRefresh}
+              onSuccess={() => setCommentsRefresh(false)}
+            />
           </Grid>
           <Grid item>
-            <AddCommentTextField onSuccess={() => setCommentsRefresh(true)} />
+            <AddCommentTextField questionId={questionId} onSuccess={() => setCommentsRefresh(true)} />
           </Grid>
         </Grid>
       </div>
