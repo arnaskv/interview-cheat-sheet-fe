@@ -79,10 +79,10 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
           <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
         <div className={style.List}>
-          <CommentsList refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
+          <CommentsList questionId={questionId} refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
         </div>
         <div className={style.TextField}>
-          <AddCommentTextField onSuccess={() => setCommentsRefresh(true)} />
+          <AddCommentTextField questionId={questionId} onSuccess={() => setCommentsRefresh(true)} />
         </div>
       </div>
     </ClickAwayListener>

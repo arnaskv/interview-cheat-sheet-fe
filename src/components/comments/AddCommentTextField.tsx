@@ -7,17 +7,16 @@ import { HTTP_METHODS } from '../../constants/http';
 import Comment from '../../interfaces/Comment';
 import styles from './AddCommentTextField.module.css';
 
-const MAX_LENGTH = 255;
-
 type Props = {
+  questionId: number;
   onSuccess: () => void;
 };
 
-const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
+const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess }) => {
   const [content, setContent] = useState('');
 
   const commentQuery = useQuery<Comment>({
-    url: ENDPOINTS.COMMENT.POST,
+    url: ENDPOINTS.COMMENT.POST(questionId),
     httpMethod: HTTP_METHODS.POST,
     onSuccess: () => {
       setContent('');
@@ -54,7 +53,7 @@ const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
           border: 'none',
         },
       }}
-      inputProps={{ maxLength: MAX_LENGTH }}
+      inputProps={{ maxLength: 255 }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">

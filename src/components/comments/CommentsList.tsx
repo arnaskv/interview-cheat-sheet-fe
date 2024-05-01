@@ -8,18 +8,19 @@ import Loader from '../shared/Loader';
 import styles from './CommentsList.module.css';
 
 type Props = {
+  questionId: number;
   refresh: boolean;
   onSuccess: () => void;
 };
 
-const CommentsList: React.FC<Props> = ({ refresh, onSuccess }) => {
+const CommentsList: React.FC<Props> = ({ questionId, refresh, onSuccess }) => {
   const {
     data: comments,
     isLoading,
     errors,
     getData,
   } = useQuery<Comment[]>({
-    url: ENDPOINTS.COMMENT.GET_ALL,
+    url: ENDPOINTS.COMMENT.GET_ALL_BY_QUESTION(questionId),
     httpMethod: HTTP_METHODS.GET,
     onSuccess: onSuccess,
   });
