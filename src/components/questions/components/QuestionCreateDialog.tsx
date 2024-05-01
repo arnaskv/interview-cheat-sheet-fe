@@ -1,4 +1,5 @@
 import {
+  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -7,21 +8,25 @@ import {
   IconButton,
   MenuItem,
   TextField,
+  Typography,
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
 import Question from '../../../interfaces/Question';
-import { Form, Formik } from 'formik';
+import { FieldArray, Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
 import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
 import { StyledDialogActions } from '../../dialogs/DialogStyles';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Category } from '../../../interfaces/Category';
-import SubQuestionList from './SubQuestionList';
+import AddIcon from '@mui/icons-material/Add';
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import DeleteButton from '../../buttons/DeleteButton';
+import { FlexColumnContainer, AddSubquestionButton } from '../QuestionStyles';
 
 type QuestionCreateDialogProps = {
   open: boolean;
@@ -29,16 +34,10 @@ type QuestionCreateDialogProps = {
   addQuestion: (question: Question) => void;
 };
 
-export interface SubQuestion {
-  id: string;
-  title: string;
-}
-
 const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDialogProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
-  const [subQuestions, setSubQuestions] = useState<SubQuestion[]>([]);
 
   const onSuccess = (response: Question) => {
     const question: Question = response;
@@ -55,7 +54,6 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
   useEffect(() => {
     if (!open) {
       setSelectedCategory('');
-      setSubQuestions([]);
     }
   }, [open]);
 
@@ -65,23 +63,8 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
       id: 0,
       title: '',
     },
+    subQuestions: [],
   };
-
-  const handleAddQuestion = () => {
-    setSubQuestions(currentSubQuestions => {
-      return [...currentSubQuestions, { id: crypto.randomUUID().toString(), title: '' }];
-    });
-  };
-
-  const handleDeleteQuestion = (id: string) => {
-    setSubQuestions(subQuestions.filter(q => q.id !== id));
-  };
-
-  const handleTitleChange = useCallback((index: number, value: string) => {
-    setSubQuestions(currentQuestion => {
-      return currentQuestion.map((q, ind) => (ind === index ? { id: q.id, title: value } : q));
-    });
-  }, []);
 
   const { data: fetchedCategories, getData: fetchCategories } = useQuery<Category[]>({
     url: ENDPOINTS.CATEGORY.GET_ALL,
@@ -102,11 +85,13 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
       return;
     }
 
-    //We should not pass UUID to POST body
-    const questionTitles = subQuestions.map(item => {
-      return item.title && item.title;
-    });
-    const questionWithCategory = { ...values, categoryId: selectedCategory, subQuestions: questionTitles };
+    const questionWithCategory = {
+      ...values,
+      categoryId: selectedCategory,
+      //Removing empty sub questions
+      subQuestions: values.subQuestions?.filter(sub => String(sub) !== ''),
+    };
+
     await createQuestionCommand.sendData(questionWithCategory);
   };
 
@@ -181,11 +166,61 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
                   {Boolean(categoryError) && <FormHelperText error>{categoryError}</FormHelperText>}
                 </Grid>
                 <Grid item xs={12}>
-                  <SubQuestionList
-                    questions={subQuestions}
-                    handleAddQuestion={handleAddQuestion}
-                    handleDeleteQuestion={handleDeleteQuestion}
-                    handleTitleChange={handleTitleChange}
+                  <FieldArray
+                    name="subQuestions"
+                    render={arrayHelpers => (
+                      <FlexColumnContainer marginBottom="20px">
+                        {values.subQuestions &&
+                          values.subQuestions.length > 0 &&
+                          values.subQuestions.map((subQuestion, index) => (
+                            <FlexColumnContainer gap="4px" key={index}>
+                              <Typography variant="h6" color="#666666" marginLeft="30px">
+                                {`Follow up question #${index + 1}`}
+                              </Typography>
+                              <Box display="flex" width="100%" gap="10px">
+                                <Box>
+                                  <SubdirectoryArrowRightIcon
+                                    sx={{ color: '#999999', height: '20px', width: '20px' }}
+                                  />
+                                </Box>
+                                <TextField
+                                  name={`subQuestions.${index}`}
+                                  fullWidth
+                                  multiline={true}
+                                  rows={4}
+                                  autoFocus
+                                  className={style.TextField}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={subQuestion}
+                                  error={Boolean(
+                                    errors.subQuestions &&
+                                      values.subQuestions &&
+                                      values.subQuestions[index].toString().length > 255,
+                                  )}
+                                  helperText={
+                                    errors.subQuestions &&
+                                    values.subQuestions &&
+                                    values.subQuestions[index].toString().length > 255 &&
+                                    'Title is too long'
+                                  }
+                                  InputProps={{
+                                    style: { color: '#000048' },
+                                  }}
+                                />
+                                <DeleteButton onClick={() => arrayHelpers.remove(index)} />
+                              </Box>
+                            </FlexColumnContainer>
+                          ))}
+                        <AddSubquestionButton
+                          startIcon={<AddIcon style={{ fontSize: '18px' }} />}
+                          fullWidth
+                          onClick={() => arrayHelpers.push('')}
+                        >
+                          Add follow up question
+                        </AddSubquestionButton>
+                      </FlexColumnContainer>
+                    )}
                   />
                 </Grid>
               </Grid>

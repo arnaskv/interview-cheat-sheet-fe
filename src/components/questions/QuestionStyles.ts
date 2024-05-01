@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 export const QuestionText = styled(Typography)`
   font-weight: 400;
@@ -49,4 +49,25 @@ export const QuestionReaction = styled(Box)`
   width: 32px;
   justify-content: center;
   align-items: center;
+`;
+
+export const FlexColumnContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: ${props => (props.gap ? `${props.gap}` : '20px')};
+`;
+
+export const AddSubquestionButton = styled(Button)`
+  background-color: #eaf1ff;
+  border-radius: 6px;
+  color: #2424d6;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: flex-start;
+  line-height: 16px;
+  padding: 0px 8px 0px 16px;
+  text-transform: none;
 `;
