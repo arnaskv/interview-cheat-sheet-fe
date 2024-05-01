@@ -1,4 +1,8 @@
-import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, MenuItem, FormHelperText } from '@mui/material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import useQuery from '../../../hooks/useQuery';
+import { ENDPOINTS } from '../../../constants/endpoints';
+import { HTTP_METHODS } from '../../../constants/http';
 import Question from '../../../interfaces/Question';
 import { Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
@@ -6,22 +10,69 @@ import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
 import { StyledDialogActions } from '../../dialogs/DialogStyles';
+import { Category } from '../../../interfaces/Category';
+import { useState, useEffect } from 'react';
 
 type QuestioneFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
   question?: Question;
+  category?: Category; // Make sure category is defined in props
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneFormDialogProps) => {
+const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
+
+  const [selectedCategory, setSelectedCategory] = useState< string>('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryError, setCategoryError] = useState<string>('');
 
   const initialValues = {
-    title: question ? question.title : ''
+    title: question ? question.title : '',
+    category: question?.category || { id: 0, title: '' },
   };
 
+  const {
+    data: fetchedCategories,
+    getData: fetchCategories,
+  } = useQuery<Category[]>({
+    url: ENDPOINTS.CATEGORY.GET_ALL,
+    httpMethod: HTTP_METHODS.GET,
+  });
+
+  useEffect(() => {
+    if (!open && !question) {
+      setSelectedCategory('');
+    }
+  }, [open, question]);
+
+  useEffect(() => {
+    if (open && question && question.category) {
+      setSelectedCategory(String(question.category.id));
+    }
+  }, [open, question]);
+
+  useEffect(() => {
+    if (fetchedCategories) {
+      setCategories(fetchedCategories);
+    } else {
+      fetchCategories();
+    }
+  }, [fetchedCategories, fetchCategories]);
+
+  useEffect(() => {
+    if (question && question.category) {
+      setSelectedCategory(String(question.category.id));
+    }
+  }, [question]);
+
   const handleSubmit = (values: Question) => {
-    onSubmit(values);
+    if (!selectedCategory) {
+      setCategoryError('Please select a category');
+      return;
+    }
+    const questionWithCategory = { ...values, categoryId: selectedCategory };
+    onSubmit(questionWithCategory);
     setOpen(false);
   }
 
@@ -57,6 +108,45 @@ const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneForm
                       style: { color: '#000048' },
                     }}
                   />
+                </Grid>
+
+                <Grid item xs={6} className={style.TextTitle}>
+                  Category
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    select
+                    fullWidth
+                    className={style.TextField}
+                    name="category"
+                    value={selectedCategory}
+                    variant="outlined"
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                      setCategoryError('');
+                    }}
+                    onBlur={handleBlur}
+                    error={Boolean(categoryError)}
+
+                    SelectProps={{
+                      classes: { select: style.TextField },
+                      IconComponent: ExpandMore,
+                    }}
+
+                    sx={{
+                      '& .MuiSvgIcon-root':{
+                        color: '#000048',
+                      }
+                    }}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id} className={style.TextField}>
+                        {category.title}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {Boolean(categoryError) && <FormHelperText error>{categoryError}</FormHelperText>}
                 </Grid>
               </Grid>
             </DialogContent>
