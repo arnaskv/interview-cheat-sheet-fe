@@ -27,15 +27,9 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
 
-  useEffect(() => {
-    if (!open) {
-      setSelectedCategory('');
-    }
-  }, [open]);
-
   const initialValues = {
     title: question ? question.title : '',
-    category: category ? category : { id: 0, title: '' },
+    category: question?.category || { id: 0, title: '' },
   };
 
   const {
@@ -45,6 +39,18 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
     url: ENDPOINTS.CATEGORY.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
   });
+
+  useEffect(() => {
+    if (!open && !question) {
+      setSelectedCategory('');
+    }
+  }, [open, question]);
+
+  useEffect(() => {
+    if (open && question && question.category) {
+      setSelectedCategory(String(question.category.id));
+    }
+  }, [open, question]);
 
   useEffect(() => {
     if (fetchedCategories) {

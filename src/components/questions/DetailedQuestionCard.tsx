@@ -41,6 +41,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
     }
 
     question.title = response.title;
+    question.category = response.category;
     updateQuestion(question);
   };
 
