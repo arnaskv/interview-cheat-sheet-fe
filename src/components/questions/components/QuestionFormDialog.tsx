@@ -28,13 +28,13 @@ import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRig
 import DeleteButton from '../../buttons/DeleteButton';
 import { FlexColumnContainer, AddSubquestionButton } from '../QuestionStyles';
 
-type QuestionCreateDialogProps = {
+type QuestionFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
   addQuestion: (question: Question) => void;
 };
 
-const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDialogProps) => {
+const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
@@ -240,4 +240,4 @@ const QuestionCreateDialog = ({ open, setOpen, addQuestion }: QuestionCreateDial
   );
 };
 
-export default QuestionCreateDialog;
+export default QuestionFormDialog;

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
-import QuestionCreateButton from './components/QuestionCreateButton';
+import QuestionFormButton from './components/QuestionFormButton';
 import Question from '../../interfaces/Question';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
@@ -58,7 +58,7 @@ const QuestionList = () => {
               subTitle="Discover, create and improve existing interview questions and build interview templates"
             />
             <ButtonContainer>
-              <QuestionCreateButton addQuestion={addQuestion} />
+              <QuestionFormButton addQuestion={addQuestion} />
             </ButtonContainer>
           </HeaderContainer>
         </Box>

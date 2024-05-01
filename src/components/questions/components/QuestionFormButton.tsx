@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import QuestionCreateDialog from './QuestionCreateDialog';
+import QuestionFormDialog from './QuestionFormDialog';
 import AddIcon from '@mui/icons-material/Add';
 import ActionButton from '../../buttons/ActionButton';
 import Question from '../../../interfaces/Question';
@@ -8,7 +8,7 @@ type Props = {
   addQuestion: (question: Question) => void;
 };
 
-const QuestionCreateButton: React.FC<Props> = ({ addQuestion }) => {
+const QuestionFormButton: React.FC<Props> = ({ addQuestion }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -21,9 +21,9 @@ const QuestionCreateButton: React.FC<Props> = ({ addQuestion }) => {
       >
         Add Question
       </ActionButton>
-      <QuestionCreateDialog open={open} setOpen={setOpen} addQuestion={addQuestion} />
+      <QuestionFormDialog open={open} setOpen={setOpen} addQuestion={addQuestion} />
     </>
   );
 };
 
-export default QuestionCreateButton;
+export default QuestionFormButton;
