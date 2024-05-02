@@ -4,7 +4,7 @@
   right: 0;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 9999;
   width: calc((100% - 100px) * 0.3);
   height: 100vh;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -29,6 +29,10 @@
 .Info {
   color: #666666;
   font-size: smaller;
+}
+.Info:link {
+  font-size: inherit;
+  text-decoration: none;
 }
 
 .TitleBox {

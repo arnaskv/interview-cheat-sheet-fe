@@ -31,7 +31,7 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId }) => {
             <QuestionText>{question.title}</QuestionText>
           </Box>
           <Box>
-            <QuestionStats category="Category" />
+            <QuestionStats category={question.category.title}/>
           </Box>
         </QuestionInfoContainer>
         <QuestionReactionContainer>
