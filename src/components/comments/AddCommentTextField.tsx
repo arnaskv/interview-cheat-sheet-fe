@@ -5,6 +5,7 @@ import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import Comment from '../../interfaces/Comment';
+import styles from './AddCommentTextField.module.css';
 
 type Props = {
   questionId: number;
@@ -36,6 +37,7 @@ const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess }) => {
 
   return (
     <TextField
+      className={styles.TextField}
       id="new-comment"
       placeholder="Add a note on candidate answer"
       multiline
@@ -47,7 +49,8 @@ const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess }) => {
       onKeyDown={handleEnter}
       sx={{
         '& fieldset': {
-          borderRadius: '16px',
+          borderRadius: '12px',
+          border: 'none',
         },
       }}
       inputProps={{ maxLength: 255 }}

@@ -4,7 +4,7 @@ import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Question from '../../interfaces/Question';
 import style from './DetailedQuestionCard.module.css';
-import { Grid, IconButton } from '@mui/material';
+import { IconButton, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
@@ -36,7 +36,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
   }, [question, getData]);
 
   const onUpdateSuccess = (response: Question) => {
-    if(!question) {
+    if (!question) {
       return;
     }
 
@@ -56,12 +56,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
     await updateQuestionCommand.sendData(values);
   };
 
-  if(isLoading || !question) {
-    return <Loader />
+  if (isLoading || !question) {
+    return <Loader />;
   }
 
   return (
-    <>
+    <ClickAwayListener onClickAway={() => setQuestionId(null)}>
       <div className={style.Box}>
         <div className={style.Header}>
           <div className={style.CloseButton}>
@@ -71,13 +71,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
           </div>
         </div>
         <div className={style.Info}>
-            Date placeholder &bull;
+          Date placeholder &bull;
           <a href={`/category/${question?.category.id}`} className={style.Info}>
             {question?.category.title}
           </a>
         </div>
-
-        <div className={style.TitleBox}>{question.title}</div>
+        <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
         <div className={style.ActionBar}>
           <div className={style.Social}>
             <div>Comments placeholder</div>
@@ -85,20 +84,14 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
           </div>
           <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
-        <Grid container direction={'column'} rowSpacing={2} sx={{ p: 2 }}>
-          <Grid item style={{ height: '50vh', overflow: 'auto' }}>
-            <CommentsList
-              questionId={questionId}
-              refresh={commentsRefresh}
-              onSuccess={() => setCommentsRefresh(false)}
-            />
-          </Grid>
-          <Grid item>
-            <AddCommentTextField questionId={questionId} onSuccess={() => setCommentsRefresh(true)} />
-          </Grid>
-        </Grid>
+        <div className={style.List}>
+          <CommentsList questionId={questionId} refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
+        </div>
+        <div className={style.TextField}>
+          <AddCommentTextField questionId={questionId} onSuccess={() => setCommentsRefresh(true)} />
+        </div>
       </div>
-    </>
+    </ClickAwayListener>
   );
 };
 

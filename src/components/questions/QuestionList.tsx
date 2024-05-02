@@ -65,7 +65,11 @@ const QuestionList = () => {
   return (
     <>
       {detailedQuestionId !== null && (
-        <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} updateQuestion={updateQuestion} />
+        <DetailedQuestionCard
+          questionId={detailedQuestionId}
+          setQuestionId={setDetailedQuestionId}
+          updateQuestion={updateQuestion}
+        />
       )}
 
       <div className="PageContainer">
