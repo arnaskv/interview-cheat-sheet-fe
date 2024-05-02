@@ -85,11 +85,16 @@ const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogPr
       return;
     }
 
+    //Filter out empty subquestions
+    const filteredSubQuestions = values.subQuestions?.filter(q => String(q) !== '');
+
     const questionWithCategory = {
       ...values,
       categoryId: selectedCategory,
-      //Removing empty sub questions
-      subQuestions: values.subQuestions?.filter(sub => String(sub) !== ''),
+      //Formatting response so the BE can understand it
+      subQuestions: filteredSubQuestions?.map(q => {
+        return { title: q, subQuestions: [] };
+      }),
     };
 
     await createQuestionCommand.sendData(questionWithCategory);
