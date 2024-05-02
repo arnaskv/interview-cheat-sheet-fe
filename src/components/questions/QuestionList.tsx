@@ -26,9 +26,9 @@ const QuestionList = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
-  const addQuestion = (question: Question) => {
+  const updateQuestion = (question: Question) => {
     setQuestionList(currentQuestions => {
-      return [...currentQuestions, question];
+      return currentQuestions.map(q => (q.id === question.id ? question : q));
     });
   };
 
@@ -41,13 +41,35 @@ const QuestionList = () => {
     // eslint-disable-next-line
   }, [questions, getData]);
 
+  const onCreateSuccess = (response: Question) => {
+    const question: Question = response;
+    setQuestionList(currentQuestions => {
+      return [...currentQuestions, question];
+    });
+  };
+
+  const createQuestionCommand = useQuery({
+    url: ENDPOINTS.QUESTION.CREATE,
+    httpMethod: HTTP_METHODS.POST,
+    onSuccess: onCreateSuccess,
+  });
+
+  const onCreateSubmit = async (values: Question) => {
+    // GSF2024S-40-Interview question and category integration: Add category to the question (create now not working)
+    await createQuestionCommand.sendData(values);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
 
   return (
     <>
       {detailedQuestionId !== null && (
-        <DetailedQuestionCard questionId={detailedQuestionId} setQuestionId={setDetailedQuestionId} />
+        <DetailedQuestionCard
+          questionId={detailedQuestionId}
+          setQuestionId={setDetailedQuestionId}
+          updateQuestion={updateQuestion}
+        />
       )}
 
       <div className="PageContainer">
@@ -58,7 +80,7 @@ const QuestionList = () => {
               subTitle="Discover, create and improve existing interview questions and build interview templates"
             />
             <ButtonContainer>
-              <QuestionFormButton addQuestion={addQuestion} />
+              <QuestionFormButton onSubmit={onCreateSubmit} />
             </ButtonContainer>
           </HeaderContainer>
         </Box>

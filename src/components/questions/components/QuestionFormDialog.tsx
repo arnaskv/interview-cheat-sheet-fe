@@ -28,41 +28,22 @@ import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRig
 import DeleteButton from '../../buttons/DeleteButton';
 import { FlexColumnContainer, AddSubquestionButton } from '../QuestionStyles';
 
-type QuestionFormDialogProps = {
+type QuestioneFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  addQuestion: (question: Question) => void;
+  question?: Question;
+  category?: Category; // Make sure category is defined in props
+  onSubmit: (question: Question) => void;
 };
 
-const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogProps) => {
+const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
 
-  const onSuccess = (response: Question) => {
-    const question: Question = response;
-    setOpen(false);
-    addQuestion(question);
-  };
-
-  const createQuestionCommand = useQuery({
-    url: ENDPOINTS.QUESTION.CREATE,
-    httpMethod: HTTP_METHODS.POST,
-    onSuccess: onSuccess,
-  });
-
-  useEffect(() => {
-    if (!open) {
-      setSelectedCategory('');
-    }
-  }, [open]);
-
   const initialValues = {
-    title: '',
-    category: {
-      id: 0,
-      title: '',
-    },
+    title: question ? question.title : '',
+    category: question?.category || { id: 0, title: '' },
     subQuestions: [],
   };
 
@@ -72,6 +53,12 @@ const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogPr
   });
 
   useEffect(() => {
+    if (!open && !question) {
+      setSelectedCategory('');
+    }
+  }, [open, question]);
+
+  useEffect(() => {
     if (fetchedCategories) {
       setCategories(fetchedCategories);
     } else {
@@ -79,7 +66,21 @@ const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogPr
     }
   }, [fetchedCategories, fetchCategories]);
 
-  const onSubmit = async (values: Question) => {
+  useEffect(() => {
+    if (fetchedCategories) {
+      setCategories(fetchedCategories);
+    } else {
+      fetchCategories();
+    }
+  }, [fetchedCategories, fetchCategories]);
+
+  useEffect(() => {
+    if (question && question.category) {
+      setSelectedCategory(String(question.category.id));
+    }
+  }, [question]);
+
+  const handleSubmit = (values: Question) => {
     if (!selectedCategory) {
       setCategoryError('Please select a category');
       return;
@@ -91,13 +92,14 @@ const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogPr
     const questionWithCategory = {
       ...values,
       categoryId: selectedCategory,
-      //Formatting response so the BE can understand it
+      //Formatting response so the BE can understand it, category is needed to shut up typescript
       subQuestions: filteredSubQuestions?.map(q => {
-        return { title: q, subQuestions: [] };
+        return { title: String(q), category: { id: 0, title: '' }, subQuestions: [] };
       }),
     };
 
-    await createQuestionCommand.sendData(questionWithCategory);
+    onSubmit(questionWithCategory);
+    setOpen(false);
   };
 
   return (
@@ -107,8 +109,8 @@ const QuestionFormDialog = ({ open, setOpen, addQuestion }: QuestionFormDialogPr
           <CloseIcon onClick={() => setOpen(false)} />
         </IconButton>
       </div>
-      <DialogTitle className={style.FormTitle}>Add question</DialogTitle>
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={questionSchema}>
+      <DialogTitle className={style.FormTitle}>{question ? 'Edit question' : 'Add question'}</DialogTitle>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
         {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
           <Form>
             <DialogContent>

@@ -5,18 +5,18 @@ import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import Comment from '../../interfaces/Comment';
-
-const MAX_LENGTH = 255;
+import styles from './AddCommentTextField.module.css';
 
 type Props = {
+  questionId: number;
   onSuccess: () => void;
 };
 
-const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
+const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess }) => {
   const [content, setContent] = useState('');
 
   const commentQuery = useQuery<Comment>({
-    url: ENDPOINTS.COMMENT.POST,
+    url: ENDPOINTS.COMMENT.POST(questionId),
     httpMethod: HTTP_METHODS.POST,
     onSuccess: () => {
       setContent('');
@@ -37,6 +37,7 @@ const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
 
   return (
     <TextField
+      className={styles.TextField}
       id="new-comment"
       placeholder="Add a note on candidate answer"
       multiline
@@ -48,10 +49,11 @@ const AddCommentTextField: React.FC<Props> = ({ onSuccess }) => {
       onKeyDown={handleEnter}
       sx={{
         '& fieldset': {
-          borderRadius: '16px',
+          borderRadius: '12px',
+          border: 'none',
         },
       }}
-      inputProps={{ maxLength: MAX_LENGTH }}
+      inputProps={{ maxLength: 255 }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">

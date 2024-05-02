@@ -7,13 +7,14 @@ import Loader from '../shared/Loader';
 import CategoryItem from './CategoryItem';
 import useQuery from '../../hooks/useQuery';
 import { ENDPOINTS } from '../../constants/endpoints';
-import CategoryAddDialog from '../dialogs/CategoryAddDialog';
+import CategoryFormDialog from '../dialogs/CategoryFormDialog';
 import { HTTP_METHODS } from '../../constants/http';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import PageTitle from '../shared/PageTitle';
 
 const Categories: React.FC = () => {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
+  const navigate = useNavigate();
 
   const {
     data: categories,
@@ -25,10 +26,8 @@ const Categories: React.FC = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
-  const addCategory = (category: Category) => {
-    setCategoryList(currentCategories => {
-      return [category, ...currentCategories];
-    });
+  const handleCategoryClick = (categoryId: number) => {
+    navigate(`/category/${categoryId}`);
   };
 
   useEffect(() => {
@@ -40,10 +39,21 @@ const Categories: React.FC = () => {
     // eslint-disable-next-line
   }, [categories, getData]);
 
-  const navigate = useNavigate();
+  const onCreateSuccess = (response: Category) => {
+    const category: Category = response;
+    setCategoryList(currentCategories => {
+      return [category, ...currentCategories];
+    });
+  };
 
-  const handleCategoryClick = (categoryId: number) => {
-    navigate(`/category/${categoryId}`);
+  const createCategoryCommand = useQuery({
+    url: ENDPOINTS.CATEGORY.CREATE,
+    httpMethod: HTTP_METHODS.POST,
+    onSuccess: onCreateSuccess,
+  });
+
+  const handleCreateSubmit = async (values: Category) => {
+    await createCategoryCommand.sendData(values);
   };
 
   if (isLoading) return <Loader />;
@@ -54,7 +64,7 @@ const Categories: React.FC = () => {
       <HeaderContainer width="100%">
         <PageTitle title="Category bank" subTitle="Discover, create and improve existing interview categories" />
         <ButtonContainer>
-          <CategoryAddDialog addCategory={addCategory} />
+          <CategoryFormDialog onSubmit={handleCreateSubmit} action="Add Category" />
         </ButtonContainer>
       </HeaderContainer>
 
