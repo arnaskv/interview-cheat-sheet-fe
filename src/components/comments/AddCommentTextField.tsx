@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputAdornment, TextField, Box } from '@mui/material';
 import SentButton from '../buttons/SendButton';
 import useQuery from '../../hooks/useQuery';
@@ -10,10 +10,20 @@ import styles from './AddCommentTextField.module.css';
 type Props = {
   questionId: number;
   onSuccess: () => void;
+  setCommentToEdit: (comment: Comment | null) => void;
+  commentToEdit: Comment | null;
 };
 
-const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess }) => {
+const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess, setCommentToEdit, commentToEdit }) => {
   const [content, setContent] = useState('');
+
+  useEffect(() => {
+    if (commentToEdit) {
+      setContent(commentToEdit.content);
+    } else {
+      setContent('');
+    }
+  }, [commentToEdit]);
 
   const commentQuery = useQuery<Comment>({
     url: ENDPOINTS.COMMENT.POST(questionId),
@@ -24,7 +34,22 @@ const AddCommentTextField: React.FC<Props> = ({ questionId, onSuccess }) => {
     },
   });
 
+  const commentEditQuery = useQuery<Comment>({
+    url: ENDPOINTS.COMMENT.UPDATE,
+    httpMethod: HTTP_METHODS.PATCH,
+    onSuccess: () => {
+      setContent('');
+      setCommentToEdit(null);
+      onSuccess();
+    },
+  });
+
   const handleSubmit = async () => {
+    if (commentToEdit) {
+      await commentEditQuery.sendData({ id: commentToEdit.id, content });
+      return;
+    }
+
     await commentQuery.sendData({ content });
   };
 

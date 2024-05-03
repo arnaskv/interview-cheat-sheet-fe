@@ -10,6 +10,7 @@ import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
+import Comment from '../../interfaces/Comment';
 
 type Props = {
   questionId: number;
@@ -19,6 +20,7 @@ type Props = {
 
 const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
 
   const {
     data: question,
@@ -85,10 +87,21 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
           <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
         <div className={style.List}>
-          <CommentsList questionId={questionId} refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
+          <CommentsList 
+            questionId={questionId} 
+            refresh={commentsRefresh} 
+            onSuccess={() => setCommentsRefresh(false)} 
+            setCommentToEdit={setCommentToEdit}
+            commentToEdit={commentToEdit}
+          />
         </div>
         <div className={style.TextField}>
-          <AddCommentTextField questionId={questionId} onSuccess={() => setCommentsRefresh(true)} />
+          <AddCommentTextField 
+            questionId={questionId} 
+            onSuccess={() => setCommentsRefresh(true)}
+            setCommentToEdit={setCommentToEdit}
+            commentToEdit={commentToEdit}
+          />
         </div>
       </div>
     </ClickAwayListener>

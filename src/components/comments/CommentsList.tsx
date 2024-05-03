@@ -11,9 +11,11 @@ type Props = {
   questionId: number;
   refresh: boolean;
   onSuccess: () => void;
+  setCommentToEdit: (comment: Comment | null) => void;
+  commentToEdit: Comment | null;
 };
 
-const CommentsList: React.FC<Props> = ({ questionId, refresh, onSuccess }) => {
+const CommentsList: React.FC<Props> = ({ questionId, refresh, onSuccess, setCommentToEdit, commentToEdit }) => {
   const {
     data: comments,
     isLoading,
@@ -37,7 +39,15 @@ const CommentsList: React.FC<Props> = ({ questionId, refresh, onSuccess }) => {
   return (
     <div className={styles.List}>
       {comments !== null &&
-        comments.map(comment => <CommentCard key={comment.id} comment={comment} refreshData={getData} />)}
+        comments.map(comment => 
+          <CommentCard 
+            key={comment.id} 
+            comment={comment} 
+            refreshData={getData} 
+            setCommentToEdit={setCommentToEdit} 
+            commentToEdit={commentToEdit}
+          />
+        )}
     </div>
   );
 };
