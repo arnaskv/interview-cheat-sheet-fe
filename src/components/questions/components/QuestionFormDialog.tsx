@@ -240,7 +240,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, parentId, onSub
                 Cancel
               </ActionButton>
               <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
-                Add Question
+                {question ? 'Update Question' : 'Add Question'}
               </ActionButton>
             </StyledDialogActions>
           </Form>
