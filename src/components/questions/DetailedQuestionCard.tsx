@@ -78,10 +78,6 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
         </div>
         <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
         <div className={style.ActionBar}>
-          <div className={style.Social}>
-            <div>Comments placeholder</div>
-            <div>Likes placeholder</div>
-          </div>
           <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
         <div className={style.List}>

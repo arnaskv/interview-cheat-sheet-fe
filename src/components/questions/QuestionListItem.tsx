@@ -1,14 +1,10 @@
 import React from 'react';
 import Question from '../../interfaces/Question';
 import { Box } from '@mui/material';
-import CommentButton from '../buttons/CommentButton';
-import LikeButton from '../buttons/LikeButton';
 import {
   QuestionInfoContainer,
   QuestionItem,
   QuestionItemContainer,
-  QuestionReaction,
-  QuestionReactionContainer,
   QuestionText,
 } from './QuestionStyles';
 import QuestionStats from './QuestionStats';
@@ -19,9 +15,6 @@ type Props = {
 };
 
 const QuestionListItem: React.FC<Props> = ({ question, setQuestionId }) => {
-  //Handle logic later
-  const handleCommentClick = () => {};
-  const handleLikeClick = () => {};
 
   return (
     <QuestionItemContainer>
@@ -34,14 +27,6 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId }) => {
             <QuestionStats category={question.category.title}/>
           </Box>
         </QuestionInfoContainer>
-        <QuestionReactionContainer>
-          <QuestionReaction>
-            <CommentButton onClick={handleCommentClick} />
-          </QuestionReaction>
-          <QuestionReaction>
-            <LikeButton onClick={handleLikeClick} />
-          </QuestionReaction>
-        </QuestionReactionContainer>
       </QuestionItem>
     </QuestionItemContainer>
   );

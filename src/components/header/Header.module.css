@@ -25,15 +25,3 @@ body {
   justify-content: flex-end;
   height: 100%;
 }
-
-.Notification {
-  width: 1.8rem;
-  height: 1.8rem;
-  margin: 0 0.8rem;
-}
-
-.Profile {
-  width: 2.8rem;
-  height: 2.8rem;
-  margin: 0 0.8rem;
-}
