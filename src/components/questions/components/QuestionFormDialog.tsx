@@ -60,12 +60,10 @@ const QuestionFormDialog = ({ open, setOpen, question, category, parentId, onSub
   }, [open, question]);
 
   useEffect(() => {
-    if (fetchedCategories) {
-      setCategories(fetchedCategories);
-    } else {
-      fetchCategories();
+    if (open && question && question.category) {
+      setSelectedCategory(String(question.category.id));
     }
-  }, [fetchedCategories, fetchCategories]);
+  }, [open, question]);
 
   useEffect(() => {
     if (fetchedCategories) {
