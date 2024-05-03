@@ -48,7 +48,7 @@ const DeleteDialog: React.FC<DeleteProps> = ({
     if (itemId) {
       await sendData({ id: itemId });
       toggleDialog();
-      navigate(-1);
+      navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, sendData]);
