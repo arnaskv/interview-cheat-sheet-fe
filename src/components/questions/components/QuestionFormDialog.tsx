@@ -33,10 +33,11 @@ type QuestioneFormDialogProps = {
   setOpen: (open: boolean) => void;
   question?: Question;
   category?: Category; // Make sure category is defined in props
+  parentId?: number;
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
+const QuestionFormDialog = ({ open, setOpen, question, category, parentId, onSubmit }: QuestioneFormDialogProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
@@ -219,13 +220,15 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
                               </Box>
                             </FlexColumnContainer>
                           ))}
-                        <AddSubquestionButton
-                          startIcon={<AddIcon style={{ fontSize: '18px' }} />}
-                          fullWidth
-                          onClick={() => arrayHelpers.push('')}
-                        >
-                          Add follow up question
-                        </AddSubquestionButton>
+                        {!parentId && (
+                          <AddSubquestionButton
+                            startIcon={<AddIcon style={{ fontSize: '18px' }} />}
+                            fullWidth
+                            onClick={() => arrayHelpers.push('')}
+                          >
+                            Add follow up question
+                          </AddSubquestionButton>
+                        )}
                       </FlexColumnContainer>
                     )}
                   />

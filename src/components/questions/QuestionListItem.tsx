@@ -16,7 +16,7 @@ import ChevronButton from '../buttons/ChevronButton';
 
 type Props = {
   question: Question;
-  setQuestionId: (id: number | null) => void;
+  setQuestionId: (id: number | null, parentId: number | null) => void;
   parentId?: number;
 };
 
@@ -40,7 +40,7 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId, parentId }
                 open={subQuestionsOpen}
               />
             )}
-            <QuestionInfoContainer onClick={() => setQuestionId(question.id || null)}>
+            <QuestionInfoContainer onClick={() => setQuestionId(question.id || null, null)}>
               <Box sx={{ lineHeight: '24px' }}>
                 <QuestionText>{question.title}</QuestionText>
               </Box>
@@ -69,7 +69,7 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId, parentId }
               key={subQuestion.id}
               question={subQuestion}
               parentId={question.id}
-              setQuestionId={() => setQuestionId(subQuestion.id || null)}
+              setQuestionId={() => setQuestionId(subQuestion.id || null, question.id ? question.id : null)}
             />
           );
         })}

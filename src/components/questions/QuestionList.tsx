@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
-import QuestionFormButton from './components/QuestionFormButton';
+import QuestionFromButton from './components/QuestionFromButton';
 import Question from '../../interfaces/Question';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
@@ -15,6 +15,7 @@ import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 const QuestionList = () => {
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
+  const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
 
   const {
     data: questions,
@@ -25,6 +26,11 @@ const QuestionList = () => {
     url: ENDPOINTS.QUESTION.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
   });
+
+  const setQuestionIds = (questionId: number | null, parentId: number | null) => {
+    setDetailedQuestionId(questionId);
+    setParentQuestionId(parentId);
+  };
 
   const updateQuestion = (question: Question) => {
     setQuestionList(currentQuestions => {
@@ -67,7 +73,8 @@ const QuestionList = () => {
       {detailedQuestionId !== null && (
         <DetailedQuestionCard
           questionId={detailedQuestionId}
-          setQuestionId={setDetailedQuestionId}
+          parentId={parentQuestionId ? parentQuestionId : undefined}
+          setQuestionId={setQuestionIds}
           updateQuestion={updateQuestion}
         />
       )}
@@ -80,7 +87,7 @@ const QuestionList = () => {
               subTitle="Discover, create and improve existing interview questions and build interview templates"
             />
             <ButtonContainer>
-              <QuestionFormButton onSubmit={onCreateSubmit} />
+              <QuestionFromButton onSubmit={onCreateSubmit} />
             </ButtonContainer>
           </HeaderContainer>
         </Box>
@@ -90,7 +97,7 @@ const QuestionList = () => {
         ) : (
           <QuestionContainer>
             {questionList.map(question => {
-              return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
+              return <QuestionListItem key={question.id} question={question} setQuestionId={setQuestionIds} />;
             })}
           </QuestionContainer>
         )}
