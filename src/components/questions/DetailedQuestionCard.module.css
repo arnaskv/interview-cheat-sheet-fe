@@ -34,11 +34,13 @@
   font-size: inherit;
   text-decoration: none;
 }
+.Info:hover{
+    color: #000048;
+}
 
 .TitleBox {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  color: #666666;
   font-size: 2.2rem;
   color: #000048;
 }
