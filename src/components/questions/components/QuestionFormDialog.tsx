@@ -130,6 +130,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
                     error={Boolean(categoryError)}
 
                     SelectProps={{
+                      MenuProps: { disablePortal: true },
                       classes: { select: style.TextField },
                       IconComponent: ExpandMore,
                     }}
