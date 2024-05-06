@@ -4,7 +4,14 @@ import { useState } from 'react';
 import { ENDPOINTS } from '../../constants/endpoints';
 import DeleteDialog from '../dialogs/DeleteDialog';
 
-function CommentCard({ comment, refreshData }: { comment: Comment; refreshData: () => void }) {
+type Props = {
+  comment: Comment;
+  refreshData: () => void;
+  setCommentToEdit: (comment: Comment | null) => void;
+  commentToEdit: Comment | null;
+};
+
+function CommentCard({ comment, refreshData, setCommentToEdit, commentToEdit }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -16,6 +23,17 @@ function CommentCard({ comment, refreshData }: { comment: Comment; refreshData: 
           <span className={styles.InfoItem} onClick={() => setOpen(true)}>
             Delete
           </span>
+          &#x2022;
+          {comment.id !== commentToEdit?.id ? (
+            <span className={styles.InfoItem} onClick={() => setCommentToEdit(comment)}>
+              Edit
+            </span>
+          ) : (
+            <span className={styles.InfoItem} onClick={() => setCommentToEdit(null)}>
+              Cancel
+            </span>
+          )}
+          
           <DeleteDialog
             itemId={comment.id.toString()}
             deleteEndpoint={ENDPOINTS.COMMENT.DELETE}

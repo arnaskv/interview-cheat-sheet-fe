@@ -20,5 +20,6 @@ export const ENDPOINTS = {
     GET_ALL_BY_QUESTION: (questionId: number) => `${BASE_URL}/interview-questions/${questionId}/comments`,
     POST: (questionId: number) => `${BASE_URL}/interview-questions/${questionId}/comments`,
     DELETE: (id: string) => `${BASE_URL}/comments/${id}`,
+    UPDATE: `${BASE_URL}/comments`,
   },
 };

@@ -10,6 +10,7 @@ import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
+import Comment from '../../interfaces/Comment';
 
 type Props = {
   questionId: number;
@@ -20,6 +21,7 @@ type Props = {
 
 const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
 
   const {
     data: question,
@@ -73,24 +75,30 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
           </div>
         </div>
         <div className={style.Info}>
-          Date placeholder &bull;
           <a href={`/category/${question?.category.id}`} className={style.Info}>
             {question?.category.title}
           </a>
         </div>
         <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
         <div className={style.ActionBar}>
-          <div className={style.Social}>
-            <div>Comments placeholder</div>
-            <div>Likes placeholder</div>
-          </div>
           <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
         </div>
         <div className={style.List}>
-          <CommentsList questionId={questionId} refresh={commentsRefresh} onSuccess={() => setCommentsRefresh(false)} />
+          <CommentsList
+            questionId={questionId}
+            refresh={commentsRefresh}
+            onSuccess={() => setCommentsRefresh(false)}
+            setCommentToEdit={setCommentToEdit}
+            commentToEdit={commentToEdit}
+          />
         </div>
         <div className={style.TextField}>
-          <AddCommentTextField questionId={questionId} onSuccess={() => setCommentsRefresh(true)} />
+          <AddCommentTextField
+            questionId={questionId}
+            onSuccess={() => setCommentsRefresh(true)}
+            setCommentToEdit={setCommentToEdit}
+            commentToEdit={commentToEdit}
+          />
         </div>
       </div>
     </ClickAwayListener>

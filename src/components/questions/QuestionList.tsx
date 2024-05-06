@@ -33,9 +33,23 @@ const QuestionList = () => {
   };
 
   const updateQuestion = (question: Question) => {
-    setQuestionList(currentQuestions => {
-      return currentQuestions.map(q => (q.id === question.id ? question : q));
-    });
+    if (parentQuestionId === null) {
+      setQuestionList(currentQuestions => {
+        return currentQuestions.map(q => (q.id === question.id ? question : q));
+      });
+    } else {
+      //If we are editing child question, there is some more work to be done
+      const parentQuestion = questionList.find(q => q.id === parentQuestionId);
+      //In theory this should never be false, it is here just to shut up typescript
+      if (parentQuestion) {
+        const subQuestions = parentQuestion.subQuestions?.map(q => (q.id === question.id ? question : q));
+        parentQuestion.subQuestions = subQuestions;
+
+        setQuestionList(currentQuestions => {
+          return currentQuestions.map(q => (q.id === parentQuestion.id ? parentQuestion : q));
+        });
+      }
+    }
   };
 
   useEffect(() => {

@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import Question from '../../interfaces/Question';
 import { Box } from '@mui/material';
-import CommentButton from '../buttons/CommentButton';
-import LikeButton from '../buttons/LikeButton';
-import {
-  QuestionInfoContainer,
-  QuestionItem,
-  QuestionItemContainer,
-  QuestionReaction,
-  QuestionReactionContainer,
-  QuestionText,
-} from './QuestionStyles';
+import { QuestionInfoContainer, QuestionItem, QuestionItemContainer, QuestionText } from './QuestionStyles';
 import QuestionStats from './QuestionStats';
 import ChevronButton from '../buttons/ChevronButton';
 
@@ -22,10 +13,6 @@ type Props = {
 
 const QuestionListItem: React.FC<Props> = ({ question, setQuestionId, parentId }) => {
   const [subQuestionsOpen, setSubQuestionsOpen] = useState<boolean>(false);
-
-  //Handle logic later
-  const handleCommentClick = () => {};
-  const handleLikeClick = () => {};
 
   return (
     <>
@@ -48,14 +35,6 @@ const QuestionListItem: React.FC<Props> = ({ question, setQuestionId, parentId }
                 <QuestionStats category={question.category.title} />
               </Box>
             </QuestionInfoContainer>
-            <QuestionReactionContainer>
-              <QuestionReaction>
-                <CommentButton onClick={handleCommentClick} />
-              </QuestionReaction>
-              <QuestionReaction>
-                <LikeButton onClick={handleLikeClick} />
-              </QuestionReaction>
-            </QuestionReactionContainer>
           </QuestionItem>
         </QuestionItemContainer>
       </Box>
