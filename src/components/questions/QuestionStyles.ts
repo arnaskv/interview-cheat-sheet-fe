@@ -34,20 +34,3 @@ export const QuestionInfoContainer = styled(Box)`
   flex: 1;
   flex-direction: column;
 `;
-
-export const QuestionReactionContainer = styled(Box)`
-  display: flex;
-  flex: 0 0 72px;
-  flex-direction: row;
-  gap: 8px;
-  height: 32px;
-  width: 72px;
-`;
-
-export const QuestionReaction = styled(Box)`
-  display: flex;
-  height: 32px;
-  width: 32px;
-  justify-content: center;
-  align-items: center;
-`;

@@ -19,18 +19,6 @@ const QuestionStats: React.FC<Props> = ({ category, likeCount, commentCount }) =
   return (
     <QuestionStatsContainer>
       <QuestionInfoText>{category}</QuestionInfoText>
-      {likeCount !== undefined && likeCount > 0 && (
-        <>
-          <QuestionInfoText>•</QuestionInfoText>
-          <QuestionInfoText>{likeCount + (likeCount === 1 ? ' like' : ' likes')}</QuestionInfoText>
-        </>
-      )}
-      {commentCount !== undefined && commentCount > 0 && (
-        <>
-          <QuestionInfoText>•</QuestionInfoText>
-          <QuestionInfoText>{commentCount + (commentCount === 1 ? ' comment' : ' comments')}</QuestionInfoText>
-        </>
-      )}
     </QuestionStatsContainer>
   );
 };
