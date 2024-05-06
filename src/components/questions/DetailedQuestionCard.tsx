@@ -43,11 +43,12 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
 
     question.title = response.title;
     question.category = response.category;
+    question.subQuestions = response.subQuestions;
     updateQuestion(question);
   };
 
   const updateQuestionCommand = useQuery({
-    url: ENDPOINTS.QUESTION.UPDATE,
+    url: ENDPOINTS.QUESTION.UPDATE(questionId.toString()),
     httpMethod: HTTP_METHODS.PATCH,
     onSuccess: onUpdateSuccess,
   });
