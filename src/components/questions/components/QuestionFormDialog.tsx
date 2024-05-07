@@ -1,4 +1,13 @@
-import { Dialog, DialogContent, DialogTitle, Grid, IconButton, TextField, MenuItem, FormHelperText } from '@mui/material';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  TextField,
+  MenuItem,
+  FormHelperText,
+} from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import useQuery from '../../../hooks/useQuery';
 import { ENDPOINTS } from '../../../constants/endpoints';
@@ -17,13 +26,11 @@ type QuestioneFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
   question?: Question;
-  category?: Category; // Make sure category is defined in props
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: QuestioneFormDialogProps) => {
-
-  const [selectedCategory, setSelectedCategory] = useState< string>('');
+const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneFormDialogProps) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
 
@@ -32,10 +39,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
     category: question?.category || { id: 0, title: '' },
   };
 
-  const {
-    data: fetchedCategories,
-    getData: fetchCategories,
-  } = useQuery<Category[]>({
+  const { data: fetchedCategories, getData: fetchCategories } = useQuery<Category[]>({
     url: ENDPOINTS.CATEGORY.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
   });
@@ -74,7 +78,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
     const questionWithCategory = { ...values, categoryId: selectedCategory };
     onSubmit(questionWithCategory);
     setOpen(false);
-  }
+  };
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md" disableRestoreFocus>
@@ -83,7 +87,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
           <CloseIcon onClick={() => setOpen(false)} />
         </IconButton>
       </div>
-      <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question' } </DialogTitle>
+      <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question'} </DialogTitle>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
         {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
           <Form>
@@ -122,25 +126,23 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
                     name="category"
                     value={selectedCategory}
                     variant="outlined"
-                    onChange={(e) => {
+                    onChange={e => {
                       setSelectedCategory(e.target.value);
                       setCategoryError('');
                     }}
                     onBlur={handleBlur}
                     error={Boolean(categoryError)}
-
                     SelectProps={{
                       classes: { select: style.TextField },
                       IconComponent: ExpandMore,
                     }}
-
                     sx={{
-                      '& .MuiSvgIcon-root':{
+                      '& .MuiSvgIcon-root': {
                         color: '#000048',
-                      }
+                      },
                     }}
                   >
-                    {categories.map((category) => (
+                    {categories.map(category => (
                       <MenuItem key={category.id} value={category.id} className={style.TextField}>
                         {category.title}
                       </MenuItem>
@@ -155,7 +157,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, onSubmit }: Que
                 Cancel
               </ActionButton>
               <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
-                {question ? 'Update Question' : 'Add Question' }
+                {question ? 'Update Question' : 'Add Question'}
               </ActionButton>
             </StyledDialogActions>
           </Form>

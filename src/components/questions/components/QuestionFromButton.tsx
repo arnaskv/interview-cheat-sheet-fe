@@ -9,7 +9,7 @@ type QuestioneFormButtonProps = {
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFromButton = ({ question, onSubmit }: QuestioneFormButtonProps)   => {
+const QuestionFromButton = ({ question, onSubmit }: QuestioneFormButtonProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -20,7 +20,7 @@ const QuestionFromButton = ({ question, onSubmit }: QuestioneFormButtonProps)   
         color="primary"
         variant="contained"
       >
-        {question ? 'Edit Question' : 'Add Question' }
+        {question ? 'Edit Question' : 'Add Question'}
       </ActionButton>
       <QuestionFormDialog open={open} setOpen={setOpen} question={question} onSubmit={onSubmit} />
     </>
