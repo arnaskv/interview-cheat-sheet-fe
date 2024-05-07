@@ -8,7 +8,6 @@ import { IconButton, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
-import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
 import Comment from '../../interfaces/Comment';
 
@@ -22,11 +21,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
 
-  const {
-    data: question,
-    isLoading,
-    getData,
-  } = useQuery<Question>({
+  const { data: question, getData } = useQuery<Question>({
     httpMethod: HTTP_METHODS.GET,
     url: ENDPOINTS.QUESTION.GET_ONE(questionId.toString()),
   });
@@ -58,10 +53,6 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
     await updateQuestionCommand.sendData(values);
   };
 
-  if (isLoading || !question) {
-    return <Loader />;
-  }
-
   return (
     <ClickAwayListener onClickAway={() => setQuestionId(null)}>
       <div className={style.Box}>
@@ -72,27 +63,31 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
             </IconButton>
           </div>
         </div>
-        <div className={style.Info}>
-          <a href={`/category/${question?.category.id}`} className={style.Info}>
-            {question?.category.title}
-          </a>
-        </div>
-        <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
-        <div className={style.ActionBar}>
-          <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
-        </div>
+        {question && (
+          <>
+            <div className={style.Info}>
+              <a href={`/category/${question.category.id}`} className={style.Info}>
+                {question.category.title}
+              </a>
+            </div>
+            <div className={style.TitleBox}>{question.title}</div>
+            <div className={style.ActionBar}>
+              <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
+            </div>
+          </>
+        )}
         <div className={style.List}>
-          <CommentsList 
-            questionId={questionId} 
-            refresh={commentsRefresh} 
-            onSuccess={() => setCommentsRefresh(false)} 
+          <CommentsList
+            questionId={questionId}
+            refresh={commentsRefresh}
+            onSuccess={() => setCommentsRefresh(false)}
             setCommentToEdit={setCommentToEdit}
             commentToEdit={commentToEdit}
           />
         </div>
         <div className={style.TextField}>
-          <AddCommentTextField 
-            questionId={questionId} 
+          <AddCommentTextField
+            questionId={questionId}
             onSuccess={() => setCommentsRefresh(true)}
             setCommentToEdit={setCommentToEdit}
             commentToEdit={commentToEdit}
