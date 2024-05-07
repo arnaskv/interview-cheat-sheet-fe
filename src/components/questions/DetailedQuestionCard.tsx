@@ -11,6 +11,7 @@ import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
 import Comment from '../../interfaces/Comment';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   questionId: number;
@@ -21,6 +22,7 @@ type Props = {
 const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
+  const navigate = useNavigate();
 
   const {
     data: question,
@@ -36,6 +38,11 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
       getData();
     }
   }, [question, getData]);
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, [questionId]);
 
   const onUpdateSuccess = (response: Question) => {
     if (!question) {
@@ -58,12 +65,22 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
     await updateQuestionCommand.sendData(values);
   };
 
+  const handleClickAway = () => {
+    if (questionId !== question?.id) {
+      navigate(`/${questionId}`);
+      setQuestionId(questionId);
+    } else {
+      navigate('/');
+      setQuestionId(null);
+    }
+  };
+
   if (isLoading || !question) {
     return <Loader />;
   }
 
   return (
-    <ClickAwayListener onClickAway={() => setQuestionId(null)}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <div className={style.Box}>
         <div className={style.Header}>
           <div className={style.CloseButton}>
@@ -82,17 +99,17 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
           <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
         </div>
         <div className={style.List}>
-          <CommentsList 
-            questionId={questionId} 
-            refresh={commentsRefresh} 
-            onSuccess={() => setCommentsRefresh(false)} 
+          <CommentsList
+            questionId={questionId}
+            refresh={commentsRefresh}
+            onSuccess={() => setCommentsRefresh(false)}
             setCommentToEdit={setCommentToEdit}
             commentToEdit={commentToEdit}
           />
         </div>
         <div className={style.TextField}>
-          <AddCommentTextField 
-            questionId={questionId} 
+          <AddCommentTextField
+            questionId={questionId}
             onSuccess={() => setCommentsRefresh(true)}
             setCommentToEdit={setCommentToEdit}
             commentToEdit={commentToEdit}

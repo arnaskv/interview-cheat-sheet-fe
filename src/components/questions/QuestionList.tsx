@@ -11,10 +11,13 @@ import { QuestionContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import QuestionFromButton from './components/QuestionFromButton';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const QuestionList = () => {
-  const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
+  const { id } = useParams();
+  const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(id ? Number(id) : null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
+  const navigate = useNavigate();
 
   const {
     data: questions,
@@ -59,6 +62,11 @@ const QuestionList = () => {
     await createQuestionCommand.sendData(values);
   };
 
+  const handleQuestionClick = (qestionId: number | null) => {
+    navigate(`/${qestionId}`);
+    setDetailedQuestionId(qestionId);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
 
@@ -90,7 +98,7 @@ const QuestionList = () => {
         ) : (
           <QuestionContainer>
             {questionList.map(question => {
-              return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
+              return <QuestionListItem key={question.id} question={question} setQuestionId={handleQuestionClick} />;
             })}
           </QuestionContainer>
         )}
