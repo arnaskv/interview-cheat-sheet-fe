@@ -3,7 +3,8 @@ import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Question from '../../interfaces/Question';
-import style from './DetailedQuestionCard.module.css';
+import styleDetailedCard from '../shared/DetailedCart.module.css';
+import styleQuestion from './DetailedQuestionCard.module.css';
 import { IconButton, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
@@ -15,11 +16,12 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = {
   questionId: number;
-  setQuestionId: (id: number | null) => void;
+  parentId?: number;
+  setQuestionId: (id: number | null, parentId: number | null) => void;
   updateQuestion: (question: Question) => void;
 };
 
-const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Props) => {
+const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
   const navigate = useNavigate();
@@ -51,11 +53,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
 
     question.title = response.title;
     question.category = response.category;
+    question.subQuestions = response.subQuestions;
     updateQuestion(question);
   };
 
   const updateQuestionCommand = useQuery({
-    url: ENDPOINTS.QUESTION.UPDATE,
+    url: ENDPOINTS.QUESTION.UPDATE(questionId.toString()),
     httpMethod: HTTP_METHODS.PATCH,
     onSuccess: onUpdateSuccess,
   });
@@ -68,10 +71,10 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
   const handleClickAway = () => {
     if (questionId !== question?.id) {
       navigate(`/${questionId}`);
-      setQuestionId(questionId);
+      setQuestionId(questionId, parentId ? parentId : null);
     } else {
       navigate('/');
-      setQuestionId(null);
+      setQuestionId(null, null);
     }
   };
 
@@ -81,24 +84,28 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <div className={style.Box}>
-        <div className={style.Header}>
-          <div className={style.CloseButton}>
+      <div className={styleDetailedCard.Box}>
+        <div className={styleDetailedCard.Header}>
+          <div className={styleDetailedCard.CloseButton}>
             <IconButton>
-              <CloseIcon onClick={() => setQuestionId(null)} />
+              <CloseIcon onClick={() => setQuestionId(null, null)} />
             </IconButton>
           </div>
         </div>
-        <div className={style.Info}>
-          <a href={`/category/${question?.category.id}`} className={style.Info}>
-            {question?.category.title}
-          </a>
-        </div>
-        <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
-        <div className={style.ActionBar}>
-          <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
-        </div>
-        <div className={style.List}>
+        {question && (
+          <>
+            <div className={styleQuestion.Info}>
+              <a href={`/category/${question?.category.id}`} className={styleQuestion.Info}>
+                {question?.category.title}
+              </a>
+            </div>
+            <div className={styleDetailedCard.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
+            <div className={styleQuestion.ActionBar}>
+              <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
+            </div>
+          </>
+        )}
+        <div className={styleQuestion.List}>
           <CommentsList
             questionId={questionId}
             refresh={commentsRefresh}
@@ -107,7 +114,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
             commentToEdit={commentToEdit}
           />
         </div>
-        <div className={style.TextField}>
+        <div className={styleQuestion.TextField}>
           <AddCommentTextField
             questionId={questionId}
             onSuccess={() => setCommentsRefresh(true)}

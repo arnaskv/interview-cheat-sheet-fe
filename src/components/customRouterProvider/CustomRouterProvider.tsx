@@ -6,7 +6,6 @@ import Layout from '../layout/Layout';
 
 const Home = lazy(() => import('../../pages/home/Home'));
 const CategoriesPage = lazy(() => import('../../pages/categories/CategoriesPage'));
-const CategoryPage = lazy(() => import('../../pages/categories/CategoryPage'));
 
 const CustomRouterProvider: FC = () => {
   const router = createBrowserRouter([
@@ -39,14 +38,16 @@ const CustomRouterProvider: FC = () => {
               <CategoriesPage />
             </Suspense>
           ),
-        },
-        {
-          path: ROUTE_PATHS.CATEGORY,
-          element: (
-            <Suspense fallback={<Loader />}>
-              <CategoryPage />
-            </Suspense>
-          ),
+          children: [
+            {
+              path: ':id',
+              element: (
+                <Suspense fallback={<Loader />}>
+                  <CategoriesPage />
+                </Suspense>
+              ),
+            },
+          ],
         },
       ],
     },

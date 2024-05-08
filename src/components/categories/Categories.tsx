@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { List } from '@mui/material';
 import { Category } from '../../interfaces/Category';
 import styles from './Categories.module.css';
-import { useNavigate } from 'react-router-dom';
 import Loader from '../shared/Loader';
 import CategoryItem from './CategoryItem';
 import useQuery from '../../hooks/useQuery';
@@ -11,8 +11,11 @@ import CategoryFormDialog from '../dialogs/CategoryFormDialog';
 import { HTTP_METHODS } from '../../constants/http';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import PageTitle from '../shared/PageTitle';
+import CategoryDetails from './CategoryDetails';
 
 const Categories: React.FC = () => {
+  const { id } = useParams();
+  const [categoryDetailedId, setCategoryDetailedId] = useState<number | null>(id ? Number(id) : null);
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const navigate = useNavigate();
 
@@ -26,10 +29,6 @@ const Categories: React.FC = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
-  const handleCategoryClick = (categoryId: number) => {
-    navigate(`/category/${categoryId}`);
-  };
-
   useEffect(() => {
     if (!categories) {
       getData();
@@ -38,6 +37,12 @@ const Categories: React.FC = () => {
     categoryList.length === 0 && categories && setCategoryList(categories);
     // eslint-disable-next-line
   }, [categories, getData]);
+
+  const updateCategory = (category: Category) => {
+    setCategoryList(currentCategory => {
+      return currentCategory.map(c => (c.id === category.id ? category : c));
+    });
+  };
 
   const onCreateSuccess = (response: Category) => {
     const category: Category = response;
@@ -56,11 +61,24 @@ const Categories: React.FC = () => {
     await createCategoryCommand.sendData(values);
   };
 
+  const handleCategoryClick = (categoryId: number | null) => {
+    navigate(`/category/${categoryId}`);
+    setCategoryDetailedId(categoryId);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
   return (
     <>
+      {categoryDetailedId !== null && !Number.isNaN(categoryDetailedId) && (
+        <CategoryDetails
+          categoryId={categoryDetailedId}
+          setCategoryId={setCategoryDetailedId}
+          updateCategory={updateCategory}
+        />
+      )}
+
       <HeaderContainer width="100%">
         <PageTitle title="Category bank" subTitle="Discover, create and improve existing interview categories" />
         <ButtonContainer>
@@ -73,7 +91,7 @@ const Categories: React.FC = () => {
           <div>No categories found</div>
         ) : (
           categoryList.map(category => (
-            <CategoryItem key={category.id} category={category} onClick={() => handleCategoryClick(category.id!)} />
+            <CategoryItem key={category.id} category={category} handleCategoryClick={handleCategoryClick} />
           ))
         )}
       </List>

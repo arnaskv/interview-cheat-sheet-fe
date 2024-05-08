@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
+import QuestionFromButton from './components/QuestionFromButton';
 import Question from '../../interfaces/Question';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
@@ -10,13 +11,13 @@ import DetailedQuestionCard from './DetailedQuestionCard';
 import { QuestionContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
-import QuestionFromButton from './components/QuestionFromButton';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const QuestionList = () => {
   const { id } = useParams();
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(id ? Number(id) : null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
+  const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const {
@@ -29,10 +30,29 @@ const QuestionList = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
+  const setQuestionIds = (questionId: number | null, parentId: number | null) => {
+    setDetailedQuestionId(questionId);
+    setParentQuestionId(parentId);
+  };
+
   const updateQuestion = (question: Question) => {
-    setQuestionList(currentQuestions => {
-      return currentQuestions.map(q => (q.id === question.id ? question : q));
-    });
+    if (parentQuestionId === null) {
+      setQuestionList(currentQuestions => {
+        return currentQuestions.map(q => (q.id === question.id ? question : q));
+      });
+    } else {
+      //If we are editing child question, there is some more work to be done
+      const parentQuestion = questionList.find(q => q.id === parentQuestionId);
+      //In theory this should never be false, it is here just to shut up typescript
+      if (parentQuestion) {
+        const subQuestions = parentQuestion.subQuestions?.map(q => (q.id === question.id ? question : q));
+        parentQuestion.subQuestions = subQuestions;
+
+        setQuestionList(currentQuestions => {
+          return currentQuestions.map(q => (q.id === parentQuestion.id ? parentQuestion : q));
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -58,13 +78,13 @@ const QuestionList = () => {
   });
 
   const onCreateSubmit = async (values: Question) => {
-    // GSF2024S-40-Interview question and category integration: Add category to the question (create now not working)
     await createQuestionCommand.sendData(values);
   };
 
-  const handleQuestionClick = (qestionId: number | null) => {
+  const handleQuestionClick = (qestionId: number | null, parentId: number | null) => {
     navigate(`/${qestionId}`);
     setDetailedQuestionId(qestionId);
+    setParentQuestionId(parentId);
   };
 
   if (isLoading) return <Loader />;
@@ -75,7 +95,8 @@ const QuestionList = () => {
       {detailedQuestionId !== null && (
         <DetailedQuestionCard
           questionId={detailedQuestionId}
-          setQuestionId={setDetailedQuestionId}
+          parentId={parentQuestionId ? parentQuestionId : undefined}
+          setQuestionId={setQuestionIds}
           updateQuestion={updateQuestion}
         />
       )}
