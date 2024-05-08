@@ -108,7 +108,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, parentId, onSub
           <CloseIcon onClick={() => setOpen(false)} />
         </IconButton>
       </div>
-      <DialogTitle className={style.FormTitle}>{question ? 'Edit question' : 'Add question'}</DialogTitle>
+      <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question'} </DialogTitle>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
         {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
           <Form>

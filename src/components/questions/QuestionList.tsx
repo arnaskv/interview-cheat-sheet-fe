@@ -75,7 +75,6 @@ const QuestionList = () => {
   });
 
   const onCreateSubmit = async (values: Question) => {
-    // GSF2024S-40-Interview question and category integration: Add category to the question (create now not working)
     await createQuestionCommand.sendData(values);
   };
 

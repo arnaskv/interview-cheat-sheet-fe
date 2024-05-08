@@ -31,6 +31,8 @@ const DeleteDialog: React.FC<DeleteProps> = ({
   const navigate = useNavigate();
 
   const onSuccess = () => {
+    navigate(deleteLabel.includes('Category') ? '/category' : '/');
+    window.location.reload();
     refreshData && refreshData();
   };
 
@@ -48,7 +50,6 @@ const DeleteDialog: React.FC<DeleteProps> = ({
     if (itemId) {
       await sendData({ id: itemId });
       toggleDialog();
-      navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, sendData]);

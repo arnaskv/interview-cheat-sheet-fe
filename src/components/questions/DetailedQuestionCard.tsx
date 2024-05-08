@@ -3,11 +3,13 @@ import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
 import Question from '../../interfaces/Question';
-import style from './DetailedQuestionCard.module.css';
+import styleDetailedCard from '../shared/DetailedCart.module.css';
+import styleQuestion from './DetailedQuestionCard.module.css';
 import { IconButton, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
+import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
 import Comment from '../../interfaces/Comment';
 
@@ -22,7 +24,11 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
 
-  const { data: question, getData } = useQuery<Question>({
+  const {
+    data: question,
+    isLoading,
+    getData,
+  } = useQuery<Question>({
     httpMethod: HTTP_METHODS.GET,
     url: ENDPOINTS.QUESTION.GET_ONE(questionId.toString()),
   });
@@ -57,9 +63,9 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
 
   return (
     <ClickAwayListener onClickAway={() => setQuestionId(null, null)}>
-      <div className={style.Box}>
-        <div className={style.Header}>
-          <div className={style.CloseButton}>
+      <div className={styleDetailedCard.Box}>
+        <div className={styleDetailedCard.Header}>
+          <div className={styleDetailedCard.CloseButton}>
             <IconButton>
               <CloseIcon onClick={() => setQuestionId(null, null)} />
             </IconButton>
@@ -67,18 +73,18 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
         </div>
         {question && (
           <>
-            <div className={style.Info}>
-              <a href={`/category/${question.category.id}`} className={style.Info}>
-                {question.category.title}
+            <div className={styleQuestion.Info}>
+              <a href={`/category/${question?.category.id}`} className={styleQuestion.Info}>
+                {question?.category.title}
               </a>
             </div>
-            <div className={style.TitleBox}>{question.title}</div>
-            <div className={style.ActionBar}>
+            <div className={styleDetailedCard.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
+            <div className={styleQuestion.ActionBar}>
               <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
             </div>
           </>
         )}
-        <div className={style.List}>
+        <div className={styleQuestion.List}>
           <CommentsList
             questionId={questionId}
             refresh={commentsRefresh}
@@ -87,7 +93,7 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
             commentToEdit={commentToEdit}
           />
         </div>
-        <div className={style.TextField}>
+        <div className={styleQuestion.TextField}>
           <AddCommentTextField
             questionId={questionId}
             onSuccess={() => setCommentsRefresh(true)}

@@ -31,7 +31,13 @@ const CategoryFormDialog: React.FC<CategoryAddDialogProps> = ({ onSubmit, catego
 
   return (
     <>
-      <ActionButton onClick={toggleDialog} startIcon={<AddIcon />} variant="contained" color="primary">
+      <ActionButton
+        onClick={toggleDialog}
+        startIcon={<AddIcon />}
+        variant="contained"
+        color="primary"
+        sx={{ marginRight: '5px' }}
+      >
         {action}
       </ActionButton>
       <ActionDialog title={action} open={open} handleClose={toggleDialog}>
