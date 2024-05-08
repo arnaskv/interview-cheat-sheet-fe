@@ -13,6 +13,7 @@ export const ENDPOINTS = {
     UPDATE: (id: string) => `${BASE_URL}/interview-questions/${id}`,
     GET_ALL: `${BASE_URL}/interview-questions`,
     GET_ONE: (id: string) => `${BASE_URL}/interview-questions/${id}`,
+    DELETE: (id: string) => `${BASE_URL}/interview-questions/${id}`,
   },
   COMMENT: {
     GET_ALL: `${BASE_URL}/comments`,
