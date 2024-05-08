@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useMatch, Link } from 'react-router-dom';
+import { Link, useMatches } from 'react-router-dom';
 import { ListItem, IconButton, Typography } from '@mui/material';
 
 type SidebarItemProps = {
@@ -9,7 +9,8 @@ type SidebarItemProps = {
 };
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ text, icon, path }) => {
-  const match = useMatch(path + '/*');
+  const matches = useMatches();
+  const match = matches[1].pathname === path;
 
   return (
     <ListItem

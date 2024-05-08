@@ -12,6 +12,7 @@ import AddCommentTextField from '../comments/AddCommentTextField';
 import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
 import Comment from '../../interfaces/Comment';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   questionId: number;
@@ -23,6 +24,7 @@ type Props = {
 const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
+  const navigate = useNavigate();
 
   const {
     data: question,
@@ -38,6 +40,11 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
       getData();
     }
   }, [question, getData]);
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, [questionId]);
 
   const onUpdateSuccess = (response: Question) => {
     if (!question) {
@@ -61,8 +68,22 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
     await updateQuestionCommand.sendData(values);
   };
 
+  const handleClickAway = () => {
+    if (questionId !== question?.id) {
+      navigate(`/${questionId}`);
+      setQuestionId(questionId, parentId ? parentId : null);
+    } else {
+      navigate('/');
+      setQuestionId(null, null);
+    }
+  };
+
+  if (isLoading || !question) {
+    return <Loader />;
+  }
+
   return (
-    <ClickAwayListener onClickAway={() => setQuestionId(null, null)}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <div className={styleDetailedCard.Box}>
         <div className={styleDetailedCard.Header}>
           <div className={styleDetailedCard.CloseButton}>

@@ -17,6 +17,8 @@ export const QuestionItemContainer = styled(Box)`
   border: 1px solid;
   border-color: #dddddd;
   border-radius: 8px;
+  cursor: pointer;
+  gap: 24px;
   margin-bottom: 5px;
 `;
 

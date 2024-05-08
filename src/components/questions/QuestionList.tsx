@@ -11,11 +11,14 @@ import DetailedQuestionCard from './DetailedQuestionCard';
 import { QuestionContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const QuestionList = () => {
-  const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
+  const { id } = useParams();
+  const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(id ? Number(id) : null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const {
     data: questions,
@@ -78,6 +81,12 @@ const QuestionList = () => {
     await createQuestionCommand.sendData(values);
   };
 
+  const handleQuestionClick = (qestionId: number | null, parentId: number | null) => {
+    navigate(`/${qestionId}`);
+    setDetailedQuestionId(qestionId);
+    setParentQuestionId(parentId);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
 
@@ -110,7 +119,7 @@ const QuestionList = () => {
         ) : (
           <QuestionContainer>
             {questionList.map(question => {
-              return <QuestionListItem key={question.id} question={question} setQuestionId={setQuestionIds} />;
+              return <QuestionListItem key={question.id} question={question} setQuestionId={handleQuestionClick} />;
             })}
           </QuestionContainer>
         )}
