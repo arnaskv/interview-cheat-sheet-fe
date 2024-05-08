@@ -28,6 +28,16 @@ const CustomRouterProvider: FC = () => {
               <CategoriesPage />
             </Suspense>
           ),
+          children: [
+            {
+              path: ':id',
+              element: (
+                <Suspense fallback={<Loader />}>
+                  <CategoriesPage />
+                </Suspense>
+              ),
+            },
+          ],
         },
       ],
     },

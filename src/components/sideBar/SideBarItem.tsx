@@ -9,7 +9,7 @@ type SidebarItemProps = {
 };
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ text, icon, path }) => {
-  const match = useMatch(path);
+  const match = useMatch(path + '/*');
 
   return (
     <ListItem
