@@ -91,7 +91,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
                 onClick={() => setOpen(true)}
                 startIcon={<DeleteIcon />}
                 variant="contained"
-                color="primary"
+                color="secondary"
               >
                 Delete
               </ActionButton>
