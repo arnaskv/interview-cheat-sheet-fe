@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
+import QuestionFromButton from './components/QuestionFromButton';
 import Question from '../../interfaces/Question';
 import { ENDPOINTS } from '../../constants/endpoints';
 import useQuery from '../../hooks/useQuery';
@@ -10,11 +11,11 @@ import DetailedQuestionCard from './DetailedQuestionCard';
 import { QuestionContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
-import QuestionFromButton from './components/QuestionFromButton';
 
 const QuestionList = () => {
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
+  const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
 
   const {
     data: questions,
@@ -26,10 +27,29 @@ const QuestionList = () => {
     httpMethod: HTTP_METHODS.GET,
   });
 
+  const setQuestionIds = (questionId: number | null, parentId: number | null) => {
+    setDetailedQuestionId(questionId);
+    setParentQuestionId(parentId);
+  };
+
   const updateQuestion = (question: Question) => {
-    setQuestionList(currentQuestions => {
-      return currentQuestions.map(q => (q.id === question.id ? question : q));
-    });
+    if (parentQuestionId === null) {
+      setQuestionList(currentQuestions => {
+        return currentQuestions.map(q => (q.id === question.id ? question : q));
+      });
+    } else {
+      //If we are editing child question, there is some more work to be done
+      const parentQuestion = questionList.find(q => q.id === parentQuestionId);
+      //In theory this should never be false, it is here just to shut up typescript
+      if (parentQuestion) {
+        const subQuestions = parentQuestion.subQuestions?.map(q => (q.id === question.id ? question : q));
+        parentQuestion.subQuestions = subQuestions;
+
+        setQuestionList(currentQuestions => {
+          return currentQuestions.map(q => (q.id === parentQuestion.id ? parentQuestion : q));
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -67,7 +87,8 @@ const QuestionList = () => {
       {detailedQuestionId !== null && (
         <DetailedQuestionCard
           questionId={detailedQuestionId}
-          setQuestionId={setDetailedQuestionId}
+          parentId={parentQuestionId ? parentQuestionId : undefined}
+          setQuestionId={setQuestionIds}
           updateQuestion={updateQuestion}
         />
       )}
@@ -90,7 +111,7 @@ const QuestionList = () => {
         ) : (
           <QuestionContainer>
             {questionList.map(question => {
-              return <QuestionListItem key={question.id} question={question} setQuestionId={setDetailedQuestionId} />;
+              return <QuestionListItem key={question.id} question={question} setQuestionId={setQuestionIds} />;
             })}
           </QuestionContainer>
         )}
