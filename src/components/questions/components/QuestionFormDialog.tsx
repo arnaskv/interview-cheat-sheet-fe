@@ -154,6 +154,7 @@ const QuestionFormDialog = ({ open, setOpen, question, category, parentId, onSub
                     onBlur={handleBlur}
                     error={Boolean(categoryError)}
                     SelectProps={{
+                      MenuProps: { disablePortal: true },
                       classes: { select: style.TextField },
                       IconComponent: ExpandMore,
                     }}
