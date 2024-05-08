@@ -1,35 +1,43 @@
 import {
+  Box,
   Dialog,
   DialogContent,
   DialogTitle,
+  FormHelperText,
   Grid,
   IconButton,
-  TextField,
   MenuItem,
-  FormHelperText,
+  TextField,
+  Typography,
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import useQuery from '../../../hooks/useQuery';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
+import useQuery from '../../../hooks/useQuery';
 import Question from '../../../interfaces/Question';
-import { Form, Formik } from 'formik';
+import { FieldArray, Form, Formik } from 'formik';
 import { questionSchema } from '../../../validation/question';
 import CloseIcon from '@mui/icons-material/Close';
 import style from './Question.module.css';
 import ActionButton from '../../buttons/ActionButton';
 import { StyledDialogActions } from '../../dialogs/DialogStyles';
+import { useEffect, useState } from 'react';
 import { Category } from '../../../interfaces/Category';
-import { useState, useEffect } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import DeleteButton from '../../buttons/DeleteButton';
+import { FlexColumnContainer, AddSubquestionButton } from '../QuestionStyles';
 
 type QuestioneFormDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
   question?: Question;
+  category?: Category; // Make sure category is defined in props
+  parentId?: number;
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneFormDialogProps) => {
+const QuestionFormDialog = ({ open, setOpen, question, category, parentId, onSubmit }: QuestioneFormDialogProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryError, setCategoryError] = useState<string>('');
@@ -37,6 +45,7 @@ const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneForm
   const initialValues = {
     title: question ? question.title : '',
     category: question?.category || { id: 0, title: '' },
+    subQuestions: [],
   };
 
   const { data: fetchedCategories, getData: fetchCategories } = useQuery<Category[]>({
@@ -75,7 +84,19 @@ const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneForm
       setCategoryError('Please select a category');
       return;
     }
-    const questionWithCategory = { ...values, categoryId: selectedCategory };
+
+    //Filter out empty subquestions
+    const filteredSubQuestions = values.subQuestions?.filter(q => String(q) !== '');
+
+    const questionWithCategory = {
+      ...values,
+      categoryId: selectedCategory,
+      //Formatting response so the BE can understand it, category is needed to shut up typescript
+      subQuestions: filteredSubQuestions?.map(q => {
+        return { title: String(q), category: { id: 0, title: '' }, subQuestions: [] };
+      }),
+    };
+
     onSubmit(questionWithCategory);
     setOpen(false);
   };
@@ -133,6 +154,7 @@ const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneForm
                     onBlur={handleBlur}
                     error={Boolean(categoryError)}
                     SelectProps={{
+                      MenuProps: { disablePortal: true },
                       classes: { select: style.TextField },
                       IconComponent: ExpandMore,
                     }}
@@ -149,6 +171,66 @@ const QuestionFormDialog = ({ open, setOpen, question, onSubmit }: QuestioneForm
                     ))}
                   </TextField>
                   {Boolean(categoryError) && <FormHelperText error>{categoryError}</FormHelperText>}
+                </Grid>
+                <Grid item xs={12}>
+                  <FieldArray
+                    name="subQuestions"
+                    render={arrayHelpers => (
+                      <FlexColumnContainer marginBottom="20px">
+                        {values.subQuestions &&
+                          values.subQuestions.length > 0 &&
+                          values.subQuestions.map((subQuestion, index) => (
+                            <FlexColumnContainer gap="4px" key={index}>
+                              <Typography variant="h6" color="#666666" marginLeft="30px">
+                                {`Follow up question #${index + 1}`}
+                              </Typography>
+                              <Box display="flex" width="100%" gap="10px">
+                                <Box>
+                                  <SubdirectoryArrowRightIcon
+                                    sx={{ color: '#999999', height: '20px', width: '20px' }}
+                                  />
+                                </Box>
+                                <TextField
+                                  name={`subQuestions.${index}`}
+                                  fullWidth
+                                  multiline={true}
+                                  rows={4}
+                                  autoFocus
+                                  className={style.TextField}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={subQuestion}
+                                  error={Boolean(
+                                    errors.subQuestions &&
+                                      values.subQuestions &&
+                                      values.subQuestions[index].toString().length > 255,
+                                  )}
+                                  helperText={
+                                    errors.subQuestions &&
+                                    values.subQuestions &&
+                                    values.subQuestions[index].toString().length > 255 &&
+                                    'Title is too long'
+                                  }
+                                  InputProps={{
+                                    style: { color: '#000048' },
+                                  }}
+                                />
+                                <DeleteButton onClick={() => arrayHelpers.remove(index)} />
+                              </Box>
+                            </FlexColumnContainer>
+                          ))}
+                        {!parentId && (
+                          <AddSubquestionButton
+                            startIcon={<AddIcon style={{ fontSize: '18px' }} />}
+                            fullWidth
+                            onClick={() => arrayHelpers.push('')}
+                          >
+                            Add follow up question
+                          </AddSubquestionButton>
+                        )}
+                      </FlexColumnContainer>
+                    )}
+                  />
                 </Grid>
               </Grid>
             </DialogContent>

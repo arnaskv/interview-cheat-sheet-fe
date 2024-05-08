@@ -6,10 +6,11 @@ import QuestionFormDialog from './QuestionFormDialog';
 
 type QuestioneFormButtonProps = {
   question?: Question;
+  parentId?: number;
   onSubmit: (question: Question) => void;
 };
 
-const QuestionFromButton = ({ question, onSubmit }: QuestioneFormButtonProps) => {
+const QuestionFromButton = ({ question, parentId, onSubmit }: QuestioneFormButtonProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -22,7 +23,7 @@ const QuestionFromButton = ({ question, onSubmit }: QuestioneFormButtonProps) =>
       >
         {question ? 'Edit Question' : 'Add Question'}
       </ActionButton>
-      <QuestionFormDialog open={open} setOpen={setOpen} question={question} onSubmit={onSubmit} />
+      <QuestionFormDialog open={open} setOpen={setOpen} question={question} parentId={parentId} onSubmit={onSubmit} />
     </>
   );
 };
