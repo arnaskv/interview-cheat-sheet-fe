@@ -13,11 +13,12 @@ import Comment from '../../interfaces/Comment';
 
 type Props = {
   questionId: number;
-  setQuestionId: (id: number | null) => void;
+  parentId?: number;
+  setQuestionId: (id: number | null, parentId: number | null) => void;
   updateQuestion: (question: Question) => void;
 };
 
-const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Props) => {
+const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
 
@@ -39,11 +40,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
 
     question.title = response.title;
     question.category = response.category;
+    question.subQuestions = response.subQuestions;
     updateQuestion(question);
   };
 
   const updateQuestionCommand = useQuery({
-    url: ENDPOINTS.QUESTION.UPDATE,
+    url: ENDPOINTS.QUESTION.UPDATE(questionId.toString()),
     httpMethod: HTTP_METHODS.PATCH,
     onSuccess: onUpdateSuccess,
   });
@@ -54,12 +56,12 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
   };
 
   return (
-    <ClickAwayListener onClickAway={() => setQuestionId(null)}>
+    <ClickAwayListener onClickAway={() => setQuestionId(null, null)}>
       <div className={style.Box}>
         <div className={style.Header}>
           <div className={style.CloseButton}>
             <IconButton>
-              <CloseIcon onClick={() => setQuestionId(null)} />
+              <CloseIcon onClick={() => setQuestionId(null, null)} />
             </IconButton>
           </div>
         </div>
@@ -72,7 +74,7 @@ const DetailedQuestionCard = ({ questionId, setQuestionId, updateQuestion }: Pro
             </div>
             <div className={style.TitleBox}>{question.title}</div>
             <div className={style.ActionBar}>
-              <QuestionFromButton question={question} onSubmit={onUpdateSubmit} />
+              <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
             </div>
           </>
         )}
