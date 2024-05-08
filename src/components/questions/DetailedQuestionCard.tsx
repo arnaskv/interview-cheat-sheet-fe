@@ -8,7 +8,6 @@ import { IconButton, ClickAwayListener } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentsList from '../comments/CommentsList';
 import AddCommentTextField from '../comments/AddCommentTextField';
-import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
 import Comment from '../../interfaces/Comment';
 
@@ -23,11 +22,7 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
 
-  const {
-    data: question,
-    isLoading,
-    getData,
-  } = useQuery<Question>({
+  const { data: question, getData } = useQuery<Question>({
     httpMethod: HTTP_METHODS.GET,
     url: ENDPOINTS.QUESTION.GET_ONE(questionId.toString()),
   });
@@ -60,10 +55,6 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
     await updateQuestionCommand.sendData(values);
   };
 
-  if (isLoading || !question) {
-    return <Loader />;
-  }
-
   return (
     <ClickAwayListener onClickAway={() => setQuestionId(null, null)}>
       <div className={style.Box}>
@@ -74,15 +65,19 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
             </IconButton>
           </div>
         </div>
-        <div className={style.Info}>
-          <a href={`/category/${question?.category.id}`} className={style.Info}>
-            {question?.category.title}
-          </a>
-        </div>
-        <div className={style.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
-        <div className={style.ActionBar}>
-          <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
-        </div>
+        {question && (
+          <>
+            <div className={style.Info}>
+              <a href={`/category/${question.category.id}`} className={style.Info}>
+                {question.category.title}
+              </a>
+            </div>
+            <div className={style.TitleBox}>{question.title}</div>
+            <div className={style.ActionBar}>
+              <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
+            </div>
+          </>
+        )}
         <div className={style.List}>
           <CommentsList
             questionId={questionId}
