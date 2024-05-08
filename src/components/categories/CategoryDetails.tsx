@@ -17,9 +17,10 @@ import { useNavigate } from 'react-router-dom';
 interface CategoryDetailsProps {
   categoryId: number;
   setCategoryId: (id: number | null) => void;
+  updateCategory: (category: Category) => void;
 }
 
-const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCategoryId }) => {
+const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCategoryId, updateCategory }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -44,6 +45,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
     }
 
     category.title = response.title;
+    updateCategory(category);
   };
 
   const updateCategoryCommand = useQuery({

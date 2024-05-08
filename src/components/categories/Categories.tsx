@@ -38,6 +38,12 @@ const Categories: React.FC = () => {
     // eslint-disable-next-line
   }, [categories, getData]);
 
+  const updateCategory = (category: Category) => {
+    setCategoryList(currentCategory => {
+      return currentCategory.map(c => (c.id === category.id ? category : c));
+    });
+  };
+
   const onCreateSuccess = (response: Category) => {
     const category: Category = response;
     setCategoryList(currentCategories => {
@@ -66,7 +72,11 @@ const Categories: React.FC = () => {
   return (
     <>
       {categoryDetailedId !== null && !Number.isNaN(categoryDetailedId) && (
-        <CategoryDetails categoryId={categoryDetailedId} setCategoryId={setCategoryDetailedId} />
+        <CategoryDetails
+          categoryId={categoryDetailedId}
+          setCategoryId={setCategoryDetailedId}
+          updateCategory={updateCategory}
+        />
       )}
 
       <HeaderContainer width="100%">
