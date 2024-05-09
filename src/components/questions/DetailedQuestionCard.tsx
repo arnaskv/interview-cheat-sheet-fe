@@ -82,10 +82,6 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
     }
   };
 
-  if (isLoading || !question) {
-    return <Loader />;
-  }
-
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={styleDetailedCard.Box}>
