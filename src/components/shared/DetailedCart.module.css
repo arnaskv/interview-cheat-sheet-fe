@@ -1,6 +1,5 @@
 .Box {
   position: fixed;
-  overflow-y: auto;
   top: 0;
   right: 0;
   display: flex;
@@ -11,8 +10,9 @@
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   background-color: white;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 1rem 1rem 0 1rem;
   row-gap: 1rem;
+  overflow-y: auto;
 }
 
 .Header {
