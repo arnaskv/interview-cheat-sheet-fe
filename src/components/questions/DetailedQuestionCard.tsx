@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { HTTP_METHODS } from '../../constants/http';
 import useQuery from '../../hooks/useQuery';
@@ -13,6 +13,9 @@ import Loader from '../shared/Loader';
 import QuestionFromButton from './components/QuestionFromButton';
 import Comment from '../../interfaces/Comment';
 import { useNavigate } from 'react-router-dom';
+import { Delete as DeleteIcon } from '@mui/icons-material';
+import ActionButton from '../buttons/ActionButton';
+import DeleteDialog from '../dialogs/DeleteDialog';
 
 type Props = {
   questionId: number;
@@ -24,6 +27,7 @@ type Props = {
 const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -102,6 +106,25 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
             <div className={styleDetailedCard.TitleBox}>{isLoading ? <Loader /> : question?.title}</div>
             <div className={styleQuestion.ActionBar}>
               <QuestionFromButton question={question} parentId={parentId} onSubmit={onUpdateSubmit} />
+              <ActionButton
+                onClick={() => setOpen(true)}
+                startIcon={<DeleteIcon />}
+                variant="contained"
+                color="secondary"
+              >
+                Delete
+              </ActionButton>
+              <DeleteDialog
+                itemId={questionId.toString()}
+                deleteEndpoint={ENDPOINTS.QUESTION.DELETE}
+                dialogTitle="Delete this question?"
+                dialogDescription={question?.subQuestions?
+                  "If you delete this question, all follow up questions and comments will also be deleted. Are you sure?" :
+                  "If you delete this question, all comments will also be deleted. Are you sure"}
+                deleteLabel="Delete Question"
+                open={open}
+                setOpen={setOpen}
+              />
             </div>
           </>
         )}
