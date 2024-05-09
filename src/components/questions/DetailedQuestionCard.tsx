@@ -85,12 +85,10 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={styleDetailedCard.Box}>
-        <div className={styleDetailedCard.Header}>
-          <div className={styleDetailedCard.CloseButton}>
-            <IconButton>
-              <CloseIcon onClick={() => setQuestionId(null, null)} />
-            </IconButton>
-          </div>
+        <div className={styleDetailedCard.CloseButton}>
+          <IconButton>
+            <CloseIcon onClick={() => setQuestionId(null, null)} />
+          </IconButton>
         </div>
         {question && (
           <>
