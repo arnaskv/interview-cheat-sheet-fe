@@ -33,7 +33,6 @@ function CommentCard({ comment, refreshData, setCommentToEdit, commentToEdit }: 
               Cancel
             </span>
           )}
-          
           <DeleteDialog
             itemId={comment.id.toString()}
             deleteEndpoint={ENDPOINTS.COMMENT.DELETE}

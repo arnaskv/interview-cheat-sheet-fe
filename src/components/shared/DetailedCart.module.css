@@ -10,20 +10,22 @@
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   background-color: white;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 0 1rem;
   row-gap: 1rem;
-}
-
-.Header {
-  padding: 1.5rem;
+  overflow-y: auto;
 }
 
 .CloseButton {
-  position: absolute;
+  position: sticky;
   top: 0;
-  right: 0;
-  padding: 0.5rem;
-  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 0;
+  z-index: 1001;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  margin-left: auto;
 }
 
 .TitleBox {

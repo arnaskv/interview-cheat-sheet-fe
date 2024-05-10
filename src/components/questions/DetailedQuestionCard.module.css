@@ -20,11 +20,12 @@
 
 .List {
   flex-grow: 1;
-  max-height: calc(100vh - 440px);
 }
 
 .TextField {
-  justify-self: flex-end;
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
   border-top: 1px solid #dddddd;
-  padding-top: 1rem;
+  padding: 1.2rem 0;
 }
