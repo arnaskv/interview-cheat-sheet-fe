@@ -69,6 +69,11 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
     }
   };
 
+  const handleClose = () => {
+    navigate('/category');
+    setCategoryId(null);
+  };
+
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
   return (
@@ -77,7 +82,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
         <div className={styleDetailedCard.Header}>
           <div className={styleDetailedCard.CloseButton}>
             <IconButton>
-              <CloseIcon onClick={() => setCategoryId(null)} />
+              <CloseIcon onClick={handleClose} />
             </IconButton>
           </div>
           <div></div>
