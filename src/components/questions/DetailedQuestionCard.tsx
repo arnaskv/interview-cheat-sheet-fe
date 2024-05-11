@@ -82,7 +82,7 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
     }
   };
 
-  const closeDialog = () => {
+  const handleClose = () => {
     navigate('/');
     setQuestionId(null, null);
   };
@@ -92,7 +92,7 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
       <div className={styleDetailedCard.Box}>
         <div className={styleDetailedCard.CloseButton}>
           <IconButton>
-            <CloseIcon onClick={closeDialog} />
+            <CloseIcon onClick={handleClose} />
           </IconButton>
         </div>
         {question && (
