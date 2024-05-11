@@ -33,21 +33,26 @@ const CommentsList: React.FC<Props> = ({ questionId, refresh, onSuccess, setComm
     }
   }, [comments, getData, refresh]);
 
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, [questionId]);
+
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
 
   return (
     <div className={styles.List}>
       {comments !== null &&
-        comments.map(comment => 
-          <CommentCard 
-            key={comment.id} 
-            comment={comment} 
-            refreshData={getData} 
-            setCommentToEdit={setCommentToEdit} 
+        comments.map(comment => (
+          <CommentCard
+            key={comment.id}
+            comment={comment}
+            refreshData={getData}
+            setCommentToEdit={setCommentToEdit}
             commentToEdit={commentToEdit}
           />
-        )}
+        ))}
     </div>
   );
 };
