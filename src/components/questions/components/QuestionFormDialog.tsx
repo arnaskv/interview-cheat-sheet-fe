@@ -109,7 +109,7 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
       </div>
       <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question'} </DialogTitle>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
-        {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
+        {({ values, handleChange, handleBlur, errors, touched, isSubmitting, setSubmitting }) => (
           <Form>
             <DialogContent>
               <Grid container spacing={2}>
@@ -150,6 +150,7 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
                         onChange={e => {
                           setSelectedCategory(e.target.value);
                           setCategoryError('');
+                          setSubmitting(false);
                         }}
                         onBlur={handleBlur}
                         error={Boolean(categoryError)}
