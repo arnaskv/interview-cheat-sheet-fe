@@ -19,7 +19,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ category, handleCategoryCli
         borderRadius: '4px',
         fontSize: '1rem',
       }}
-      onClick={() => handleCategoryClick(category.id ?? null)}
+      onClick={() => handleCategoryClick(category.id || null)}
     >
       <ListItem>
         <ListItemText primary={category.title} />

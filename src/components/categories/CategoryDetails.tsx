@@ -18,9 +18,15 @@ interface CategoryDetailsProps {
   categoryId: number;
   setCategoryId: (id: number | null) => void;
   updateCategory: (category: Category) => void;
+  deleteCategory: (id: number) => void;
 }
 
-const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCategoryId, updateCategory }) => {
+const CategoryDetails: React.FC<CategoryDetailsProps> = ({
+  categoryId,
+  setCategoryId,
+  updateCategory,
+  deleteCategory,
+}) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -33,6 +39,12 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
     url: ENDPOINTS.CATEGORY.GET_ONE(categoryId.toString()),
     httpMethod: HTTP_METHODS.GET,
   });
+
+  useEffect(() => {
+    if (!category) {
+      getData();
+    }
+  }, [category, getData]);
 
   useEffect(() => {
     getData();
@@ -103,6 +115,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
                 deleteLabel="Delete Category"
                 open={open}
                 setOpen={setOpen}
+                handleDelete={() => deleteCategory(categoryId)}
               />
             </div>
           </>
