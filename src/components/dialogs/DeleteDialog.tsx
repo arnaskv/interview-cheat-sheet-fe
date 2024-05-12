@@ -35,7 +35,7 @@ const DeleteDialog: React.FC<DeleteProps> = ({
   const onSuccess = () => {
     if (deleteLabel.includes('Category') || deleteLabel.includes('Question')) {
       navigate(deleteLabel.includes('Category') ? '/category' : '/');
-      handleDelete ? handleDelete(itemId) : window.location.reload();
+      handleDelete && handleDelete(itemId);
     }
     refreshData && refreshData();
   };
