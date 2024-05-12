@@ -78,7 +78,6 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({
     } else {
       navigate('/category');
       setCategoryId(null);
-      console.log('Now its null away');
     }
   };
 
