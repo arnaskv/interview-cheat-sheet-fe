@@ -41,9 +41,8 @@ const QuestionList = () => {
         return currentQuestions.map(q => (q.id === question.id ? question : q));
       });
     } else {
-      //If we are editing child question, there is some more work to be done
       const parentQuestion = questionList.find(q => q.id === parentQuestionId);
-      //In theory this should never be false, it is here just to shut up typescript
+
       if (parentQuestion) {
         const subQuestions = parentQuestion.subQuestions?.map(q => (q.id === question.id ? question : q));
         parentQuestion.subQuestions = subQuestions;
@@ -61,9 +60,8 @@ const QuestionList = () => {
         return currentQuestions.filter(q => q.id !== id);
       });
     } else {
-      //If we are editing child question, there is some more work to be done
       const parentQuestion = questionList.find(q => q.id === parentQuestionId);
-      //In theory this should never be false, it is here just to shut up typescript
+
       if (parentQuestion) {
         const subQuestions = parentQuestion.subQuestions?.filter(q => q.id !== id);
         parentQuestion.subQuestions = subQuestions;
