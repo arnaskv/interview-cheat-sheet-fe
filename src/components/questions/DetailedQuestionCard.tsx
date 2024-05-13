@@ -83,12 +83,17 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
     }
   };
 
+  const handleClose = () => {
+    navigate('/');
+    setQuestionId(null, null);
+  };
+
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={styleDetailedCard.Box}>
         <div className={styleDetailedCard.CloseButton}>
           <IconButton>
-            <CloseIcon onClick={() => setQuestionId(null, null)} />
+            <CloseIcon onClick={handleClose} />
           </IconButton>
         </div>
         {question && (
