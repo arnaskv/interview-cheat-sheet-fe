@@ -16,6 +16,7 @@ type DeleteProps = {
   deleteLabel: string;
   open: boolean;
   setOpen: (open: boolean) => void;
+  handleDelete?: (id: string) => void;
 };
 
 const DeleteDialog: React.FC<DeleteProps> = ({
@@ -27,13 +28,14 @@ const DeleteDialog: React.FC<DeleteProps> = ({
   deleteLabel,
   open,
   setOpen,
+  handleDelete,
 }) => {
   const navigate = useNavigate();
 
   const onSuccess = () => {
     if (deleteLabel.includes('Category') || deleteLabel.includes('Question')) {
       navigate(deleteLabel.includes('Category') ? '/category' : '/');
-      window.location.reload();
+      handleDelete && handleDelete(itemId);
     }
     refreshData && refreshData();
   };
