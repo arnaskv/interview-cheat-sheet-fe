@@ -10,6 +10,7 @@ import { HTTP_METHODS } from '../../constants/http';
 import DetailedQuestionCard from './DetailedQuestionCard';
 import { QuestionContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
+import NotFoundPage from '../shared/NotFoundPage';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -109,6 +110,10 @@ const QuestionList = () => {
 
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
+
+  if (detailedQuestionId !== null && !questionList.some(question => question.id === detailedQuestionId)) {
+    return <NotFoundPage missingComponent="question" setMissingComponent={setDetailedQuestionId} />;
+  }
 
   return (
     <>
