@@ -9,7 +9,6 @@ async function renewToken(): Promise<Object | null> {
             'Authorization': `Bearer ${Cookies.get('refreshJwtToken')}`,
             },
         });
-    
         const token = result.data.token;
         const refreshJwtToken = result.data.refreshToken;
         setCookies(token, refreshJwtToken);
@@ -37,8 +36,6 @@ async function renewToken(): Promise<Object | null> {
       const payloadBase64 = token.split('.')[1];
       const base64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
       const decodedJwt = JSON.parse(window.atob(base64));
-
-        console.log('user', decodedJwt);
 
       const user : Object = decodedJwt;
       return user;
