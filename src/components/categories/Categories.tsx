@@ -66,16 +66,24 @@ const Categories: React.FC = () => {
     setCategoryDetailedId(categoryId);
   };
 
+  const deleteCategory = (id: number) => {
+    setCategoryList(currentCategories => {
+      return currentCategories.filter(c => c.id !== id);
+    });
+    setCategoryDetailedId(null);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
   return (
     <>
-      {categoryDetailedId !== null && !Number.isNaN(categoryDetailedId) && (
+      {categoryDetailedId !== null && (
         <CategoryDetails
           categoryId={categoryDetailedId}
           setCategoryId={setCategoryDetailedId}
           updateCategory={updateCategory}
+          deleteCategory={deleteCategory}
         />
       )}
 

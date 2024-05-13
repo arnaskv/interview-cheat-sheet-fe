@@ -22,9 +22,10 @@ type Props = {
   parentId?: number;
   setQuestionId: (id: number | null, parentId: number | null) => void;
   updateQuestion: (question: Question) => void;
+  deleteQuestion: (id: number) => void;
 };
 
-const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
+const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion, deleteQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
   const [open, setOpen] = useState(false);
@@ -125,6 +126,7 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
                 deleteLabel="Delete Question"
                 open={open}
                 setOpen={setOpen}
+                handleDelete={() => deleteQuestion(questionId)}
               />
             </div>
           </>
