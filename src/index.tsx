@@ -3,6 +3,7 @@ import App from './App';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import AuthenticationProvider from './components/authenticationProvider/AuthenticationProvider';
 
 const container = document.getElementById('root');
 
@@ -11,9 +12,11 @@ if (container) {
 
   root.render(
     <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <AuthenticationProvider>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </AuthenticationProvider>
     </React.StrictMode>,
   );
 } else {

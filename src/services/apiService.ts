@@ -1,4 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import authService from "./auth";
+
+const token = authService.getToken();
 
 export type ErrorResponse = {
     status: number;
@@ -52,6 +55,7 @@ const makeRequestAsync = async <T>({
         data: body,
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
     };
 

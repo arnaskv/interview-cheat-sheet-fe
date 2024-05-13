@@ -1,6 +1,11 @@
 const BASE_URL = 'https://gvigai-api.devbstaging.com/api/v1';
 
 export const ENDPOINTS = {
+  AUTH: {
+    LOGIN: `${BASE_URL}/auth/login`,
+    REGISTER: `${BASE_URL}/auth/register`,
+    RENEW_TOKEN: `${BASE_URL}/auth/renew-token`,
+  },
   CATEGORY: {
     GET_ALL: `${BASE_URL}/category`,
     GET_ONE: (id: string) => `${BASE_URL}/category/${id}`,
