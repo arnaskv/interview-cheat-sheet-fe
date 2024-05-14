@@ -20,7 +20,7 @@ const QuestionList = () => {
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(id ? Number(id) : null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
-  const [sortingOption, setSortingOption] = useState('dateCreatedAsc'); // Default sorting option
+  const [sortingOption, setSortingOption] = useState('dateCreatedDesc'); // Default sorting option
 
   const navigate = useNavigate();
 
@@ -85,11 +85,10 @@ const QuestionList = () => {
   };
 
   const onCreateSuccess = (response: Question) => {
+
     const question: Question = response;
     setQuestionList(currentQuestions => {
-      const updatedList = [...currentQuestions];
-      updatedList.unshift(question);
-      return updatedList;
+      return [question, ...currentQuestions];
     });
   };
 
