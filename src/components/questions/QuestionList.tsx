@@ -1,4 +1,4 @@
-import { Box, MenuItem, Select, SelectChangeEvent  } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import QuestionListItem from './QuestionListItem';
 import QuestionFromButton from './components/QuestionFromButton';
@@ -8,10 +8,12 @@ import useQuery from '../../hooks/useQuery';
 import Loader from '../shared/Loader';
 import { HTTP_METHODS } from '../../constants/http';
 import DetailedQuestionCard from './DetailedQuestionCard';
-import { QuestionContainer } from './QuestionPageStyles';
+import { QuestionContainer, FilteringContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import { useNavigate, useParams } from 'react-router-dom';
+import DropDownList from '../dropDownList/DropDownList';
+import sortingTypes from '../../constants/sortingTypes'
 
 const QuestionList = () => {
   const { id } = useParams();
@@ -72,13 +74,10 @@ const QuestionList = () => {
     getData({ sort: sortingOption });
   }, [sortingOption]);
 
-  const handleSortingChange = async (event: SelectChangeEvent<string>) => {
-    const selectedOption = event.target.value;
-    console.log("Selected Sorting Option:", selectedOption);
+  const handleSortingChange = async (selectedOption: string) => {
     setSortingOption(selectedOption);
 
     const updatedQuestions = await getData({ sort: selectedOption });
-    console.log("Updated Questions:", updatedQuestions);
 
     if (updatedQuestions !== null && updatedQuestions !== undefined) {
       setQuestionList(updatedQuestions);
@@ -88,7 +87,9 @@ const QuestionList = () => {
   const onCreateSuccess = (response: Question) => {
     const question: Question = response;
     setQuestionList(currentQuestions => {
-      return [...currentQuestions, question];
+      const updatedList = [...currentQuestions];
+      updatedList.unshift(question);
+      return updatedList;
     });
   };
 
@@ -130,18 +131,14 @@ const QuestionList = () => {
               subTitle="Discover, create and improve existing interview questions and build interview templates"
             />
             <ButtonContainer>
-              <div>
-                <Select value={sortingOption} onChange={handleSortingChange}>
-                  <MenuItem value="dateCreatedAsc">Date Created (Ascending)</MenuItem>
-                  <MenuItem value="dateCreatedDesc">Date Created (Descending)</MenuItem>
-                  <MenuItem value="titleAsc">Title (Ascending)</MenuItem>
-                  <MenuItem value="titleDesc">Title (Descending)</MenuItem>
-                </Select>
-              </div>
               <QuestionFromButton onSubmit={onCreateSubmit} />
             </ButtonContainer>
           </HeaderContainer>
         </Box>
+        <FilteringContainer>
+          <span>Sort by:</span>
+          <DropDownList value={sortingOption} onChange={handleSortingChange} options={sortingTypes} />
+        </FilteringContainer>
 
         {!questionList || questionList.length === 0 ? (
           <div>No questions found</div>
