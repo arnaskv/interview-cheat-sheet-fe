@@ -7,6 +7,7 @@ import Layout from '../layout/Layout';
 const Home = lazy(() => import('../../pages/home/Home'));
 const CategoriesPage = lazy(() => import('../../pages/categories/CategoriesPage'));
 const Login = lazy(() => import('../../pages/login/Login'));
+const Register = lazy(() => import('../../pages/register/Register'));
 
 const CustomRouterProvider: FC = () => {
   const router = createBrowserRouter([
@@ -57,7 +58,15 @@ const CustomRouterProvider: FC = () => {
               <Login />
             </Suspense>
           ),
-        }
+        },
+        {
+          path: ROUTE_PATHS.REGISTER,
+          element: (
+            <Suspense fallback={<Loader />}>
+              <Register />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);

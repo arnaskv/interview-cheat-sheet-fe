@@ -3,4 +3,5 @@ export const ROUTE_PATHS = {
   CATEGORIES: '/category',
   COMMENTS: '/comments',
   LOGIN: '/login',
+  REGISTER: '/register'
 };
