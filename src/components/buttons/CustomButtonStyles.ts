@@ -21,6 +21,11 @@ export const StyledButton = styled(Button)<ButtonProps>(({ color }) => ({
     border: '1px solid #DDD',
     color: '#000048',
   }),
+  ...(color === 'info' && {
+    backgroundColor: '#78ECE8',
+    border: '1px solid #78ECE8',
+    color: '#000048',
+  }),
   '&:hover': {
     boxShadow: 'none',
     ...(color === 'primary' && {
@@ -28,6 +33,9 @@ export const StyledButton = styled(Button)<ButtonProps>(({ color }) => ({
     }),
     ...(color === 'secondary' && {
       backgroundColor: '#c2c2c2',
+    }),
+    ...(color === 'info' && {
+      backgroundColor: '#00b3b3',
     }),
   },
 }));

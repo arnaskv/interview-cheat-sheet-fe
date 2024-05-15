@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form} from 'formik';
-import { Grid, TextField, Button, Card, DialogContent } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ENDPOINTS } from "../../constants/endpoints";
 import { HTTP_METHODS } from "../../constants/http";
@@ -8,6 +8,8 @@ import { useContext } from "react";
 import { UserContext } from '../../components/authenticationProvider/AuthenticationProvider';
 import useQuery from '../../hooks/useQuery';
 import { userLoginSchema } from '../../validation/userLogin';
+import { LoginPageContainer, LoginPageTitle, FormContainer, ActionButtonContainer, HorizontalLine, HorizontalLineContainer } from './LoginPageStyles';
+import ActionButton from '../../components/buttons/ActionButton';
 
 type userLoginResponse = {
   token: string;
@@ -46,72 +48,89 @@ const Login: React.FC = () => {
   
   
     return (
-      <div>
-      <Formik 
-        initialValues={initialValues}
-        validationSchema={userLoginSchema}
-  
-        onSubmit={(values) => {
-          const user = {
-            email: values.email,
-            password: values.password
-          };
-          onSubmit(user);
-        }}
-      >
-        {(formik) => (
-          <Form>
-            <Card style={{ width: '50%'}}>
-              <DialogContent>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <h2>Login</h2>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      name="email"
-                      label="Email"
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      variant="outlined"
-                      error={Boolean(formik.errors.email && formik.touched.email)}
-                      helperText={
-                        formik.errors.email &&
-                        formik.touched.email &&
-                        formik.errors.email
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      type="password"
-                      name="password"
-                      label="Password"
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      variant="outlined"
-                      error={Boolean(formik.errors.password && formik.touched.password)}
-                      helperText={
-                        formik.errors.password &&
-                        formik.touched.password &&
-                        formik.errors.password
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button type="submit" variant="contained" disabled={false}> 
-                      Sign in
-                    </Button>
-                  </Grid>
-                </Grid>
-              </DialogContent>
-            </Card>
-          </Form>
-        )}
-      </Formik>
-      </div>
+      <LoginPageContainer>
+        <FormContainer>
+          <LoginPageTitle>
+            <Typography variant="h4" align='left'>Welcome to </Typography>
+            <Typography variant="h4" align='left'>Interview Cheat Sheet</Typography>
+          </LoginPageTitle>
+          <Formik 
+            initialValues={initialValues}
+            validationSchema={userLoginSchema}
+      
+            onSubmit={(values) => {
+              const user = {
+                email: values.email,
+                password: values.password
+              };
+              onSubmit(user);
+            }}
+          >
+            {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
+              <Form>
+                    <Grid container spacing={1}>
+                      <Grid item xs={6}>
+                        Email address
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          name="email"
+                          label="e.g, name@cognizant.com"
+                          value={values.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          variant="outlined"
+                          fullWidth
+                          error={touched.email && Boolean(errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                      </Grid>
+                      <Grid item xs={6} >
+                        Password
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          type="password"
+                          name="password"
+                          value={values.password}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          variant="outlined"
+                          fullWidth
+                          error={touched.password && Boolean(errors.password)}
+                          helperText={touched.password && errors.password}
+                        />
+                      </Grid>
+                        <ActionButtonContainer>
+                          <ActionButton 
+                            type="submit" 
+                            disabled={isSubmitting} 
+                            color="primary" 
+                            variant="contained" 
+                            fullWidth
+                          >
+                              Sign in
+                          </ActionButton>
+                          <HorizontalLineContainer>
+                            <HorizontalLine />
+                              or
+                            <HorizontalLine />
+                          </HorizontalLineContainer>
+                          <ActionButton 
+                            color="info" 
+                            variant="contained" 
+                            fullWidth
+                            onClick={() => navigate('/register')}
+                          >
+                              Register
+                          </ActionButton>
+                        </ActionButtonContainer>
+                    </Grid>
+              </Form>
+            )}
+          </Formik>
+        </FormContainer>
+      </LoginPageContainer>
     );
   };
   
