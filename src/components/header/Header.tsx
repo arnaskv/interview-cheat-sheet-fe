@@ -41,18 +41,16 @@ const Header = () => {
                   navigate('/');
                   handleClose();
                 }}>Log out</MenuItem>
-              ) : (
-                <>
-                  <MenuItem onClick={() => {
-                    navigate('/login');
-                    handleClose();
-                  }}>Log in</MenuItem>
-                  <MenuItem onClick={() => {
-                      navigate('/register')
-                      handleClose();
-                  }}>Register</MenuItem>
-                </>
-              )}
+              ) : [
+                <MenuItem key="login" onClick={() => {
+                  navigate('/login');
+                  handleClose();
+                }}>Log in</MenuItem>,
+                <MenuItem key="register" onClick={() => {
+                  navigate('/register')
+                  handleClose();
+                }}>Register</MenuItem>
+              ]}
             </Menu>
             </div>
         </header>

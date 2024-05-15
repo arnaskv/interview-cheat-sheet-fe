@@ -75,7 +75,7 @@ const Login: React.FC = () => {
                       <Grid item xs={12}>
                         <TextField
                           name="email"
-                          label="e.g, name@cognizant.com"
+                          placeholder='e.g, name@cognizant.com'
                           value={values.email}
                           onChange={handleChange}
                           onBlur={handleBlur}
