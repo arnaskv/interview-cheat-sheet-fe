@@ -32,7 +32,7 @@ const NotFoundPage: React.FC<CategoryDetailsProps> = ({ missingComponent, setMis
               click the button below to go back to the homepage.
             </p>
             <button className={styledNotFoundPage.button} onClick={handleClick}>
-              HOME
+              BACK
             </button>
           </div>
         </div>
