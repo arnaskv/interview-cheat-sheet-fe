@@ -33,14 +33,13 @@
 
 .select-input.primary-variant .MuiPaper-root .MuiMenuItem-root {
     color: #000048;
-    width: 283px;
+    width: 254px;
     font-family: Inter, sans-serif;
     font-size: 14px;
-    font-family: Inter, sans-serif;
 }
 
 .select-input.primary-variant .MuiPaper-root {
-    margin-left: -39px; /* moves dropdown menu to the left */
+    margin-left: -28px; /* moves dropdown menu to the left */
 }
 
 .chevron-button {

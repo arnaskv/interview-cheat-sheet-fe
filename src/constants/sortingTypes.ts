@@ -1,8 +1,8 @@
 const sortingTypes = [
-  { value: 'dateCreatedDesc', label: 'Recently created first' },
-  { value: 'dateCreatedAsc', label: 'Oldest first' },
-  { value: 'commentCountDesc', label: 'Most comments first' },
-  { value: 'commentCountAsc', label: 'Least comments first' },
+  { value: 'dateCreatedDesc', label: 'Latest' },
+  { value: 'dateCreatedAsc', label: 'Oldest' },
+  { value: 'commentCountDesc', label: 'Most comments' },
+  { value: 'commentCountAsc', label: 'Least comments' },
   { value: 'titleAsc', label: 'Ascending (A-Z)' },
   { value: 'titleDesc', label: 'Descending (Z-A)' },
 ]
