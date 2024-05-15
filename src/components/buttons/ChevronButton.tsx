@@ -15,7 +15,7 @@ const ChevronButton: React.FC<Props> = ({ open, onClick, showBorder = true, butt
   return (
     <IconButton
       onClick={onClick}
-      className={buttonClassName} // Apply buttonClassName here
+      className={buttonClassName}
       sx={{ border: showBorder ? '1px solid #DDDDDD' : 'none', borderRadius: '12px', height: '32px', width: '32px' }}
     >
       {open ? (

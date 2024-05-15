@@ -79,7 +79,7 @@ const QuestionList = () => {
 
     const updatedQuestions = await getData({ sort: selectedOption });
 
-    if (updatedQuestions !== null && updatedQuestions !== undefined) {
+    if (!!updatedQuestions) {
       setQuestionList(updatedQuestions);
     }
   };
