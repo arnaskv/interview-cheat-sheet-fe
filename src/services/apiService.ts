@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import authService from "./auth";
 
-const token = authService.getToken();
 
 export type ErrorResponse = {
     status: number;
@@ -47,6 +46,7 @@ const makeRequestAsync = async <T>({
     queryParams,
     body,
 } : RequestParams): Promise<ApiResponse<T> | ErrorResponse> => {
+    const token = authService.getToken();
 
     const request: AxiosRequestConfig = {
         url,
