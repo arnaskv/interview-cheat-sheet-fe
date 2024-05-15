@@ -26,8 +26,8 @@ const Header = () => {
         <header className={styles.HeaderBox}>
             <div className={styles.ButtonsBox}>
             {/*    <NotificationsIcon className={styles.Notification}/>*/}
-            <IconButton className={styles.Profile} onClick={handleClick}>
-              <AccountCircleIcon className={styles.ProfileButton} />
+            <IconButton onClick={handleClick}>
+              <AccountCircleIcon style={{width: '2.5rem', height: '2.5rem'}} />
             </IconButton>
             <Menu
               id="profile-menu"
