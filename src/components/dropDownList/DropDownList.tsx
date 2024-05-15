@@ -13,9 +13,10 @@ type DropDownListProps = {
   onChange: (value: string) => void;
   options: Option[];
   variant?: 'primary' | 'secondary';
+  error?: boolean;
   }
 
-const DropDownList: React.FC<DropDownListProps> = ({ value, onChange, options, variant = 'primary'}) => {
+const DropDownList: React.FC<DropDownListProps> = ({ value, onChange, options, variant = 'primary', error}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -32,12 +33,13 @@ const DropDownList: React.FC<DropDownListProps> = ({ value, onChange, options, v
   };
 
   return (
-    <div className={`sorting-select-container ${variant === 'secondary' ? 'secondary-variant' : 'primary-variant'}`}>
+    <div className={`sorting-select-container ${variant}-variant`}>
       <Select
         value={value}
         onChange={handleChange}
-        MenuProps={{ disablePortal: true, open, onClose: handleClose, PaperProps: { style: { width: 'max-content' } } }}
-        className={`select-input ${variant === 'secondary' ? 'secondary-variant' : 'primary-variant'}`}
+        MenuProps={{ disablePortal: true, open, onClose: handleClose, PaperProps: { style: { width: 'max-content'} } }}
+        className={`select-input ${variant}-variant ${variant === 'secondary' && (error) ? 'error-border' : ''}`}
+
         IconComponent={() => (
           <ChevronButton
             open={open}

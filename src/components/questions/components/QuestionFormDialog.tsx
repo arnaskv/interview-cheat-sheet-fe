@@ -77,6 +77,14 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
     }
   }, [question]);
 
+  useEffect(() => {
+    if (!open) {
+      setSelectedCategory('');
+      setCategoryError('');
+    }
+  }, [open]);
+
+
   const handleSubmit = (values: Question) => {
     if (!selectedCategory) {
       setCategoryError('Please select a category');
@@ -150,6 +158,7 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
                           label: category.title
                         }))} // converting categories to options
                         variant={"secondary"}
+                        error={Boolean(categoryError)}
                       />
                       {Boolean(categoryError) && <FormHelperText error>{categoryError}</FormHelperText>}
                     </Grid>
