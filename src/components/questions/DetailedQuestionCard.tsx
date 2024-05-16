@@ -22,9 +22,10 @@ type Props = {
   parentId?: number;
   setQuestionId: (id: number | null, parentId: number | null) => void;
   updateQuestion: (question: Question) => void;
+  deleteQuestion: (id: number) => void;
 };
 
-const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion }: Props) => {
+const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuestion, deleteQuestion }: Props) => {
   const [commentsRefresh, setCommentsRefresh] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState<Comment | null>(null);
   const [open, setOpen] = useState(false);
@@ -82,12 +83,17 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
     }
   };
 
+  const handleClose = () => {
+    navigate('/');
+    setQuestionId(null, null);
+  };
+
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={styleDetailedCard.Box}>
         <div className={styleDetailedCard.CloseButton}>
           <IconButton>
-            <CloseIcon onClick={() => setQuestionId(null, null)} />
+            <CloseIcon onClick={handleClose} />
           </IconButton>
         </div>
         {question && (
@@ -112,12 +118,15 @@ const DetailedQuestionCard = ({ questionId, parentId, setQuestionId, updateQuest
                 itemId={questionId.toString()}
                 deleteEndpoint={ENDPOINTS.QUESTION.DELETE}
                 dialogTitle="Delete this question?"
-                dialogDescription={question?.subQuestions?
-                  "If you delete this question, all follow up questions and comments will also be deleted. Are you sure?" :
-                  "If you delete this question, all comments will also be deleted. Are you sure"}
+                dialogDescription={
+                  question?.subQuestions
+                    ? 'If you delete this question, all follow up questions and comments will also be deleted. Are you sure?'
+                    : 'If you delete this question, all comments will also be deleted. Are you sure'
+                }
                 deleteLabel="Delete Question"
                 open={open}
                 setOpen={setOpen}
+                handleDelete={() => deleteQuestion(questionId)}
               />
             </div>
           </>

@@ -11,6 +11,7 @@ import CategoryFormDialog from '../dialogs/CategoryFormDialog';
 import { HTTP_METHODS } from '../../constants/http';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import PageTitle from '../shared/PageTitle';
+import NotFoundPage from '../shared/NotFoundPage';
 import CategoryDetails from './CategoryDetails';
 
 const Categories: React.FC = () => {
@@ -66,16 +67,28 @@ const Categories: React.FC = () => {
     setCategoryDetailedId(categoryId);
   };
 
+  const deleteCategory = (id: number) => {
+    setCategoryList(currentCategories => {
+      return currentCategories.filter(c => c.id !== id);
+    });
+    setCategoryDetailedId(null);
+  };
+
   if (isLoading) return <Loader />;
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
+  if (categoryDetailedId !== null && !categoryList.some(category => category.id === categoryDetailedId)) {
+    return <NotFoundPage missingComponent="category" setMissingComponent={setCategoryDetailedId} />;
+  }
+
   return (
     <>
-      {categoryDetailedId !== null && !Number.isNaN(categoryDetailedId) && (
+      {categoryDetailedId !== null && (
         <CategoryDetails
           categoryId={categoryDetailedId}
           setCategoryId={setCategoryDetailedId}
           updateCategory={updateCategory}
+          deleteCategory={deleteCategory}
         />
       )}
 

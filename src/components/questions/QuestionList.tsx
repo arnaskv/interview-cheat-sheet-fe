@@ -8,16 +8,21 @@ import useQuery from '../../hooks/useQuery';
 import Loader from '../shared/Loader';
 import { HTTP_METHODS } from '../../constants/http';
 import DetailedQuestionCard from './DetailedQuestionCard';
-import { QuestionContainer } from './QuestionPageStyles';
+import { QuestionContainer, FilteringContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
+import NotFoundPage from '../shared/NotFoundPage';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import { useNavigate, useParams } from 'react-router-dom';
+import DropDownList from '../dropDownList/DropDownList';
+import sortingTypes from '../../constants/sortingTypes'
 
 const QuestionList = () => {
   const { id } = useParams();
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(id ? Number(id) : null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
+  const [sortingOption, setSortingOption] = useState('dateCreatedDesc'); // Default sorting option
+
   const navigate = useNavigate();
 
   const {
@@ -28,6 +33,7 @@ const QuestionList = () => {
   } = useQuery<Question[]>({
     url: ENDPOINTS.QUESTION.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
+    queryParams: {sort: sortingOption}
   });
 
   const setQuestionIds = (questionId: number | null, parentId: number | null) => {
@@ -41,9 +47,8 @@ const QuestionList = () => {
         return currentQuestions.map(q => (q.id === question.id ? question : q));
       });
     } else {
-      //If we are editing child question, there is some more work to be done
       const parentQuestion = questionList.find(q => q.id === parentQuestionId);
-      //In theory this should never be false, it is here just to shut up typescript
+
       if (parentQuestion) {
         const subQuestions = parentQuestion.subQuestions?.map(q => (q.id === question.id ? question : q));
         parentQuestion.subQuestions = subQuestions;
@@ -55,19 +60,56 @@ const QuestionList = () => {
     }
   };
 
-  useEffect(() => {
-    if (!questions) {
-      getData();
+  const deleteQuestion = (id: number) => {
+    if (parentQuestionId === null) {
+      setQuestionList(currentQuestions => {
+        return currentQuestions.filter(q => q.id !== id);
+      });
+    } else {
+      const parentQuestion = questionList.find(q => q.id === parentQuestionId);
+
+      if (parentQuestion) {
+        const subQuestions = parentQuestion.subQuestions?.filter(q => q.id !== id);
+        parentQuestion.subQuestions = subQuestions;
+
+        setQuestionList(currentQuestions => {
+          return currentQuestions.map(q => (q.id === parentQuestion.id ? parentQuestion : q));
+        });
+      }
     }
 
-    questionList.length === 0 && questions && setQuestionList(questions);
-    // eslint-disable-next-line
-  }, [questions, getData]);
+    setQuestionIds(null, null);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (questions) {
+      setQuestionList(questions);
+    }
+  }, [questions]);
+
+  useEffect(() => {
+    getData({ sort: sortingOption });
+  }, [sortingOption]);
+
+  const handleSortingChange = async (selectedOption: string) => {
+    setSortingOption(selectedOption);
+
+    const updatedQuestions = await getData({ sort: selectedOption });
+
+    if (!!updatedQuestions) {
+      setQuestionList(updatedQuestions);
+    }
+  };
 
   const onCreateSuccess = (response: Question) => {
+
     const question: Question = response;
     setQuestionList(currentQuestions => {
-      return [...currentQuestions, question];
+      return [question, ...currentQuestions];
     });
   };
 
@@ -90,6 +132,10 @@ const QuestionList = () => {
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
 
+  if (detailedQuestionId !== null && !questionList.some(question => question.id === detailedQuestionId)) {
+    return <NotFoundPage missingComponent="question" setMissingComponent={setDetailedQuestionId} />;
+  }
+
   return (
     <>
       {detailedQuestionId !== null && (
@@ -98,6 +144,7 @@ const QuestionList = () => {
           parentId={parentQuestionId ? parentQuestionId : undefined}
           setQuestionId={setQuestionIds}
           updateQuestion={updateQuestion}
+          deleteQuestion={deleteQuestion}
         />
       )}
 
@@ -113,6 +160,10 @@ const QuestionList = () => {
             </ButtonContainer>
           </HeaderContainer>
         </Box>
+        <FilteringContainer>
+          <span>Sort by:</span>
+          <DropDownList value={sortingOption} onChange={handleSortingChange} options={sortingTypes} />
+        </FilteringContainer>
 
         {!questionList || questionList.length === 0 ? (
           <div>No questions found</div>
