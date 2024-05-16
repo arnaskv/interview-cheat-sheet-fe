@@ -6,11 +6,9 @@ import {
   FormHelperText,
   Grid,
   IconButton,
-  MenuItem,
   TextField,
   Typography,
 } from '@mui/material';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ENDPOINTS } from '../../../constants/endpoints';
 import { HTTP_METHODS } from '../../../constants/http';
 import useQuery from '../../../hooks/useQuery';
@@ -27,6 +25,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import DeleteButton from '../../buttons/DeleteButton';
 import { FlexColumnContainer, AddSubquestionButton } from '../QuestionStyles';
+import DropDownList from '../../dropDownList/DropDownList';
 
 type QuestioneFormDialogProps = {
   open: boolean;
@@ -77,6 +76,14 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
       setSelectedCategory(String(question.category.id));
     }
   }, [question]);
+
+  useEffect(() => {
+    if (!open) {
+      setSelectedCategory('');
+      setCategoryError('');
+    }
+  }, [open]);
+
 
   const handleSubmit = (values: Question) => {
     if (!selectedCategory) {
@@ -140,38 +147,22 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
                     </Grid>
 
                     <Grid item xs={12}>
-                      <TextField
-                        select
-                        fullWidth
-                        className={style.TextField}
-                        name="category"
+                      <DropDownList
                         value={selectedCategory}
-                        variant="outlined"
-                        onChange={e => {
-                          setSelectedCategory(e.target.value);
+                        onChange={(selectedValue) => {
+                          setSelectedCategory(selectedValue);
                           setCategoryError('');
                         }}
-                        onBlur={handleBlur}
+                        options={categories.map(category => ({
+                          value: category.id ? category.id.toString() : "",
+                          label: category.title
+                        }))} // converting categories to options
+                        variant={"secondary"}
                         error={Boolean(categoryError)}
-                        SelectProps={{
-                          MenuProps: { disablePortal: true },
-                          classes: { select: style.TextField },
-                          IconComponent: ExpandMore,
-                        }}
-                        sx={{
-                          '& .MuiSvgIcon-root': {
-                            color: '#000048',
-                          },
-                        }}
-                      >
-                        {categories.map(category => (
-                          <MenuItem key={category.id} value={category.id} className={style.TextField}>
-                            {category.title}
-                          </MenuItem>
-                        ))}
-                      </TextField>
+                      />
                       {Boolean(categoryError) && <FormHelperText error>{categoryError}</FormHelperText>}
                     </Grid>
+
                     <Grid item xs={12}>
                       <FieldArray
                         name="subQuestions"

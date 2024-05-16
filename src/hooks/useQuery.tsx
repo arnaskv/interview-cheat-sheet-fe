@@ -28,14 +28,21 @@ export default function useQuery<T>({
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<string[] | null>(null);
 
-  const getData = async () => {
+  const getData = async (params?: Query) => {
     setIsLoading(true);
 
     try {
+      let requestUrl = url;
+
+      if (params?.sort) {
+        requestUrl += `?sort=${params.sort}`;
+        delete params.sort; // Remove sort from other queryParams
+      }
+
       const response = await apiService.makeRequestAsync<T>({
-        url,
+        url: requestUrl,
         httpMethod: HTTP_METHODS.GET,
-        queryParams,
+        queryParams: params,
       });
 
       if ('message' in response) {
@@ -44,12 +51,14 @@ export default function useQuery<T>({
         const mappedData = mapper(response.data);
         setData(mappedData);
         onSuccess(mappedData);
+        return mappedData;
       }
     } catch (error) {
       setErrors([error as string]);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
+    return null;
   };
 
   const sendData = async (values?: Query) => {

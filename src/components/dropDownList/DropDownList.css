@@ -1,0 +1,73 @@
+.sorting-select-container.primary-variant {
+    width: 199px;
+    height: 32px;
+    border-radius: 100px;
+    position: relative;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+}
+
+.select-input.primary-variant {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: inherit;
+    color: #000048;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+}
+
+.select-input.primary-variant .MuiPaper-root .MuiMenuItem-root {
+    color: #000048;
+    width: 254px;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+}
+
+.select-input.primary-variant .MuiPaper-root {
+    margin-left: -28px; /* moves dropdown menu to the left */
+}
+
+.select-input.secondary-variant {
+    color: #000048;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+
+.select-input.secondary-variant.error-border {
+    border-radius: 4px;
+    border: 1px solid rgb(211, 47, 47);
+}
+
+.select-input.secondary-variant.error-border:focus-within {
+    border: 2px solid rgb(211, 47, 47);
+
+}
+
+.select-input.secondary-variant .MuiPaper-root .MuiMenuItem-root {
+    color: #000048; /* drop down element color*/
+}
+
+.select-input.secondary-variant .MuiMenu-paper {
+    /* drop down element table*/
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.chevron-button {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 4px; /*moving a bit the left*/
+    top: center; /*moving a bit down*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chevron-icon {
+    opacity: 1;
+}
