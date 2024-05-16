@@ -12,12 +12,14 @@ import { QuestionContainer } from './QuestionPageStyles';
 import PageTitle from '../shared/PageTitle';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import { useNavigate, useParams } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 const QuestionList = () => {
   const { id } = useParams();
   const [detailedQuestionId, setDetailedQuestionId] = React.useState<number | null>(id ? Number(id) : null);
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
+  const [isSearching, setIsSearching] = useState<Boolean>(false);
   const navigate = useNavigate();
 
   const {
@@ -76,11 +78,10 @@ const QuestionList = () => {
   };
 
   useEffect(() => {
-    if (!questions) {
+    if (!questions && !isSearching) {
       getData();
     }
 
-    questionList.length === 0 && questions && setQuestionList(questions);
     // eslint-disable-next-line
   }, [questions, getData]);
 
@@ -134,7 +135,9 @@ const QuestionList = () => {
             </ButtonContainer>
           </HeaderContainer>
         </Box>
-
+        <Box paddingBottom="1rem">
+          <SearchBar questions={questions} onSearchResult={setQuestionList} isSearching={setIsSearching} />
+        </Box>
         {!questionList || questionList.length === 0 ? (
           <div>No questions found</div>
         ) : (
