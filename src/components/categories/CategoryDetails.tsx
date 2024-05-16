@@ -18,9 +18,15 @@ interface CategoryDetailsProps {
   categoryId: number;
   setCategoryId: (id: number | null) => void;
   updateCategory: (category: Category) => void;
+  deleteCategory: (id: number) => void;
 }
 
-const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCategoryId, updateCategory }) => {
+const CategoryDetails: React.FC<CategoryDetailsProps> = ({
+  categoryId,
+  setCategoryId,
+  updateCategory,
+  deleteCategory,
+}) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -33,6 +39,12 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
     url: ENDPOINTS.CATEGORY.GET_ONE(categoryId.toString()),
     httpMethod: HTTP_METHODS.GET,
   });
+
+  useEffect(() => {
+    if (!category) {
+      getData();
+    }
+  }, [category, getData]);
 
   useEffect(() => {
     getData();
@@ -69,6 +81,11 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
     }
   };
 
+  const handleClose = () => {
+    navigate('/category');
+    setCategoryId(null);
+  };
+
   if (errors) return <div className={styles.Error}>{errors.join(', ')}</div>;
 
   return (
@@ -77,7 +94,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
         <div className={styleDetailedCard.Header}>
           <div className={styleDetailedCard.CloseButton}>
             <IconButton>
-              <CloseIcon onClick={() => setCategoryId(null)} />
+              <CloseIcon onClick={handleClose} />
             </IconButton>
           </div>
           <div></div>
@@ -103,6 +120,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ categoryId, setCatego
                 deleteLabel="Delete Category"
                 open={open}
                 setOpen={setOpen}
+                handleDelete={() => deleteCategory(categoryId)}
               />
             </div>
           </>
