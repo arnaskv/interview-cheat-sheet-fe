@@ -111,8 +111,14 @@ const QuestionList = () => {
   if (isLoading) return <Loader />;
   if (errors) return <div>{errors.join(', ')}</div>;
 
-  if (detailedQuestionId !== null && !questionList.some(question => question.id === detailedQuestionId)) {
-    return <NotFoundPage missingComponent="question" setMissingComponent={setDetailedQuestionId} />;
+  if (detailedQuestionId !== null) {
+    const detailedQuestion =
+      questionList.find(q => q.id === detailedQuestionId) ||
+      questionList.flatMap(q => q.subQuestions || []).find(q => q.id === detailedQuestionId);
+
+    if (!detailedQuestion) {
+      return <NotFoundPage missingComponent="question" setMissingComponent={setDetailedQuestionId} />;
+    }
   }
 
   return (
