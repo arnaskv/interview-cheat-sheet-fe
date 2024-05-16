@@ -116,7 +116,7 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
       </div>
       <DialogTitle className={style.FormTitle}> {question ? 'Edit question' : 'Add question'} </DialogTitle>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={questionSchema}>
-        {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
+        {({ values, handleChange, handleBlur, errors, touched, isSubmitting, setSubmitting }) => (
           <Form>
             <DialogContent>
               <Grid container spacing={2}>
@@ -152,6 +152,7 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
                         onChange={(selectedValue) => {
                           setSelectedCategory(selectedValue);
                           setCategoryError('');
+                          setSubmitting(false);
                         }}
                         options={categories.map(category => ({
                           value: category.id ? category.id.toString() : "",
@@ -229,7 +230,12 @@ const QuestionFormDialog = ({ open, setOpen, question, parentId, onSubmit }: Que
               <ActionButton onClick={() => setOpen(false)} color="secondary" variant="contained">
                 Cancel
               </ActionButton>
-              <ActionButton type="submit" disabled={isSubmitting} color="primary" variant="contained">
+              <ActionButton
+                type="submit"
+                disabled={isSubmitting || Object.keys(errors).length > 0}
+                color="primary"
+                variant="contained"
+              >
                 {question ? 'Update Question' : 'Add Question'}
               </ActionButton>
             </StyledDialogActions>
