@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ROUTE_PATHS } from '../../constants/routePaths';
 import Loader from '../shared/Loader';
 import Layout from '../layout/Layout';
-import NotFoundPage from '../shared/NotFoundPage';
 
+const NotFoundPage = lazy(() => import('../shared/NotFoundPage'));
 const Home = lazy(() => import('../../pages/home/Home'));
 const CategoriesPage = lazy(() => import('../../pages/categories/CategoriesPage'));
 
