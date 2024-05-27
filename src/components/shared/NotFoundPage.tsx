@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styledNotFoundPage from './NotFoundPage.module.css';
 
 interface CategoryDetailsProps {
-  missingComponent: 'category' | 'question';
+  missingComponent: 'category' | 'question' | 'page';
   setMissingComponent: (id: number | null) => void;
 }
 
