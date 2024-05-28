@@ -14,7 +14,8 @@ import NotFoundPage from '../shared/NotFoundPage';
 import { ButtonContainer, HeaderContainer } from '../shared/PageTitleStyles';
 import { useNavigate, useParams } from 'react-router-dom';
 import DropDownList from '../dropDownList/DropDownList';
-import sortingTypes from '../../constants/sortingTypes'
+import sortingTypes from '../../constants/sortingTypes';
+import SearchBar from './SearchBar';
 
 const QuestionList = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const QuestionList = () => {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [parentQuestionId, setParentQuestionId] = useState<number | null>(null);
   const [sortingOption, setSortingOption] = useState('dateCreatedDesc'); // Default sorting option
-
+  const [isSearching, setIsSearching] = useState<Boolean>(false);
   const navigate = useNavigate();
 
   const {
@@ -33,7 +34,7 @@ const QuestionList = () => {
   } = useQuery<Question[]>({
     url: ENDPOINTS.QUESTION.GET_ALL,
     httpMethod: HTTP_METHODS.GET,
-    queryParams: {sort: sortingOption}
+    queryParams: { sort: sortingOption },
   });
 
   const setQuestionIds = (questionId: number | null, parentId: number | null) => {
@@ -82,7 +83,9 @@ const QuestionList = () => {
   };
 
   useEffect(() => {
-    getData();
+    if (!questions && !isSearching) {
+      getData();
+    }
   }, []);
 
   useEffect(() => {
@@ -106,7 +109,6 @@ const QuestionList = () => {
   };
 
   const onCreateSuccess = (response: Question) => {
-
     const question: Question = response;
     setQuestionList(currentQuestions => {
       return [question, ...currentQuestions];
@@ -166,11 +168,13 @@ const QuestionList = () => {
             </ButtonContainer>
           </HeaderContainer>
         </Box>
+        <Box paddingBottom="1rem">
+          <SearchBar questions={questions} onSearchResult={setQuestionList} isSearching={setIsSearching} />
+        </Box>{' '}
         <FilteringContainer>
           <span>Sort by:</span>
           <DropDownList value={sortingOption} onChange={handleSortingChange} options={sortingTypes} />
         </FilteringContainer>
-
         {!questionList || questionList.length === 0 ? (
           <div>No questions found</div>
         ) : (
